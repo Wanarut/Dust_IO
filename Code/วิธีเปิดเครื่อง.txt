@@ -1,0 +1,11 @@
+วิธีเปิดเครื่อง
+แอพ blynk
+login email
+ไม่ต้องห่วงเป็นเมลสำรอง
+joker_shoker@hotmail.com
+password
+thanakorn#joker5
+ต้องตั้งชื่อWi-Fiให้บอร์ดเป็น
+Dustkiller
+password
+wifi8266
