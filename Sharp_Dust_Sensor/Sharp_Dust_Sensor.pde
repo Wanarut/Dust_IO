@@ -35,7 +35,7 @@ static float Voc = 0.6;
 
 // Use the typical sensitivity in units of V per 100ug/m3.
 float K = 0.5;
-float max_dval = 4096.0
+float max_dval = 4096.0;
   
 /////////////////////////////////////////////////////////////////////////////
 
@@ -110,7 +110,7 @@ void draw() {
   // Turn on the dust sensor LED by setting digital pin LOW.
   GPIO.digitalWrite(sharpLEDPin, GPIO.LOW);
 
-  // Wait 1ms before taking a reading of the output voltage as per spec.
+  // Wait 0.28ms before taking a reading of the output voltage as per spec.
   delay(1);
 
   // Record the output voltage. This operation takes around 100 microseconds.
