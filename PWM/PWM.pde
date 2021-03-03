@@ -1,30 +1,26 @@
-import processing.io.*;
-SoftwareServo pwm;
+import deadpixel.command.*;
 
-float gear[] = {0, 90, 135, 180};
-int gear_i = 0;
-int pwmPin = 4;
+static final String BASH = platform == WINDOWS? "cmd /C " : "bash -c ";
 
 void setup() {
-  frameRate(0.5);
-  pwm = new SoftwareServo(this);
-  pwm.attach(pwmPin);
-  // On the Raspberry Pi, GPIO 4 is pin 7 on the pin header,
-  // located on the fourth row, above one of the ground pins
+
+  // On Mac OSX or Linux
+
+  String pythonPath = sketchPath("setPWM.py");
+  String pin = " 12";
+  String duty = " 50";
+
+  Command cmd = new Command("python " + pythonPath + pin + duty); 
+  if ( cmd.run() == true ) {
+    // peachy
+    String[] output = cmd.getOutput(); 
+    println(output);
+  } 
+
+  // The Windows equivalent:
+  // String pythonPath = sketchPath("myBatchFile.bat");   
+  // Command cmd = new Command("cmd.exe /c " + pythonPath);
 }
 
 void draw() {
-  // Here we are using the Software Servo class as a Kludge (as recommended by Processing) for PWM.
-  // The only software PWM available in the processing.io library is
-  // SoftwareServo, intended for pwm motors, not LEDs, or DC motors.
-  // Therefore:
-  //    100% PWM == 180 degrees.
-  //     75% PWM == 135 degrees.
-  //     50% PWM == 90 degrees.
-  //      0% PWM == 0 degrees.
-
-  pwm.write(gear[gear_i]);
-  println(gear[gear_i]);
-  gear_i++;
-  gear_i %= gear.length;
 }
