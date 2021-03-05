@@ -1,20 +1,15 @@
-import deadpixel.command.*;
+import processing.io.*;
+PWM pwm;
 
 void setup() {
-
-  // On Mac OSX or Linux
-
-  String pythonPath = sketchPath("setPWM.py");
-  String pin = " 18";
-  String duty = " 50";
-
-  Command cmd = new Command("python " + pythonPath + pin + duty); 
-  if ( cmd.run() == true ) {
-    // peachy
-    String[] output = cmd.getOutput(); 
-    println(output);
-  }
+    printArray(pwm.list());
+    size(300, 100);
+    // you might need to use a different channel on other SBCs
+    pwm = new PWM("pwmchip0/pwm0");  //GPIO pin 18,
+    // pwm = new PWM("pwmchip0/pwm1");  //GPIO pin 19,
 }
-
 void draw() {
+    background(255);
+    pwm.set(map(mouseX, 0, width, 0.0, 1.0));
+    line(mouseX, 0, mouseX, height);
 }
