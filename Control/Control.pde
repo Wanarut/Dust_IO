@@ -1,13 +1,11 @@
 import g4p_controls.*;
-import deadpixel.command.*;
 import processing.io.*;
 
 GImageToggleButton btnESP;
 GCustomSlider sdrFan;
 GLabel labelESP, labelFan;
 
-String pythonPath, duty;
-String pinFan = " 18";
+PWM pwmFan;
 int pinESP = 24;
 
 public void setup() {
@@ -20,12 +18,12 @@ public void setup() {
 
   sdrFan = new GCustomSlider(this, 20, 80, 260, 50, "blue18px");
   sdrFan.setShowDecor(false, true, false, true);
-  sdrFan.setNumberFormat(G4P.DECIMAL, 3);
+  sdrFan.setNumberFormat(G4P.DECIMAL, 1);
   sdrFan.setLimits(0, 0, 100);
   sdrFan.setShowValue(true);
 
-  pythonPath = sketchPath("setPWM.py");
   GPIO.pinMode(pinESP, GPIO.OUTPUT);
+  pwmFan = new PWM("pwmchip0/pwm0"); // GPIO pin 18
   createLabels();
 }
 
@@ -49,14 +47,9 @@ public void handleToggleButtonEvents(GImageToggleButton button, GEvent event) {
 void handleSliderEvents(GValueControl slider, GEvent event) {
   if (event == GEvent.RELEASED) {
     int val = slider.getValueI();
-    println("integer value:" + val);
-    duty = " " + str(val);
-    Command cmd = new Command("python " + pythonPath + pinFan + duty); 
-    if ( cmd.run() == true ) {
-      // peachy
-      String[] output = cmd.getOutput(); 
-      println(output);
-    }
+    float duty = val/100.0;
+    println("duty value:" + duty);
+    pwm.set(1000, duty);
   }
 }
 
