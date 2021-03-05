@@ -25,6 +25,7 @@ public void setup() {
   sdrFan.setShowValue(true);
 
   pythonPath = sketchPath("setPWM.py");
+  GPIO.pinMode(pinESP, GPIO.OUTPUT);
   createLabels();
 }
 
@@ -37,7 +38,7 @@ public void handleToggleButtonEvents(GImageToggleButton button, GEvent event) {
   if (button == btnESP) {
     int val = button.getState();
     println(button + "   State: " + val);
-    if (val){
+    if (val==1){
       GPIO.digitalWrite(pinESP, GPIO.HIGH);
     }else{
       GPIO.digitalWrite(pinESP, GPIO.LOW);
