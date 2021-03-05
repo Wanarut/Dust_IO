@@ -6,6 +6,7 @@ GCustomSlider sdrFan;
 GLabel labelESP, labelFan;
 
 PWM pwmFan;
+int period = 1000; // 1 kHz
 int pinESP = 24;
 
 public void setup() {
@@ -49,7 +50,7 @@ void handleSliderEvents(GValueControl slider, GEvent event) {
     int val = slider.getValueI();
     float duty = val/100.0;
     println("duty value:" + duty);
-    pwm.set(1000, duty);
+    pwmFan.set(period, duty);
   }
 }
 
