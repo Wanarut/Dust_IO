@@ -17,11 +17,12 @@ public void setup() {
   btnESP = new GImageToggleButton(this, 10, 10);
   btnESP.tag = "ESP control button ";
 
-  sdrFan = new GCustomSlider(this, 20, 80, 260, 50, "blue18px");
+  sdrFan = new GCustomSlider(this, 20, 100, 260, 100, "metallic");
   sdrFan.setShowDecor(false, true, false, true);
   sdrFan.setNumberFormat(G4P.DECIMAL, 1);
   sdrFan.setLimits(0, 0, 100);
   sdrFan.setShowValue(true);
+  sdrFan.setNbrTicks(5);
 
   GPIO.pinMode(pinESP, GPIO.OUTPUT);
   pwmFan = new PWM("pwmchip0/pwm0"); // GPIO pin 18
