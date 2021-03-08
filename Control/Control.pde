@@ -73,7 +73,7 @@ public void createLabels() {
   labelFan.setOpaque(true);
 }
 
-void zcDetectISR() {
+void zcDetectISR(int pin) {
   if (!zcState) {
     zcState = true;
     pwmFan.set(period, 0);
