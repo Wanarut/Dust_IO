@@ -1,10 +1,11 @@
 import processing.io.*;
-printArray(PWM.list());
 
 PWM pwm;
 
 void setup() {
     size(300, 100);
+    
+    printArray(pwm.list());
     //you might need to use a different channel on other SBCs
     pwm = new PWM("pwmchip0/pwm0"); // GPIO pin 18
     //pwm = new PWM("pwmchip0/pwm1"); // GPIO pin 19
