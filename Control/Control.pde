@@ -8,6 +8,8 @@ GLabel labelESP, labelFan;
 PWM pwmFan;
 int period = 1000; // 1 kHz
 int pinESP = 24;
+int pinZC = 4;
+boolean zcState = false;  // 0 = ready, 1 = processing
 
 public void setup() {
   size(480, 220, JAVA2D);
@@ -25,6 +27,8 @@ public void setup() {
   sdrFan.setNbrTicks(5);
 
   GPIO.pinMode(pinESP, GPIO.OUTPUT);
+  GPIO.pinMode(pinZC, GPIO.INPUT_PULLUP);
+  GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
   pwmFan = new PWM("pwmchip0/pwm0"); // GPIO pin 18
   createLabels();
 }
@@ -52,6 +56,7 @@ void handleSliderEvents(GValueControl slider, GEvent event) {
     float duty = val/100.0;
     println("duty value:" + duty);
     pwmFan.set(period, duty);
+    zcState = false;
   }
 }
 
@@ -66,4 +71,11 @@ public void createLabels() {
   labelFan.setText("Fan control");
   labelFan.setTextBold();
   labelFan.setOpaque(true);
+}
+
+void zcDetectISR(int pin) {
+  if (!zcState) {
+    zcState = true;
+    pwmFan.set(period, 0);
+  }
 }
