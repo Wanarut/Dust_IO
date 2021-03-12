@@ -1,18 +1,24 @@
 import g4p_controls.*;
 
-int screens[] = {0, 1, 2, 3, 4};
-int cur_screen = 1;
+long timeout = 15000;
+int cur_screen = 0;
 long prev_mil = 0;
+
 public void setup() {
   size(1024, 600);
   G4P.setCtrlMode(GControlMode.CENTER);
 
   setupPin();
   setupGif();
-  setBtn();
+  select_setBtn();
+  mode_setBtn();
 }
 
 public void draw() {
+  long cur_mil = millis();
+  if (cur_mil - prev_mil >= timeout) {
+    cur_screen = 0;
+  }
   switch(cur_screen) {
   case 0:
     {
@@ -25,9 +31,20 @@ public void draw() {
       break;
     }
   case 2:
+    {
+      mode_screen();
+      break;
+    }
   case 3:
+    {
+      
+      break;
+    }
   case 4:
-  default:
+    {
+      
+      break;
+    }
   }
 }
 
@@ -37,13 +54,26 @@ void mousePressed() {
   switch(cur_screen) {
   case 0: 
     {
-      cur_screen = 1;
       break;
     }
   case 1:
     {
-      btnMode.hasClicked();
-      btnTimer.hasClicked();
+      btnMode.hasPressed();
+      btnTimer.hasPressed();
+      break;
+    }
+  case 2:
+    {
+      btnHi.hasPressed();
+      btnEco.hasPressed();
+      for (int i=0; i<btnPower.length; i++) {
+        btnPower[i].hasPressed();
+      }
+      break;
+    }
+  case 3:
+    {
+      
       break;
     }
   }
@@ -58,24 +88,26 @@ void mouseReleased() {
     }
   case 1:
     {
-      btnMode.hasReleased();
-      btnTimer.hasReleased();
+      if (btnMode.hasReleased()) {
+        cur_screen = 2;
+      }
+      if (btnTimer.hasReleased()) {
+        //cur_screen = 3;
+      }
       break;
     }
-  }
-}
-
-void mouseMoved() {
-  switch(cur_screen) {
-  case 0: 
+  case 2:
     {
-      cur_screen = 1;
+      btnHi.hasReleased();
+      btnEco.hasReleased();
+      for (int i=0; i<btnPower.length; i++) {
+        btnPower[i].hasReleased();
+      }
       break;
     }
-  case 1:
+  case 3:
     {
-      btnMode.hasMoved();
-      btnTimer.hasMoved();
+      
       break;
     }
   }
