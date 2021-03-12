@@ -1,7 +1,7 @@
 import g4p_controls.*;
 
 int screens[] = {0, 1, 2, 3, 4};
-int cur_screen = 0;
+int cur_screen = 1;
 long prev_mil = 0;
 public void setup() {
   size(1024, 600);
@@ -34,7 +34,49 @@ public void draw() {
 void mousePressed() {
   //Set the screen when whatever happens that you want to happen
   prev_mil = millis();
-  cur_screen++;
-  cur_screen %= screens.length;
-  println(cur_screen);
+  switch(cur_screen) {
+  case 0: 
+    {
+      cur_screen = 1;
+      break;
+    }
+  case 1:
+    {
+      btnMode.hasClicked();
+      btnTimer.hasClicked();
+      break;
+    }
+  }
+}
+
+void mouseReleased() {
+  switch(cur_screen) {
+  case 0: 
+    {
+      cur_screen = 1;
+      break;
+    }
+  case 1:
+    {
+      btnMode.hasReleased();
+      btnTimer.hasReleased();
+      break;
+    }
+  }
+}
+
+void mouseMoved() {
+  switch(cur_screen) {
+  case 0: 
+    {
+      cur_screen = 1;
+      break;
+    }
+  case 1:
+    {
+      btnMode.hasMoved();
+      btnTimer.hasMoved();
+      break;
+    }
+  }
 }

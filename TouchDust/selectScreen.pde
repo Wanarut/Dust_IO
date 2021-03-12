@@ -1,4 +1,4 @@
-long timeout = 5000;
+long timeout = 50000;
 gifButton btnMode, btnTimer;
 
 void select_screen() {
@@ -7,13 +7,17 @@ void select_screen() {
   if (cur_mil - prev_mil >= timeout) {
     cur_screen = 0;
   }
-  btnMode.draw();
+  btnMode.display();
+  btnTimer.display();
 }
 
-void setBtn(){
+void setBtn() {
   String[] files;
   files = new String[] { 
-    "btn/149b53dcfb58393e2055800180cacaa5.gif", "btn/a177dfc84703c31afa0d501ccf43fe4f.gif", "btn/original.gif"
+    "btn/blue.gif", "btn/purple.gif", "btn/sky.gif"
   };
-  btnMode = new gifButton(this, width/2, height/2, files);
+  btnMode = new gifButton(this, width/2-200, height/2, 300, 300, files);
+  btnMode.text = "MODE";
+  btnTimer = new gifButton(this, width/2+200, height/2, 300, 300, files);
+  btnTimer.text = "TIMER";
 }
