@@ -7,11 +7,15 @@ long prev_mil = 0;
 public void setup() {
   size(1024, 600);
   G4P.setCtrlMode(GControlMode.CENTER);
+  rectMode(CENTER);
+  imageMode(CENTER);
+  textAlign(CENTER, CENTER);
 
   setupPin();
   setupGif();
   select_setBtn();
   mode_setBtn();
+  timer_setBtn();
 }
 
 public void draw() {
@@ -27,22 +31,17 @@ public void draw() {
     }
   case 1:
     {
-      select_screen();
+      screen_select();
       break;
     }
   case 2:
     {
-      mode_screen();
+      screen_mode();
       break;
     }
   case 3:
     {
-      
-      break;
-    }
-  case 4:
-    {
-      
+      screen_timer();
       break;
     }
   }
@@ -73,7 +72,11 @@ void mousePressed() {
     }
   case 3:
     {
-      
+      add.hasPressed();
+      del.hasPressed();
+      set.hasPressed();
+      clear.hasPressed();
+      cancel.hasPressed();
       break;
     }
   }
@@ -92,7 +95,7 @@ void mouseReleased() {
         cur_screen = 2;
       }
       if (btnTimer.hasReleased()) {
-        //cur_screen = 3;
+        cur_screen = 3;
       }
       break;
     }
@@ -107,7 +110,26 @@ void mouseReleased() {
     }
   case 3:
     {
-      
+      if (add.hasReleased()) {
+        time_min += 30;
+        time_min %= 60;
+        if (time_min==0) {
+          time_hour++;
+          time_hour%=24;
+        }
+      }
+      if (del.hasReleased()) {
+        if (time_min==0) {
+          time_hour--;
+          if (time_hour < 0) time_hour=23;
+          time_hour%=24;
+        }
+        time_min += 30;
+        time_min %= 60;
+      }
+      set.hasReleased();
+      clear.hasReleased();
+      cancel.hasReleased();
       break;
     }
   }

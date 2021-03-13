@@ -49,11 +49,11 @@ class gifButton {
         break;
       }
     }
-    //rect(xpos_-w_/2, ypos_-h_/2, w_, h_);
+    
     image(cur_gif, xpos_, ypos_, w_, h_);
     textSize(tsize_);
     fill(cur_color);
-    text(text, xpos_, ypos_);
+    text(text, xpos_, ypos_-5);
   }
 
   boolean hasPressed() {

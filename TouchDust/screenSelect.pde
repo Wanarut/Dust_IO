@@ -1,11 +1,4 @@
-
 gifButton btnMode, btnTimer;
-
-void select_screen() {
-  background(0);
-  btnMode.display();
-  btnTimer.display();
-}
 
 void select_setBtn() {
   String[] files;
@@ -16,4 +9,10 @@ void select_setBtn() {
   btnMode.text = "MODE";
   btnTimer = new gifButton(this, width/2+200, height/2, 300, 300, 45, color(255,255,255), files);
   btnTimer.text = "TIMER";
+}
+
+void screen_select() {
+  background(0);
+  btnMode.display();
+  btnTimer.display();
 }
