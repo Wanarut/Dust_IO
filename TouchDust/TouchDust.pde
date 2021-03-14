@@ -101,10 +101,16 @@ void mouseReleased() {
     }
   case 2:
     {
-      btnHi.hasReleased();
-      btnEco.hasReleased();
+      if (btnHi.hasReleased()) {
+        println("Hi Mode");
+      }
+      if (btnEco.hasReleased()) {
+        println("Eco Mode");
+      }
       for (int i=0; i<btnPower.length; i++) {
-        btnPower[i].hasReleased();
+        if (btnPower[i].hasReleased()) {
+          println("Fan level " + str(i+1));
+        }
       }
       break;
     }
@@ -127,9 +133,12 @@ void mouseReleased() {
         time_min += 30;
         time_min %= 60;
       }
-      set.hasReleased();
-      clear.hasReleased();
-      cancel.hasReleased();
+      if (set.hasReleased()) {
+      }
+      if (clear.hasReleased()) {
+      }
+      if (cancel.hasReleased()) {
+      }
       break;
     }
   }
