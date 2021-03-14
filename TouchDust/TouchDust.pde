@@ -10,6 +10,7 @@ public void setup() {
   rectMode(CENTER);
   imageMode(CENTER);
   textAlign(CENTER, CENTER);
+  //frameRate(10);
 
   setupPin();
   setupGif();
@@ -136,6 +137,8 @@ void mouseReleased() {
       if (set.hasReleased()) {
       }
       if (clear.hasReleased()) {
+        time_hour=0;
+        time_min=0;
       }
       if (cancel.hasReleased()) {
         cur_screen = 0;
