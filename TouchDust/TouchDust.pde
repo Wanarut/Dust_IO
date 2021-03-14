@@ -138,6 +138,7 @@ void mouseReleased() {
       if (clear.hasReleased()) {
       }
       if (cancel.hasReleased()) {
+        cur_screen = 0;
       }
       break;
     }
