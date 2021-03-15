@@ -4,11 +4,11 @@ void setup()
 {
   // On Mac OSX or Linux
   String pythonPath = sketchPath("pmsRead.py");
-  Command cmd = new Command("python " + pythonPath); 
+  Command cmd = new Command("python3 " + pythonPath); 
   if ( cmd.run() == true ) {
     // peachy
     String[] output = cmd.getOutput(); 
-    println(output);
+    println(output[0].split(" "));
   } 
 
   // The Windows equivalent:
