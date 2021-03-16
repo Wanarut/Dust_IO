@@ -1,4 +1,5 @@
 //import processing.io.*;
+import g4p_controls.*;
 
 GImageToggleButton btnESP;
 GCustomSlider sdrFan;
@@ -9,13 +10,15 @@ int period = 1000; // 1 kHz
 int pinESP = 24;
 int pinZC = 4;
 boolean zcState = false;  // 0 = ready, 1 = processing
-int mode = 0;
 
 void setupPin() {
   //GPIO.pinMode(pinESP, GPIO.OUTPUT);
   //GPIO.pinMode(pinZC, GPIO.INPUT_PULLUP);
   //GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
   //pwmFan = new PWM("pwmchip0/pwm0"); // GPIO pin 18
+  
+  //GPIO.digitalWrite(pinESP, GPIO.HIGH);
+  //pwmFan.set(period, 0.5);
 }
 
 // Event handler for image toggle buttons

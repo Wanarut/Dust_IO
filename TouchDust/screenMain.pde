@@ -2,6 +2,8 @@ import gifAnimation.*;
 Gif[] emoji = new Gif[6];
 Gif cur_emoji;
 color circle_c = color(59, 204, 255);
+String text_mode = "AUTO";
+String text_level = "2";
 
 void setupGif() {
   emoji[0] = new Gif(this, "emoji/face-yellow-loop-02.gif");
@@ -38,9 +40,11 @@ void main_screen() {
   textSize(60); 
   text("PM 2.5: " + str(pm_inValue) + " μg/m\u00B3", width/2, height*0.77);
   textSize(16);
-  text("MODE AUTO H", width*0.35, height*0.85);
+  text("MODE " + text_mode, width*0.35, height*0.85);
   fill(255, 0, 0);
-  text("Filter " + filter_percent + " %", width/2, height*0.85);
+  text("Filter " + filter_lifetime + " %", width/2, height*0.85);
+  fill(255);
+  text("FAN LEVEL " + text_level, width*0.65, height*0.85);
 }
 
 void select_emoji() {
@@ -62,6 +66,4 @@ void select_emoji() {
     cur_emoji = emoji[4];
     circle_c = color(255, 59, 59);
   }
-  pm_inValue++;
-  pm_inValue%=300;
 }

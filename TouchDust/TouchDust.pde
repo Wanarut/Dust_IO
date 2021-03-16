@@ -1,8 +1,8 @@
-import g4p_controls.*;
-
-long timeout = 15000;
+int timeout = 15000;
 int cur_screen = 0;
-long prev_mil = 0;
+int prev_mil = 0;
+int counter_prev_mil = 0;
+int prev_read_mil = 0;
 
 public void setup() {
   size(1024, 600);
@@ -20,32 +20,33 @@ public void setup() {
 }
 
 public void draw() {
-  long cur_mil = millis();
-  if (cur_mil - prev_mil >= timeout) {
+  int cur_mil = millis();
+  if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
     cur_screen = 0;
+    prev_mil = cur_mil;
   }
-  switch(cur_screen) {
-  case 0:
-    {
-      main_screen();
-      break;
-    }
-  case 1:
-    {
-      screen_select();
-      break;
-    }
-  case 2:
-    {
-      screen_mode();
-      break;
-    }
-  case 3:
-    {
-      screen_timer();
-      break;
-    }
+  if (cur_mil - prev_read_mil >= 5000) {
+    //readPMvalue();
+    prev_read_mil = cur_mil;
   }
+  if (start_count & cur_mil - counter_prev_mil>= 1000) {
+    if (time_min>0) {
+      time_min--;
+      pm_inValue-=10;
+    } else {
+      println("Timer End");
+      text_mode = "OFF";
+      text_level = "0";
+      //pwmFan.set(period, 0);
+      //GPIO.digitalWrite(pinESP, GPIO.LOW);
+      start_count = false;
+    }
+    counter_prev_mil = cur_mil;
+  }
+  if (cur_screen==0) main_screen();
+  if (cur_screen==1) screen_select();
+  if (cur_screen==2) screen_mode();
+  if (cur_screen==3) screen_timer();
 }
 
 void mousePressed() {
@@ -103,14 +104,26 @@ void mouseReleased() {
   case 2:
     {
       if (btnHi.hasReleased()) {
-        println("Hi Mode");
+        println("Hi Mode: ESP On");
+        text_mode = "HI";
+        text_level = "4";
+        //pwmFan.set(period, 1.0);
+        //GPIO.digitalWrite(pinESP, GPIO.HIGH);
       }
       if (btnEco.hasReleased()) {
-        println("Eco Mode");
+        println("Eco Mode: ESP Off");
+        text_mode = "ECO";
+        text_level = "1";
+        //pwmFan.set(period, 0.25);
+        //GPIO.digitalWrite(pinESP, GPIO.LOW);
       }
       for (int i=0; i<btnPower.length; i++) {
         if (btnPower[i].hasReleased()) {
-          println("Fan level " + str(i+1));
+          int level = i+1;
+          println("Fan level " + str(level));
+          text_mode = "MANUAL";
+          text_level = str(level);
+          //pwmFan.set(period, (level*0.25));
         }
       }
       break;
@@ -119,25 +132,17 @@ void mouseReleased() {
     {
       if (add.hasReleased()) {
         time_min += 30;
-        time_min %= 60;
-        if (time_min==0) {
-          time_hour++;
-          time_hour%=24;
-        }
       }
       if (del.hasReleased()) {
-        if (time_min==0) {
-          time_hour--;
-          if (time_hour < 0) time_hour=23;
-          time_hour%=24;
-        }
-        time_min += 30;
-        time_min %= 60;
+        time_min -= 30;
+        if (time_min<0) time_min=0;
       }
       if (set.hasReleased()) {
+        start_count = true;
+        counter_prev_mil = millis();
       }
       if (clear.hasReleased()) {
-        time_hour=0;
+        start_count = false;
         time_min=0;
       }
       if (cancel.hasReleased()) {
