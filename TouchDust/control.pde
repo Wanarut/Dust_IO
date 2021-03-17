@@ -1,9 +1,4 @@
 //import processing.io.*;
-import g4p_controls.*;
-
-GImageToggleButton btnESP;
-GCustomSlider sdrFan;
-GLabel labelESP, labelFan;
 
 //PWM pwmFan;
 int period = 1000; // 1 kHz
@@ -19,29 +14,6 @@ void setupPin() {
   
   //GPIO.digitalWrite(pinESP, GPIO.HIGH);
   //pwmFan.set(period, 0.5);
-}
-
-// Event handler for image toggle buttons
-void handleToggleButtonEvents(GImageToggleButton button, GEvent event) {
-  if (button == btnESP) {
-    int val = button.getState();
-    println(button + "   State: " + val);
-    //if (val==1) {
-    //  GPIO.digitalWrite(pinESP, GPIO.HIGH);
-    //} else {
-    //  GPIO.digitalWrite(pinESP, GPIO.LOW);
-    //}
-  }
-}
-
-void handleSliderEvents(GValueControl slider, GEvent event) {
-  if (event == GEvent.RELEASED) {
-    int val = slider.getValueI();
-    float duty = val/100.0;
-    println("duty value:" + duty);
-    zcState = false;
-    //pwmFan.set(period, duty);
-  }
 }
 
 void zcDetectISR(int pin) {

@@ -2,9 +2,8 @@ class Button {
   String text = "button";
   private int btn_state = 0;
   private color colour_;
-  private int cur_color;
   private int xpos_, ypos_, w_, h_, tsize_;
-  
+
   Button(int xpos, int ypos, int w, int h, int tsize, color colour) {
     xpos_ = xpos;
     ypos_ = ypos;
@@ -12,7 +11,6 @@ class Button {
     h_ = h;
     tsize_ = tsize;
     colour_ = colour;
-    cur_color = 255;
   }
 
   void display() {
@@ -21,7 +19,8 @@ class Button {
     stroke(colour_);
     rect(xpos_, ypos_, w_, h_);
     textSize(tsize_);
-    fill(cur_color);
+    if (btn_state==1) fill(128);
+    else fill(255);
     text(text, xpos_, ypos_-5);
   }
 
@@ -31,8 +30,7 @@ class Button {
       mouseY > ypos_-h_/2 & 
       mouseY < ypos_+h_/2);
     if (pressed) {
-      btn_state = 2;
-      cur_color = 128;
+      btn_state = 1;
     }
     return pressed;
   }
@@ -44,7 +42,6 @@ class Button {
       mouseY < ypos_+h_/2);
     if (released) {
       btn_state = 0;
-      cur_color = 255;
     }
     return released;
   }

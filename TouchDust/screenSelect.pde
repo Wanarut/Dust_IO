@@ -1,13 +1,9 @@
 gifButton btnMode, btnTimer;
 
 void select_setBtn() {
-  String[] files;
-  files = new String[] { 
-    "btn/blue.gif", "btn/sky.gif", "btn/purple.gif"
-  };
-  btnMode = new gifButton(this, width/2-200, height/2, 300, 300, 45, color(255,255,255), files);
+  btnMode = new gifButton(this, width/2-200, height/2, 300, 300, 45, color(255,255,255), "btn/blue.gif", "btn/purple.gif");
   btnMode.text = "MODE";
-  btnTimer = new gifButton(this, width/2+200, height/2, 300, 300, 45, color(255,255,255), files);
+  btnTimer = new gifButton(this, width/2+200, height/2, 300, 300, 45, color(255,255,255), "btn/blue.gif", "btn/purple.gif");
   btnTimer.text = "TIMER";
 }
 
