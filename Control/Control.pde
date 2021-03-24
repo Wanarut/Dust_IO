@@ -1,15 +1,17 @@
 import g4p_controls.*;
 import processing.io.*;
+//PWM pwmFan;
 
 GImageToggleButton btnESP;
 GCustomSlider sdrFan;
 GLabel labelESP, labelFan;
 
-PWM pwmFan;
 int period = 1000; // 1 kHz
-int pinESP = 24;
+int pinESP = 23;
 int pinZC = 4;
+int AC_LOAD = 18;
 boolean zcState = false;  // 0 = ready, 1 = processing
+int dimming = 3; // Dimming level (0-3)  0 = ON, 3 = OFF
 
 public void setup() {
   size(480, 220, JAVA2D);
@@ -26,11 +28,15 @@ public void setup() {
   sdrFan.setShowValue(true);
   sdrFan.setNbrTicks(5);
 
-  GPIO.pinMode(pinESP, GPIO.OUTPUT);
-  GPIO.pinMode(pinZC, GPIO.INPUT_PULLUP);
-  GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
-  pwmFan = new PWM("pwmchip0/pwm0"); // GPIO pin 18
   createLabels();
+  
+  GPIO.pinMode(pinESP, GPIO.OUTPUT);
+  GPIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
+  //GPIO.pinMode(pinZC, GPIO.INPUT_PULLUP);
+  //GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
+  GPIO.pinMode(pinZC, GPIO.INPUT);
+  GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
+  //pwmFan = new PWM("pwmchip0/pwm0"); // GPIO pin 18
 }
 
 public void draw() {
@@ -54,9 +60,12 @@ void handleSliderEvents(GValueControl slider, GEvent event) {
   if (event == GEvent.RELEASED) {
     int val = slider.getValueI();
     float duty = val/100.0;
-    println("duty value:" + duty);
-    pwmFan.set(period, duty);
-    zcState = false;
+    dimming = int(map(duty, 0, 1, 3, 0));
+    println("dimming:" + dimming);
+    
+    //println("duty value:" + duty);
+    //pwmFan.set(period, duty);
+    //zcState = false;
   }
 }
 
@@ -74,8 +83,14 @@ public void createLabels() {
 }
 
 void zcDetectISR(int pin) {
-  if (!zcState) {
-    zcState = true;
-    pwmFan.set(period, 0);
-  }
+  int dimtime = (3*dimming);
+  delay(dimtime);
+  GPIO.digitalWrite(AC_LOAD, GPIO.HIGH);
+  delay(1);
+  GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
+  
+  //if (!zcState) {
+  //  zcState = true;
+  //  pwmFan.set(period, 0);
+  //}
 }
