@@ -5,7 +5,8 @@ int counter_prev_mil = 0;
 int prev_read_mil = 0;
 
 public void setup() {
-  size(1024, 600);
+  //size(1024, 600);
+  fullScreen();
   rectMode(CENTER);
   imageMode(CENTER);
   textAlign(CENTER, CENTER);
@@ -24,19 +25,19 @@ public void draw() {
     prev_mil = cur_mil;
   }
   if (cur_mil - prev_read_mil >= 5000) {
-    //readPMvalue();
+    readPMvalue();
     prev_read_mil = cur_mil;
   }
   if (start_count & cur_mil - counter_prev_mil>= 1000) {
     if (time_min>0) {
       time_min--;
-      pm_inValue-=10;
+      //pm_inValue-=10;
     } else {
       println("Timer End");
       text_mode = "OFF";
       text_level = "0";
-      //pwmFan.set(period, 0);
-      //GPIO.digitalWrite(pinESP, GPIO.LOW);
+      pwmFan.set(period, 0);
+      GPIO.digitalWrite(pinESP, GPIO.LOW);
       start_count = false;
     }
     counter_prev_mil = cur_mil;

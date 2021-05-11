@@ -26,15 +26,15 @@ void controller() {
     println("Hi Mode: ESP On");
     text_mode = "HI";
     text_level = "4";
-    //pwmFan.set(period, 1.0);
-    //GPIO.digitalWrite(pinESP, GPIO.HIGH);
+    pwmFan.set(period, 1.0);
+    GPIO.digitalWrite(pinESP, GPIO.HIGH);
   }
   if (btnEco.hasReleased()) {
     println("Eco Mode: ESP Off");
     text_mode = "ECO";
     text_level = "1";
-    //pwmFan.set(period, 0.25);
-    //GPIO.digitalWrite(pinESP, GPIO.LOW);
+    pwmFan.set(period, 0.25);
+    GPIO.digitalWrite(pinESP, GPIO.LOW);
   }
   for (int i=0; i<btnPower.length; i++) {
     if (btnPower[i].hasReleased()) {
@@ -42,7 +42,7 @@ void controller() {
       println("Fan level " + str(level));
       text_mode = "MANUAL";
       text_level = str(level);
-      //pwmFan.set(period, (level*0.25));
+      pwmFan.set(period, (level*0.25));
     }
   }
 }
