@@ -7,12 +7,12 @@ String text_mode = "AUTO";
 String text_level = "2";
 
 void setupGif() {
-  emoji[0] = new Gif(this, "emoji/face-yellow-loop-02.gif");
-  emoji[1] = new Gif(this, "emoji/face-yellow-loop-36.gif");
-  emoji[2] = new Gif(this, "emoji/face-yellow-loop-SAd.gif");
-  emoji[3] = new Gif(this, "emoji/face-yellow-loop-34.gif");
-  emoji[4] = new Gif(this, "emoji/face-yellow-loop-35.gif");
-  emoji[5] = new Gif(this, "emoji/water.gif");
+  emoji[0] = new Gif(this, "Emoji/face-yellow-loop-02.gif");
+  emoji[1] = new Gif(this, "Emoji/face-yellow-loop-36.gif");
+  emoji[2] = new Gif(this, "Emoji/face-yellow-loop-SAd.gif");
+  emoji[3] = new Gif(this, "Emoji/face-yellow-loop-34.gif");
+  emoji[4] = new Gif(this, "Emoji/face-yellow-loop-35.gif");
+  emoji[5] = new Gif(this, "Emoji/water.gif");
 
   for (int i=0; i<emoji.length; i++) {
     emoji[i].loop();

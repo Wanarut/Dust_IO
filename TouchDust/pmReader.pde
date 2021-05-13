@@ -10,9 +10,10 @@ void readPMvalue() {
   Command cmd = new Command("python3 " + pythonPath); 
   if ( cmd.run() == true ) {
     // peachy
-    String[] output = cmd.getOutput(); 
+    String[] output = cmd.getOutput();
+    println(output);
     String[] value = output[0].split(" ");
-    if (value[0] != '-1') pm_inValue = int(value[0]);
-    if (value[1] != '-1') pm_outValue = int(value[1]);
+    if (value[0] != "-1") pm_inValue = int(value[0]);
+    if (value[1] != "-1") pm_outValue = int(value[1]);
   }
 }
