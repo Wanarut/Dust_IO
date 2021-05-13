@@ -1,7 +1,7 @@
 import deadpixel.command.*;
 
-int pm_inValue = 300;
-int pm_outValue = 0;
+int pm_inValue = 21;
+int pm_outValue = 21;
 int filter_lifetime = 100;
 boolean dirty = false;
 
@@ -12,7 +12,7 @@ void readPMvalue() {
     // peachy
     String[] output = cmd.getOutput(); 
     String[] value = output[0].split(" ");
-    pm_inValue = int(value[0]);
-    pm_outValue = int(value[1]);
+    if (value[0] != '-1') pm_inValue = int(value[0]);
+    if (value[1] != '-1') pm_outValue = int(value[1]);
   }
 }

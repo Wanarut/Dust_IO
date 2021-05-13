@@ -1,5 +1,5 @@
-//import processing.io.*;
-//PWM pwmFan;
+import processing.io.*;
+PWM pwmFan;
 
 int period = 1000; // 1 kHz
 int pinESP = 23;
