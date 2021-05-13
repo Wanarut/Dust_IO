@@ -23,7 +23,7 @@ void main_screen() {
   background(0);
 
   if (dirty) {
-    image(emoji[5], width/2, height*0.4, 480*1.2, 360*1.2);
+    image(emoji[5], width/2, height*0.4, 580, 435);
     fill(255);
     textSize(40); 
     text("PLEASE\nCLEAN UP", width/2, height*0.4);

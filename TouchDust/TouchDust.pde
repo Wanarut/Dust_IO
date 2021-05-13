@@ -1,3 +1,5 @@
+String os = System.getProperty("os.name");
+
 int timeout = 15000;
 int cur_screen = 0;
 int prev_mil = 0;
@@ -7,6 +9,7 @@ int prev_read_mil = 0;
 public void setup() {
   //size(1024, 600);
   fullScreen();
+  frameRate(15);
   rectMode(CENTER);
   imageMode(CENTER);
   textAlign(CENTER, CENTER);
@@ -36,8 +39,8 @@ public void draw() {
       println("Timer End");
       text_mode = "OFF";
       text_level = "0";
-      pwmFan.set(period, 0);
-      GPIO.digitalWrite(pinESP, GPIO.LOW);
+      if(os == "Linux") pwmFan.set(period, 0);
+      if(os == "Linux") GPIO.digitalWrite(pinESP, GPIO.LOW);
       start_count = false;
     }
     counter_prev_mil = cur_mil;
@@ -53,15 +56,13 @@ void mousePressed() {
   if (cur_screen==1) {
     btnMode.hasPressed();
     btnTimer.hasPressed();
-  }
-  else if (cur_screen==2) {
+  } else if (cur_screen==2) {
     btnHi.hasPressed();
     btnEco.hasPressed();
     for (int i=0; i<btnPower.length; i++) {
       btnPower[i].hasPressed();
     }
-  }
-  else if (cur_screen==3) {
+  } else if (cur_screen==3) {
     add.hasPressed();
     del.hasPressed();
     set.hasPressed();
@@ -75,7 +76,6 @@ void mouseReleased() {
   else if (cur_screen==1) {
     if (btnMode.hasReleased()) cur_screen = 2;
     if (btnTimer.hasReleased()) cur_screen = 3;
-  }
-  else if (cur_screen==2) controller();
+  } else if (cur_screen==2) controller();
   else if (cur_screen==3) calculatetime();
 }
