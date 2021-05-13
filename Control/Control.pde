@@ -1,4 +1,5 @@
 import g4p_controls.*;
+String os = System.getProperty("os.name");
 import processing.io.*;
 
 GImageToggleButton btnESP;
@@ -14,6 +15,7 @@ int level = 9;
 int dimming = level; // Dimming level (0-9)  0 = ON, 9 = OFF
 
 public void setup() {
+println(os);
   size(480, 220, JAVA2D);
   G4P.setGlobalColorScheme(GCScheme.ORANGE_SCHEME);
   noCursor();
@@ -29,11 +31,13 @@ public void setup() {
   sdrFan.setNbrTicks(10);
 
   createLabels();
-
-  GPIO.pinMode(pinESP, GPIO.OUTPUT);
-  GPIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
-  GPIO.pinMode(pinZC, GPIO.INPUT);
-  GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
+  
+  if(os == "Linux"){
+    GPIO.pinMode(pinESP, GPIO.OUTPUT);
+    GPIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
+    GPIO.pinMode(pinZC, GPIO.INPUT);
+    GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
+  }
 }
 
 public void draw() {
@@ -46,9 +50,13 @@ public void handleToggleButtonEvents(GImageToggleButton button, GEvent event) {
     int val = button.getState();
     println(button + "   State: " + val);
     if (val==1) {
-      GPIO.digitalWrite(pinESP, GPIO.HIGH);
+      if(os == "Linux"){
+        GPIO.digitalWrite(pinESP, GPIO.HIGH);
+      }
     } else {
-      GPIO.digitalWrite(pinESP, GPIO.LOW);
+      if(os == "Linux"){
+        GPIO.digitalWrite(pinESP, GPIO.LOW);
+      }
     }
   }
 }
@@ -78,8 +86,12 @@ void zcDetectISR(int pin) {
   if (dimming < level) {
     int dimtime = (dimming);
     delay(dimtime);
-    GPIO.digitalWrite(AC_LOAD, GPIO.HIGH);
+    if(os == "Linux"){
+      GPIO.digitalWrite(AC_LOAD, GPIO.HIGH);
+    }
     delay(1);
   }
-  GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
+  if(os == "Linux"){
+    GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
+  }
 }
