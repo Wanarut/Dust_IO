@@ -7,8 +7,9 @@ int counter_prev_mil = 0;
 int prev_read_mil = 0;
 
 public void setup() {
-  //size(1024, 600);
-  fullScreen();
+  size(1024, 600, JAVA2D);
+  //fullScreen();
+  noCursor();
   frameRate(15);
   rectMode(CENTER);
   imageMode(CENTER);
@@ -39,8 +40,8 @@ public void draw() {
       println("Timer End");
       text_mode = "OFF";
       text_level = "0";
-      if(os == "Linux") pwmFan.set(period, 0);
-      if(os == "Linux") GPIO.digitalWrite(pinESP, GPIO.LOW);
+      //if(os.equals("Linux")) pwmFan.set(period, 0);
+      if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
       start_count = false;
     }
     counter_prev_mil = cur_mil;
@@ -56,6 +57,7 @@ void mousePressed() {
   if (cur_screen==1) {
     btnMode.hasPressed();
     btnTimer.hasPressed();
+    btnShutdown.hasPressed();
   } else if (cur_screen==2) {
     btnHi.hasPressed();
     btnEco.hasPressed();
@@ -76,6 +78,7 @@ void mouseReleased() {
   else if (cur_screen==1) {
     if (btnMode.hasReleased()) cur_screen = 2;
     if (btnTimer.hasReleased()) cur_screen = 3;
+    if (btnShutdown.hasReleased()) shutdown_now();
   } else if (cur_screen==2) controller();
   else if (cur_screen==3) calculatetime();
 }

@@ -15,7 +15,6 @@ int level = 9;
 int dimming = level; // Dimming level (0-9)  0 = ON, 9 = OFF
 
 public void setup() {
-println(os);
   size(480, 220, JAVA2D);
   G4P.setGlobalColorScheme(GCScheme.ORANGE_SCHEME);
   noCursor();
@@ -32,7 +31,8 @@ println(os);
 
   createLabels();
   
-  if(os == "Linux"){
+  if(os.equals("Linux")){
+    println(os);
     GPIO.pinMode(pinESP, GPIO.OUTPUT);
     GPIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
     GPIO.pinMode(pinZC, GPIO.INPUT);
@@ -50,11 +50,11 @@ public void handleToggleButtonEvents(GImageToggleButton button, GEvent event) {
     int val = button.getState();
     println(button + "   State: " + val);
     if (val==1) {
-      if(os == "Linux"){
+      if(os.equals("Linux")){
         GPIO.digitalWrite(pinESP, GPIO.HIGH);
       }
     } else {
-      if(os == "Linux"){
+      if(os.equals("Linux")){
         GPIO.digitalWrite(pinESP, GPIO.LOW);
       }
     }
@@ -86,12 +86,12 @@ void zcDetectISR(int pin) {
   if (dimming < level) {
     int dimtime = (dimming);
     delay(dimtime);
-    if(os == "Linux"){
+    if(os.equals("Linux")){
       GPIO.digitalWrite(AC_LOAD, GPIO.HIGH);
     }
     delay(1);
   }
-  if(os == "Linux"){
+  if(os.equals("Linux")){
     GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
   }
 }
