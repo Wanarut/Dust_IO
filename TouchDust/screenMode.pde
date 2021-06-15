@@ -26,26 +26,23 @@ void controller() {
     println("Hi Mode: ESP On");
     text_mode = "HI";
     text_level = "4";
-    //if(os.equals("Linux")) pwmFan.set(period, 1.0);
     dimming = 0;
-    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
+    //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
   }
   if (btnEco.hasReleased()) {
     println("Eco Mode: ESP Off");
     text_mode = "ECO";
     text_level = "1";
-    //if(os.equals("Linux")) pwmFan.set(period, 0.25);
-    dimming = 8;
-    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+    dimming = 7;
+    //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
   }
   for (int i=0; i<btnPower.length; i++) {
     if (btnPower[i].hasReleased()) {
-      int level = i+1;
-      println("Fan level " + str(level));
+      int btn_level = i+1;
+      println("Fan level " + str(btn_level));
       text_mode = "MANUAL";
-      text_level = str(level);
-      //if(os.equals("Linux")) pwmFan.set(period, (level*0.25));
-      dimming = min_level - (level*2) - 1;
+      text_level = str(btn_level);
+      dimming = level - (btn_level*2) - 1;
     }
   }
 }

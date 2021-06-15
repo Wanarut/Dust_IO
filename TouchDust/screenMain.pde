@@ -1,29 +1,29 @@
 import gifAnimation.*;
 
-Gif[] emoji = new Gif[6];
+PImage[] emoji = new PImage[5];
+Gif emoji_5;
 int gif_i = 0;
 color circle_c = color(59, 204, 255);
 String text_mode = "AUTO";
 String text_level = "2";
 
 void setupGif() {
-  emoji[0] = new Gif(this, "Emoji/face-yellow-loop-02.gif");
-  emoji[1] = new Gif(this, "Emoji/face-yellow-loop-36.gif");
-  emoji[2] = new Gif(this, "Emoji/face-yellow-loop-SAd.gif");
-  emoji[3] = new Gif(this, "Emoji/face-yellow-loop-34.gif");
-  emoji[4] = new Gif(this, "Emoji/face-yellow-loop-35.gif");
-  emoji[5] = new Gif(this, "Emoji/water.gif");
+  emoji[0] = loadImage("Emoji/Emoji_1.png");
+  emoji[1] = loadImage("Emoji/Emoji_2.png");
+  emoji[2] = loadImage("Emoji/Emoji_3.png");
+  emoji[3] = loadImage("Emoji/Emoji_4.png");
+  emoji[4] = loadImage("Emoji/Emoji_5.png");
+  emoji_5 = new Gif(this, "Emoji/water.gif");
 
-  for (int i=0; i<emoji.length; i++) {
-    emoji[i].loop();
-  }
+  emoji_5.loop();
+  
 }
 
 void main_screen() {
   background(0);
 
   if (dirty) {
-    image(emoji[5], width/2, height*0.4, 580, 435);
+    image(emoji_5, width/2, height*0.4, 580, 435);
     fill(255);
     textSize(40); 
     text("PLEASE\nCLEAN UP", width/2, height*0.4);

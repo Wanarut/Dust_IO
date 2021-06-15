@@ -9,7 +9,7 @@ int prev_read_mil = 0;
 public void setup() {
   size(1024, 600, JAVA2D);
   //fullScreen();
-  noCursor();
+  //noCursor();
   frameRate(15);
   rectMode(CENTER);
   imageMode(CENTER);
@@ -41,7 +41,7 @@ public void draw() {
       text_mode = "OFF";
       text_level = "0";
       //if(os.equals("Linux")) pwmFan.set(period, 0);
-      if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+      //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
       start_count = false;
     }
     counter_prev_mil = cur_mil;
