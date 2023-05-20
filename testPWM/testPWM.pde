@@ -2,6 +2,7 @@ import processing.io.*;
 PWM pwm;
 
 int AC_LOAD = 18;
+int period = 1000;
 
 void setup() {
     size(300, 100);
@@ -16,7 +17,7 @@ void draw() {
     background(255);
     float value = map(mouseX, 0, width, 0.0, 1.0);
     if(value > 0){
-      pwm.set(value);
+      pwm.set(period, value);
     }else{
       GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
       //println(value);
