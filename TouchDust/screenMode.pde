@@ -42,7 +42,7 @@ void controller() {
       println("Fan level " + str(btn_level));
       text_mode = "MANUAL";
       text_level = str(btn_level);
-      dimming = level - (btn_level*2) - 1;
+      dimming = level - (btn_level*2);
     }
   }
 }

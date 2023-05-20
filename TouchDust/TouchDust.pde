@@ -40,7 +40,7 @@ public void draw() {
       println("Timer End");
       text_mode = "OFF";
       text_level = "0";
-      //if(os.equals("Linux")) pwmFan.set(period, 0);
+      //if(os.equals("Linux")) dimming = 9;
       //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
       start_count = false;
     }
