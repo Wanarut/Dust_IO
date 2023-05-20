@@ -17,10 +17,18 @@ void draw() {
     background(255);
     float value = map(mouseX, 0, width, 0.0, 1.0);
     if(value > 0){
+      println(value);
       pwm.set(period, value);
     }else{
       GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
       //println(value);
     }
     line(mouseX, 0, mouseX, height);
+}
+
+void keyPressed() {
+  if (key == ESC) {
+    pwm.clear();
+    exit();
+  }
 }
