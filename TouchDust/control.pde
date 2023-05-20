@@ -10,7 +10,7 @@ int dimming = level/2; // Dimming level (0-9)  0 = ON, 9 = OFF
 void setupPin() {
   //if(os.equals("Linux")) {
   //  GPIO.pinMode(pinESP, GPIO.OUTPUT);
-  //  PIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
+  //  GPIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
   //  GPIO.pinMode(pinZC, GPIO.INPUT);
   //  GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
     

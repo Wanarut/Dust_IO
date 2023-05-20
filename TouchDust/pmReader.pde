@@ -13,12 +13,14 @@ void readPMvalue() {
     String[] output = cmd.getOutput();
     println(output);
     String[] value = output[0].split(" ");
-    if (value[0].equals("-1")) pm_inValue = int(value[0]);
-    if (value[1].equals("-1")) pm_outValue = int(value[1]);
+    if (!value[0].equals("-1")) pm_inValue = int(value[0]);
+    if (!value[1].equals("-1")) pm_outValue = int(value[1]);
   }
 }
 
 void shutdown_now() {
+  //if(os.equals("Linux")) dimming = 9;
+  //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
   Command cmd = new Command("shutdown now");
   if ( cmd.run() == true ) {
     String[] output = cmd.getOutput();
