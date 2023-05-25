@@ -7,9 +7,9 @@ int counter_prev_mil = 0;
 int prev_read_mil = 0;
 
 public void setup() {
-  size(1024, 600, JAVA2D);
-  //fullScreen();
-  //noCursor();
+  //size(1024, 600, JAVA2D);
+  fullScreen();
+  noCursor();
   frameRate(15);
   rectMode(CENTER);
   imageMode(CENTER);
@@ -22,6 +22,9 @@ public void setup() {
   timer_setBtn();
 }
 
+int level = 9;
+int dimming = level/2; // Dimming level (0-9)  0 = ON, 9 = OFF
+
 public void draw() {
   int cur_mil = millis();
   if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
@@ -31,17 +34,25 @@ public void draw() {
   if (cur_mil - prev_read_mil >= 5000) {
     readPMvalue();
     prev_read_mil = cur_mil;
+    
+    String[] data_str = new String[1];
+    int duty_value = int(map(dimming, 1,7, 100, 10));
+    data_str[0] = str(duty_value);
+    saveStrings("/home/pi/Dust_IO/testPWM/fan_output.txt", data_str);
   }
   if (start_count & cur_mil - counter_prev_mil>= 1000) {
     if (time_min>0) {
       time_min--;
-      //pm_inValue-=10;
+      //pm_inValue+=10;
     } else {
       println("Timer End");
       text_mode = "OFF";
       text_level = "0";
-      //if(os.equals("Linux")) dimming = 9;
-      //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+      //if(os.equals("Linux")) pwmFan.set(period, 0);
+      if(os.equals("Linux")) {
+        dimming = 9;
+        GPIO.digitalWrite(pinESP, GPIO.LOW);
+      }
       start_count = false;
     }
     counter_prev_mil = cur_mil;
@@ -81,4 +92,12 @@ void mouseReleased() {
     if (btnShutdown.hasReleased()) shutdown_now();
   } else if (cur_screen==2) controller();
   else if (cur_screen==3) calculatetime();
+}
+
+void keyPressed() {
+  if (key == ESC) {
+    //fan_output.flush();
+    //fan_output.close();
+    exit();
+  }
 }
