@@ -26,15 +26,15 @@ void controller() {
     println("Hi Mode: ESP On");
     text_mode = "HI";
     text_level = "4";
-    dimming = 0;
-    //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
+    dimming = 1;
+    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
   }
   if (btnEco.hasReleased()) {
     println("Eco Mode: ESP Off");
     text_mode = "ECO";
     text_level = "1";
     dimming = 7;
-    //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
   }
   for (int i=0; i<btnPower.length; i++) {
     if (btnPower[i].hasReleased()) {

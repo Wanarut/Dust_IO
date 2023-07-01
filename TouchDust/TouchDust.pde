@@ -23,7 +23,7 @@ public void setup() {
 }
 
 int level = 9;
-int dimming = level/2; // Dimming level (0-9)  0 = ON, 9 = OFF
+int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
 
 public void draw() {
   int cur_mil = millis();
@@ -36,7 +36,7 @@ public void draw() {
     prev_read_mil = cur_mil;
     
     String[] data_str = new String[1];
-    int duty_value = int(map(dimming, 1,7, 100, 10));
+    int duty_value = int(map(dimming, 1, 7, 40, 3));
     data_str[0] = str(duty_value);
     saveStrings("/home/pi/Dust_IO/testPWM/fan_output.txt", data_str);
   }

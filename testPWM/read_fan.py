@@ -3,7 +3,7 @@ import time
 
 # Setup GPIO Pins
 fan_pin = 12 # GPIO 18
-frequency = 1500
+frequency = 3000
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(fan_pin, GPIO.OUT)
@@ -15,10 +15,13 @@ print('Start Reading Dimming')
 
 try:
     while True:
-        fan_file = open("/home/pi/Dust_IO/testPWM/fan_output.txt", "r")
-        duty_str = fan_file.readline()
-        fan_file.close()
-        duty = float(duty_str)
+        try:
+            fan_file = open("/home/pi/Dust_IO/testPWM/fan_output.txt", "r")
+            duty_str = fan_file.readline()
+            fan_file.close()
+            duty = float(duty_str)
+        except:
+            continue
         print('Set Duty Cycle: ' + str(duty) + '%')
         pwm12.ChangeDutyCycle(duty)
         

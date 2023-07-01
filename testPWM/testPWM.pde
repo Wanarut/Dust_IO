@@ -1,5 +1,5 @@
 import processing.io.*;
-PWM pwm;
+PWM pwm_fan;
 
 int AC_LOAD = 18;
 int period = 1000;
@@ -8,17 +8,17 @@ void setup() {
     size(300, 100);
     
     GPIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
-    printArray(pwm.list());
+    printArray(pwm_fan.list());
     //you might need to use a different channel on other SBCs
-    pwm = new PWM("pwmchip0/pwm0"); // GPIO pin 18
+    pwm_fan = new PWM("pwmchip0/pwm0"); // GPIO pin 18
     //pwm = new PWM("pwmchip0/pwm1"); // GPIO pin 19
 }
 void draw() {
     background(255);
     float value = map(mouseX, 0, width, 0.0, 1.0);
     if(value > 0){
-      println(value);
-      pwm.set(period, value);
+      //println(value);
+      pwm_fan.set(period, value);
     }else{
       GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
       //println(value);
@@ -28,7 +28,8 @@ void draw() {
 
 void keyPressed() {
   if (key == ESC) {
-    pwm.clear();
+    pwm_fan.clear();
+    pwm_fan.close();
     exit();
   }
 }

@@ -1,12 +1,12 @@
 import deadpixel.command.*;
 
-int pm_inValue = 21;
-int pm_outValue = 21;
+int pm_inValue = 0;
+int pm_outValue = 0;
 int filter_lifetime = 100;
 boolean dirty = false;
 
 void readPMvalue() {
-  String pythonPath = sketchPath("pmsRead.py");
+  String pythonPath = sketchPath("/home/pi/Dust_IO/TouchDust/pmsRead.py");
   Command cmd = new Command("python3 " + pythonPath); 
   if ( cmd.run() == true ) {
     // peachy
@@ -19,8 +19,8 @@ void readPMvalue() {
 }
 
 void shutdown_now() {
-  //if(os.equals("Linux")) dimming = 9;
-  //if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+  if(os.equals("Linux")) dimming = 9;
+  if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
   Command cmd = new Command("shutdown now");
   if ( cmd.run() == true ) {
     String[] output = cmd.getOutput();

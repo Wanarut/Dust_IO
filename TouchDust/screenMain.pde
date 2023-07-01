@@ -42,7 +42,7 @@ void main_screen() {
   text("PM 2.5: " + str(pm_inValue) + " μg/m\u00B3", width/2, height*0.77);
   textSize(16);
   text("MODE " + text_mode, width*0.35, height*0.85);
-  fill(255, 0, 0);
+  fill(255);
   text("Filter " + filter_lifetime + " %", width/2, height*0.85);
   fill(255);
   text("FAN LEVEL " + text_level, width*0.65, height*0.85);
@@ -50,10 +50,10 @@ void main_screen() {
 
 void select_emoji() {
   gif_i = 0;
-  circle_c = color(59, 204, 255);
+  circle_c = color(0, 255, 0);
   if (pm_inValue>12) {
     gif_i = 1;
-    circle_c = color(146, 208, 80);
+    circle_c = color(36, 202, 220);
   }
   if (pm_inValue>35) {
     gif_i = 2;
