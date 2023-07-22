@@ -7,7 +7,7 @@ long counter_prev_mil = 0;
 long prev_read_mil = 0;
 
 PFont font_bold, font_regu;
-Button menu, cancel, btnShutdown;
+Button menu, cancel;
 
 public void setup() {
     size(1024, 600, JAVA2D);
@@ -22,7 +22,7 @@ public void setup() {
     font_regu = createFont("Fira_Sans/FiraSans-Regular.ttf", 100);
     
     setupPin();
-    setupGif();
+    setupmain();
     select_setBtn();
     mode_setBtn();
     timer_setBtn();
@@ -41,7 +41,7 @@ public void draw() {
     // if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
     //     cur_screen = 0;
     //     prev_mil = cur_mil;
-    // }
+// }
     //read pm value & write duty cycle every 5 second
     if (cur_mil - prev_read_mil >= 5000) {
         // read pm value
@@ -91,7 +91,7 @@ public void draw() {
             break;
         default :
             main_screen();
-            break;	
+            break;
     }
 }
 
@@ -103,15 +103,14 @@ void mousePressed() {
         case 1 :
             btnMode.hasPressed();
             btnTimer.hasPressed();
-            //btnShutdown.hasPressed();
-
+            
             cancel.hasPressed();
             break;
         case 2 :
             btnFanPow.hasPressed();
             btnAutoHi.hasPressed();
             btnAutoEco.hasPressed();
-
+            
             menu.hasPressed();
             cancel.hasPressed();
             break;
@@ -120,11 +119,12 @@ void mousePressed() {
             del.hasPressed();
             set.hasPressed();
             clear.hasPressed();
-
+            
             menu.hasPressed();
             cancel.hasPressed();
             break;
         default :
+            btnShutdown.hasPressed();
             break;	
     }
 }
@@ -135,20 +135,24 @@ void mouseReleased() {
         case 1 :
             if (btnMode.hasReleased()) cur_screen = 2;
             if (btnTimer.hasReleased()) cur_screen = 3;
-            //if (btnShutdown.hasReleased()) shutdown_now();
+            
+            if (cancel.hasReleased()) cur_screen = 0;
             break;
         case 2 :
             controller();
+            if (menu.hasReleased()) cur_screen = 1;
+            if (cancel.hasReleased()) cur_screen = 0;
             break;
         case 3 :
             calculatetime();
+            if (menu.hasReleased()) cur_screen = 1;
+            if (cancel.hasReleased()) cur_screen = 0;
             break;
         default :
-            cur_screen = 1;
+            if (btnShutdown.hasReleased()) shutdown_now();
+            else cur_screen = 1;
             break;	
     }
-    if (menu.hasReleased()) cur_screen = 1;
-    if (cancel.hasReleased()) cur_screen = 0;
 }
 
 void keyPressed() {
@@ -156,4 +160,14 @@ void keyPressed() {
     if (key == ESC) {
         exit();
     }
+}
+
+void shutdown_now() {
+  if(os.equals("Linux")) dimming = 9;
+  if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+  Command cmd = new Command("shutdown now");
+  if ( cmd.run() == true ) {
+    String[] output = cmd.getOutput();
+    println(output);
+  }
 }
