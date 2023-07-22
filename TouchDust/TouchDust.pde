@@ -1,10 +1,10 @@
 String os = System.getProperty("os.name");
 
 int timeout = 15000;
-int cur_screen = 0;
-int prev_mil = 0;
-int counter_prev_mil = 0;
-int prev_read_mil = 0;
+long cur_screen = 0;
+long prev_mil = 0;
+long counter_prev_mil = 0;
+long prev_read_mil = 0;
 
 public void setup() {
     size(1024, 600, JAVA2D);
@@ -26,7 +26,7 @@ int level = 9;
 int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
 
 public void draw() {
-    int cur_mil = millis();
+    long cur_mil = millis();
     //timmer for switching to main page
     if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
         cur_screen = 0;
