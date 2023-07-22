@@ -101,6 +101,7 @@ void mousePressed() {
             del.hasPressed();
             set.hasPressed();
             clear.hasPressed();
+            menu.hasPressed();
             cancel.hasPressed();
             break;
         default :
