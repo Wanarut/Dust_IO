@@ -5,8 +5,8 @@ import processing.event.*;
 import processing.opengl.*;
 
 import processing.io.*;
-import deadpixel.command.*;
 import gifAnimation.*;
+import deadpixel.command.*;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -19,40 +19,50 @@ import java.io.IOException;
 
 public class TouchDust extends PApplet {
 
-String os = System.getProperty("os.name");
+static final String os = System.getProperty("os.name");
 
-int timeout = 15000;
-long cur_screen = 0;
+static final int timeout = 15000;
+int cur_screen = 0;
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
 
+PFont font_bold, font_regu;
+Button menu, cancel;
+
 public void setup() {
+    // size(1024, 600, JAVA2D);
     /* size commented out by preprocessor */;
-    //fullScreen();
-    //noCursor();
+    noCursor();
     frameRate(15);
     rectMode(CENTER);
     imageMode(CENTER);
     textAlign(CENTER, CENTER);
+    // system font
+    font_bold = createFont("Fira_Sans/FiraSans-Bold.ttf", 100);
+    font_regu = createFont("Fira_Sans/FiraSans-Regular.ttf", 100);
     
     setupPin();
-    setupGif();
+    setupmain();
     select_setBtn();
     mode_setBtn();
     timer_setBtn();
+    
+    // navigation btn
+    menu = new Button(width / 7, PApplet.parseInt(height * 0.85f), 150, 150, 1, 0, "btn/btn_back.jpg");
+    cancel = new Button(width / 2, PApplet.parseInt(height * 0.85f), 100, 100, 1, 0, "btn/logo.jpg");
 }
 
-int level = 9;
+static final int level = 9;
 int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
 
 public void draw() {
     long cur_mil = millis();
     //timmer for switching to main page
-    if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
-        cur_screen = 0;
-        prev_mil = cur_mil;
-    }
+    // if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
+    //     cur_screen = 0;
+    //     prev_mil = cur_mil;
+// }
     //read pm value & write duty cycle every 5 second
     if (cur_mil - prev_read_mil >= 5000) {
         // read pm value
@@ -60,7 +70,7 @@ public void draw() {
         prev_read_mil = cur_mil;
         // write duty cycle
         String[] data_str = new String[1];
-        int duty_value = PApplet.parseInt(map(dimming, 1, 7, 40, 3));
+        int duty_value = PApplet.parseInt(map(dimming, 1, level, 40, 0));
         data_str[0] = str(duty_value);
         saveStrings("/home/pi/Dust_IO/testPWM/fan_output.txt", data_str);
     }
@@ -72,11 +82,12 @@ public void draw() {
         } else {
             println("Timer End");
             text_mode = "OFF";
+            text_mode_post = "";
             text_level = "0";
+            // setduty cycle = 0 & close ESP pin
+            dimming = level;
             //if(os.equals("Linux")) pwmFan.set(period, 0);
             if (os.equals("Linux")) {
-                // setduty cycle = 0 & close ESP pin
-                dimming = 9;
                 GPIO.digitalWrite(pinESP, GPIO.LOW);
             }
             start_count = false;
@@ -84,98 +95,191 @@ public void draw() {
         counter_prev_mil = cur_mil;
     }
     // select showing screen
-    if (cur_screen ==  0) main_screen();
-    else if (cur_screen ==  1) screen_select();
-    else if (cur_screen ==  2) screen_mode();
-    else if (cur_screen ==  3) screen_timer();
+    switch (cur_screen) {
+        case 1 :
+            screen_select();
+            cancel.display();
+            break;
+        case 2 :
+            screen_mode();
+            menu.display();
+            cancel.display();
+            break;
+        case 3 :
+            screen_timer();
+            menu.display();
+            cancel.display();
+            break;
+        default :
+            main_screen();
+            break;
+    }
 }
 
 public void mousePressed() {
     //reset timmer
     prev_mil = millis();
-    if (cur_screen ==  1) {
-        btnMode.hasPressed();
-        btnTimer.hasPressed();
-        btnShutdown.hasPressed();
-    } else if (cur_screen ==  2) {
-        btnHi.hasPressed();
-        btnEco.hasPressed();
-        for (int i = 0; i < btnPower.length; i++) {
-            btnPower[i].hasPressed();
-        }
-    } else if (cur_screen ==  3) {
-        add.hasPressed();
-        del.hasPressed();
-        set.hasPressed();
-        clear.hasPressed();
-        cancel.hasPressed();
+    // button is clicking
+    switch (cur_screen) {
+        case 1 :
+            btnMode.hasPressed();
+            btnTimer.hasPressed();
+            
+            cancel.hasPressed();
+            break;
+        case 2 :
+            btnFanPow.hasPressed();
+            btnAutoHi.hasPressed();
+            btnAutoEco.hasPressed();
+            
+            menu.hasPressed();
+            cancel.hasPressed();
+            break;
+        case 3 :
+            add.hasPressed();
+            del.hasPressed();
+            set.hasPressed();
+            clear.hasPressed();
+            
+            menu.hasPressed();
+            cancel.hasPressed();
+            break;
+        default :
+            btnShutdown.hasPressed();
+            break;	
     }
 }
 
 public void mouseReleased() {
-    if (cur_screen ==  0) cur_screen = 1;
-    else if (cur_screen ==  1) {
-        if (btnMode.hasReleased()) cur_screen = 2;
-        if (btnTimer.hasReleased()) cur_screen = 3;
-        if (btnShutdown.hasReleased()) shutdown_now();
-    } else if (cur_screen ==  2) controller();
-    else if (cur_screen ==  3) calculatetime();
+    // button action
+    switch (cur_screen) {
+        case 1 :
+            if (btnMode.hasReleased()) cur_screen = 2;
+            if (btnTimer.hasReleased()) cur_screen = 3;
+            
+            if (cancel.hasReleased()) cur_screen = 0;
+            break;
+        case 2 :
+            controller();
+            if (menu.hasReleased()) cur_screen = 1;
+            if (cancel.hasReleased()) cur_screen = 0;
+            break;
+        case 3 :
+            calculatetime();
+            if (menu.hasReleased()) cur_screen = 1;
+            if (cancel.hasReleased()) cur_screen = 0;
+            break;
+        default :
+            if (btnShutdown.hasReleased()) shutdown_now();
+            else cur_screen = 1;
+            break;	
+    }
 }
 
 public void keyPressed() {
+    // press ESC for exit app
     if (key == ESC) {
-        //fan_output.flush();
-        //fan_output.close();
         exit();
     }
 }
+
+public void shutdown_now() {
+  if(os.equals("Linux")) dimming = 9;
+  if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+  Command cmd = new Command("shutdown now");
+  if ( cmd.run() == true ) {
+    String[] output = cmd.getOutput();
+    println(output);
+  }
+}
 class Button {
-  String text = "button";
-  private int btn_state = 0;
-  private int colour_;
-  private int xpos_, ypos_, w_, h_, tsize_;
+    private PImage image;
+    private PImage image_active;
+    String text = "";
+    private int btn_state = 0;
+    private int colour_;
+    private int xpos_, ypos_, w_, h_, tsize_;
+    int weight = 0;
+    PFont font;
+    
+    // construction with image
+    Button(int xpos, int ypos, int w, int h, int tsize, int colour, String file) {
+        xpos_ = xpos;
+        ypos_ = ypos;
+        w_ = w;
+        h_ = h;
+        tsize_ = tsize;
+        colour_ = colour;
 
-  Button(int xpos, int ypos, int w, int h, int tsize, int colour) {
-    xpos_ = xpos;
-    ypos_ = ypos;
-    w_ = w;
-    h_ = h;
-    tsize_ = tsize;
-    colour_ = colour;
-  }
+        font = createFont("Fira_Sans/FiraSans-Regular.ttf", tsize_);
 
-  public void display() {
-    noFill();
-    strokeWeight(15);
-    stroke(colour_);
-    rect(xpos_, ypos_, w_, h_);
-    textSize(tsize_);
-    if (btn_state==1) fill(128);
-    else fill(255);
-    text(text, xpos_, ypos_-5);
-  }
-
-  public boolean hasPressed() {
-    boolean pressed = (mouseX > xpos_-w_/2 & 
-      mouseX < xpos_+w_/2 & 
-      mouseY > ypos_-h_/2 & 
-      mouseY < ypos_+h_/2);
-    if (pressed) {
-      btn_state = 1;
+        image = loadImage(file);
+        image_active = loadImage(file);
+        image_active.filter(POSTERIZE, 5);
     }
-    return pressed;
-  }
-
-  public boolean hasReleased() {
-    boolean released = (mouseX > xpos_-w_/2 & 
-      mouseX < xpos_+w_/2 & 
-      mouseY > ypos_-h_/2 & 
-      mouseY < ypos_+h_/2);
-    if (released) {
-      btn_state = 0;
+    
+    // construction with out image
+    Button(int xpos, int ypos, int w, int h, int tsize, int colour) {
+        xpos_ = xpos;
+        ypos_ = ypos;
+        w_ = w;
+        h_ = h;
+        tsize_ = tsize;
+        colour_ = colour;
+        
+        font = createFont("Fira_Sans/FiraSans-Regular.ttf", tsize_);
     }
-    return released;
-  }
+
+    public void setImage(PImage cur_image) {
+        image = cur_image;
+        image_active = cur_image;
+        image_active.filter(POSTERIZE, 5);
+    }
+    
+    public void display() {
+        // add stroke in button
+        if (weight > 0) {
+            noFill();
+            strokeWeight(weight);
+            stroke(colour_);
+            rect(xpos_, ypos_, w_, h_, 8);
+        }
+        // display image
+        if (image != null) {
+            if (btn_state ==  1) {
+                image(image_active, xpos_, ypos_, w_, h_);
+            } else {
+                image(image, xpos_, ypos_, w_, h_);
+            }
+        }
+        // display text
+        if (btn_state ==  1) fill(128);
+        else fill(0);
+        textFont(font);
+        text(text, xpos_, ypos_ - 3);
+    }
+    
+    public boolean hasPressed() {
+        boolean pressed = (mouseX > xpos_ - w_ / 2 & 
+            mouseX< xpos_ + w_ / 2 & 
+            mouseY> ypos_ - h_ / 2 & 
+            mouseY< ypos_ + h_ / 2);
+        if (pressed) {
+            btn_state = 1;
+        }
+        return pressed;
+    }
+    
+    public boolean hasReleased() {
+        boolean released = (mouseX > xpos_ - w_ / 2 & 
+            mouseX< xpos_ + w_ / 2 & 
+            mouseY> ypos_ - h_ / 2 & 
+            mouseY< ypos_ + h_ / 2);
+        if (released) {
+            btn_state = 0;
+        }
+        return released;
+    }
 }
 
 
@@ -208,6 +312,8 @@ public void zcDetectISR(int pin) {
     //GPIO.digitalWrite(AC_LOAD, GPIO.LOW);
   }
 }
+
+
 class gifButton {
   private Gif image_off;
   private Gif image_down;
@@ -268,7 +374,8 @@ class gifButton {
 int pm_inValue = 0;
 int pm_outValue = 0;
 int filter_lifetime = 100;
-boolean dirty = false;
+boolean esp_dirty = false;
+boolean filter_dirty = false;
 
 public void readPMvalue() {
   String pythonPath = sketchPath("/home/pi/Dust_IO/TouchDust/pmsRead.py");
@@ -282,211 +389,255 @@ public void readPMvalue() {
     if (!value[1].equals("-1")) pm_outValue = PApplet.parseInt(value[1]);
   }
 }
-
-public void shutdown_now() {
-  if(os.equals("Linux")) dimming = 9;
-  if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
-  Command cmd = new Command("shutdown now");
-  if ( cmd.run() == true ) {
-    String[] output = cmd.getOutput();
-    println(output);
-  }
-}
-
-
 PImage[] emoji = new PImage[5];
-Gif emoji_5;
 int gif_i = 0;
-int circle_c = color(59, 204, 255);
+
 String text_mode = "AUTO";
-String text_level = "2";
+String text_mode_post = "Hi";
+int text_mode_color = color(255, 0, 0);
+String text_level = "0";
 
-public void setupGif() {
-  emoji[0] = loadImage("Emoji/Emoji_1.png");
-  emoji[1] = loadImage("Emoji/Emoji_2.png");
-  emoji[2] = loadImage("Emoji/Emoji_3.png");
-  emoji[3] = loadImage("Emoji/Emoji_4.png");
-  emoji[4] = loadImage("Emoji/Emoji_5.png");
-  emoji_5 = new Gif(this, "Emoji/water.gif");
+PImage icon_mode, icon_filter, icon_fan;
+Button btnShutdown;
 
-  emoji_5.loop();
-  
+public void setupmain() {
+    for (int i = 0; i < emoji.length; i++) {
+        emoji[i] = loadImage("Emoji/emoji_lvl_" + str(i + 1) + ".jpg");
+    }
+    icon_mode = loadImage("logo/icon_mode.jpg");
+    icon_filter = loadImage("logo/icon_filter.jpg");
+    icon_fan = loadImage("logo/icon_fan.jpg");
+    
+    btnShutdown = new Button(PApplet.parseInt(width - 75), PApplet.parseInt(height - 75), 100, 100, 1, 0, "btn/icon_power.jpg");
 }
 
 public void main_screen() {
-  background(0);
-
-  if (dirty) {
-    image(emoji_5, width/2, height*0.4f, 580, 435);
-    fill(255);
-    textSize(40); 
-    text("PLEASE\nCLEAN UP", width/2, height*0.4f);
-  } else {
-    select_emoji();
-    image(emoji[gif_i], width/2, height*0.4f, 300, 300);
-
-    strokeWeight(15);
-    stroke(circle_c);
-    noFill();
-    circle(width/2, height*0.4f, 350);
-  }
-
-  fill(255);
-  textSize(60); 
-  text("PM 2.5: " + str(pm_inValue) + " μg/m\u00B3", width/2, height*0.77f);
-  textSize(16);
-  text("MODE " + text_mode, width*0.35f, height*0.85f);
-  fill(255);
-  text("Filter " + filter_lifetime + " %", width/2, height*0.85f);
-  fill(255);
-  text("FAN LEVEL " + text_level, width*0.65f, height*0.85f);
+    background(255);
+    
+    if (esp_dirty) {
+        // image(emoji_5, width / 2, height * 0.4, 580, 435);
+        // fill(255);
+        // textSize(40); 
+        // text("PLEASE\nCLEAN UP", width / 2, height * 0.4);
+    } else if (filter_dirty) {
+        // image(emoji_5, width / 2, height * 0.4, 580, 435);
+        // fill(255);
+        // textSize(40); 
+        // text("PLEASE\nCLEAN UP", width / 2, height * 0.4);
+    } else {
+        select_emoji();
+        image(emoji[gif_i], width / 2, height * 0.3f, 300, 300);
+    }
+    
+    fill(128);
+    textFont(font_bold);
+    textSize(60);
+    text("   PM                μg/m\u00B3", width / 2, height * 0.62f);
+    textSize(30);
+    text("2.5", width / 2 - 120, height * 0.66f);
+    fill(0);
+    textSize(90);
+    textAlign(RIGHT, CENTER);
+    text(pm_inValue, width / 2 + 70, height * 0.6f);
+    textAlign(CENTER, CENTER);
+    
+    fill(128);
+    textFont(font_regu);
+    textSize(18);
+    text("MODE : " + text_mode, width * 0.32f, height * 0.85f);
+    
+    textAlign(LEFT, CENTER);
+    fill(text_mode_color);
+    text(text_mode_post, width * 0.38f, height * 0.85f);
+    textAlign(CENTER, CENTER);
+    
+    fill(128);
+    text("Filter : " + filter_lifetime + " %", width / 2, height * 0.85f);
+    text("FAN LEVEL : " + text_level, width * 0.65f, height * 0.85f);
+    
+    image(icon_mode, width * 0.33f, height * 0.77f, 50, 50);
+    image(icon_filter, width / 2, height * 0.77f, 50, 50);
+    image(icon_fan, width * 0.65f, height * 0.77f, 50, 50);
+    
+    btnShutdown.display();
 }
 
 public void select_emoji() {
-  gif_i = 0;
-  circle_c = color(0, 255, 0);
-  if (pm_inValue>12) {
-    gif_i = 1;
-    circle_c = color(36, 202, 220);
-  }
-  if (pm_inValue>35) {
-    gif_i = 2;
-    circle_c = color(255, 255, 0);
-  }
-  if (pm_inValue>55) {
-    gif_i = 3;
-    circle_c = color(255, 162, 0);
-  }
-  if (pm_inValue>250) {
-    gif_i = 4;
-    circle_c = color(255, 59, 59);
-  }
+    gif_i = 0;
+    if (pm_inValue > 12) {
+        gif_i = 1;
+    }
+    if (pm_inValue > 35) {
+        gif_i = 2;
+    }
+    if (pm_inValue > 55) {
+        gif_i = 3;
+    }
+    if (pm_inValue > 250) {
+        gif_i = 4;
+    }
 }
-gifButton btnHi, btnEco;
-gifButton[] btnPower = new gifButton[4];
+Button btnFanPow, btnAutoHi, btnAutoEco;
+PImage[] fanPowerImgs = new PImage[5];
+int fan_index = 0;
 
 public void mode_setBtn() {
-  btnHi = new gifButton(this, width/2-200, PApplet.parseInt(height*0.4f), 300, 300, 80, color(255, 0, 0), "btn/winkle.gif", "btn/purple.gif");
-  btnHi.text = "Hi";
-  btnEco = new gifButton(this, width/2+200, PApplet.parseInt(height*0.4f), 300, 300, 80, color(0, 255, 0), "btn/blue.gif", "btn/purple.gif");
-  btnEco.text = "Eco";
-  for (int i=0; i<btnPower.length; i++) {
-    btnPower[i] = new gifButton(this, (i+1)*(width/5), PApplet.parseInt(height*0.8f), 75, 75, 40, 255, "btn/white.gif", "btn/purple.gif");
-    btnPower[i].text = str(i+1);
-  }
+    btnFanPow = new Button(width / 2 - 220, PApplet.parseInt(height / 2.5f), 300, 300, 1, 0, "btn/fan_0.jpg");
+    btnAutoEco = new Button(width / 2 + 220, height / 4, 200, 200, 1, 0, "btn/mode_eco.jpg");
+    btnAutoHi = new Button(width / 2 + 220, PApplet.parseInt(1.8f * height) / 3, 200, 200, 1, 0, "btn/mode_high.jpg");
+
+    for (int i = 0; i < fanPowerImgs.length; i++) {
+      fanPowerImgs[i] = loadImage("btn/fan_" + str(i) + ".jpg");
+    }
 }
 
 public void screen_mode() {
-  background(0);
-  btnHi.display();
-  btnEco.display();
-  for (int i=0; i<btnPower.length; i++) {
-    btnPower[i].display();
-  }
+    background(255);
+    
+    fan_index = (level - dimming) / 2;
+    text_level = str(fan_index);
+    btnFanPow.setImage(fanPowerImgs[fan_index]);
+    btnFanPow.display();
+    btnAutoHi.display();
+    btnAutoEco.display();
+    
+    fill(128);
+    textFont(font_bold);
+    textSize(40);
+    text("ECO", width / 2 + 220, height / 4 + 90);
+    text("High Air Quality", width / 2 + 220, PApplet.parseInt(2.3f * height) / 3);
 }
 
 public void controller() {
-  if (btnHi.hasReleased()) {
-    println("Hi Mode: ESP On");
-    text_mode = "HI";
-    text_level = "4";
-    dimming = 1;
-    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
-  }
-  if (btnEco.hasReleased()) {
-    println("Eco Mode: ESP Off");
-    text_mode = "ECO";
-    text_level = "1";
-    dimming = 7;
-    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
-  }
-  for (int i=0; i<btnPower.length; i++) {
-    if (btnPower[i].hasReleased()) {
-      int btn_level = i+1;
-      println("Fan level " + str(btn_level));
-      text_mode = "MANUAL";
-      text_level = str(btn_level);
-      dimming = level - (btn_level*2);
+    if (btnAutoHi.hasReleased()) {
+      println("Eco Mode: ESP On");
+        text_mode = "AUTO";
+        text_mode_post = "Hi";
+        text_mode_color = color(255, 0, 0);
+        // read pm value
+        if (pm_inValue > 3 && pm_inValue < 9) {
+            dimming = 7;
+            if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
+        }
+        if (pm_inValue > 12) {
+            dimming = 1;
+            if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
+        }
     }
-  }
+    if (btnAutoEco.hasReleased()) {
+        println("Eco Mode: ESP Off");
+        text_mode = "AUTO";
+        text_mode_post = "Eco";
+        text_mode_color = color(0, 176, 80);
+        // read pm value
+        if (pm_inValue > 3 && pm_inValue < 9) {
+            dimming = 7;
+        }
+        if (pm_inValue > 12 && pm_inValue < 35) {
+            dimming = 5;
+        }
+        if (pm_inValue > 38 && pm_inValue < 55) {
+            dimming = 3;
+        }
+        if (pm_inValue > 58) {
+            dimming = 1;
+        }
+        if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+    }
+    if (btnFanPow.hasReleased()) {
+        dimming -= 2;
+        if (dimming < 1) dimming = 7;
+
+        text_mode = "MANUAL";
+        text_mode_post = "";
+    }
+    fan_index = (level - dimming) / 2;
+    text_level = str(fan_index);
+    println(text_mode, text_mode_post, "Fan Level:", text_level);
 }
-gifButton btnMode, btnTimer;
-Button btnShutdown;
+Button btnMode, btnTimer;
 
 public void select_setBtn() {
-  btnMode = new gifButton(this, width/2-200, height/2, 300, 300, 45, color(255,255,255), "btn/blue.gif", "btn/purple.gif");
-  btnMode.text = "MODE";
-  btnTimer = new gifButton(this, width/2+200, height/2, 300, 300, 45, color(255,255,255), "btn/blue.gif", "btn/purple.gif");
-  btnTimer.text = "TIMER";
-  btnShutdown = new Button(PApplet.parseInt(width*0.8f), PApplet.parseInt(height*0.9f), 220, 80, 35, color(200, 200, 200));
-  btnShutdown.text = "Shutdown";
-  
+    btnMode = new Button(width / 2 - 220, height / 2, 200, 200, 1, 0, "btn/btn_mode.jpg");
+    btnTimer = new Button(width / 2 + 220, height / 2, 200, 200, 1, 0, "btn/btn_timer.jpg");
 }
 
 public void screen_select() {
-  background(0);
-  btnMode.display();
-  btnTimer.display();
-  btnShutdown.display();
+    background(255);
+    btnMode.display();
+    btnTimer.display();
 }  
-Button add, del, set, clear, cancel;
+Button add, del, set, clear;
 int time_min;
 boolean start_count = false;
+static final int time_step = 900;
+PImage sleep_timer_img;
+
+static final String lead_zero_format = "%02d";
+static final String colon = ":";
+static final String time_label = "  HOURS                   MINUTES";
 
 public void timer_setBtn() {
-  add = new Button(width/2-300, PApplet.parseInt(height*0.3f), 100, 150, 100, color(255, 255, 255));
-  add.text = "+";
-  del = new Button(width/2+300, PApplet.parseInt(height*0.3f), 100, 150, 100, color(255, 255, 255));
-  del.text = "-";
-
-  time_min = 0;
-
-  set = new Button(width/4-50, PApplet.parseInt(height*0.7f), 220, 80, 50, color(0, 255, 0));
-  set.text = "SET";
-  clear = new Button(2*width/4, PApplet.parseInt(height*0.7f), 220, 80, 50, color(255, 0, 0));
-  clear.text = "CLEAR";
-  cancel = new Button(3*width/4+50, PApplet.parseInt(height*0.7f), 220, 80, 50, color(200, 200, 200));
-  cancel.text = "CANCEL";
+    time_min = 0;
+    // sleep timer logo
+    sleep_timer_img = loadImage("logo/icon_sleep.jpg");
+    // timmer increase & decrease btn
+    add = new Button(width / 2 + 300, PApplet.parseInt(height * 0.4f), 100, 100, 1, 0, "btn/plus.png");
+    del = new Button(width / 2 - 300, PApplet.parseInt(height * 0.4f), 100, 100, 1, 0, "btn/min.png");
+    // set timmer & clear btn
+    set = new Button(width / 2 - 130, PApplet.parseInt(height * 0.65f), 150, 50, 30, color(0, 173, 73));
+    set.text = "SET";
+    set.weight = 5;
+    clear = new Button(width / 2 + 130, PApplet.parseInt(height * 0.65f), 150, 50, 30, color(122, 122, 122));
+    clear.text = "CLEAR";
+    clear.weight = 5;
 }
 
 public void screen_timer() {
-  background(0);
-  add.display();
-  del.display();
-  set.display();
-  clear.display();
-  cancel.display();
-
-  textSize(100);
-  fill(255);
-  String hour = str(time_min / 60);
-  String min = str(time_min % 60);
-  text(hour + " : " + min, width/2, PApplet.parseInt(height*0.3f));
+    background(255);
+    // display logo
+    image(sleep_timer_img, PApplet.parseInt(width * 0.9f), PApplet.parseInt(height * 0.15f), 152, 120);
+    // display btns
+    add.display();
+    del.display();
+    set.display();
+    clear.display();
+    // digit lead with zero
+    String hour = String.format(lead_zero_format, time_min / 3600);
+    String min = String.format(lead_zero_format, (time_min / 60) % 60);
+    // display time
+    fill(55, 179, 73);
+    textFont(font_bold);
+    text(hour, width / 2 - 128, PApplet.parseInt(height * 0.35f));
+    text(colon, width / 2, PApplet.parseInt(height * 0.35f));
+    text(min, width / 2 + 128, PApplet.parseInt(height * 0.35f));
+    // display labels
+    fill(157);
+    textFont(font_regu);
+    textSize(30);
+    text(time_label, width / 2, PApplet.parseInt(height * 0.47f));
 }
 
 public void calculatetime() {
-  if (add.hasReleased()) {
-    time_min += 30;
-  }
-  if (del.hasReleased()) {
-    time_min -= 30;
-    if (time_min<0) time_min=0;
-  }
-  if (set.hasReleased()) {
-    start_count = true;
-    counter_prev_mil = millis();
-  }
-  if (clear.hasReleased()) {
-    start_count = false;
-    time_min=0;
-  }
-  if (cancel.hasReleased()) {
-    cur_screen = 0;
-  }
+    if (add.hasReleased()) {
+        time_min += time_step;
+    }
+    if (del.hasReleased()) {
+        time_min -= time_step;
+        if (time_min < 0) time_min = 0;
+    }
+    if (set.hasReleased()) {
+        start_count = true;
+        counter_prev_mil = millis();
+    }
+    if (clear.hasReleased()) {
+        start_count = false;
+        time_min = 0;
+    }
 }
 
 
-  public void settings() { size(1024, 600, JAVA2D); }
+  public void settings() { fullScreen(); }
 
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "TouchDust" };

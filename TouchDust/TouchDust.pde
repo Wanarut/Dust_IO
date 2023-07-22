@@ -10,9 +10,9 @@ PFont font_bold, font_regu;
 Button menu, cancel;
 
 public void setup() {
-    size(1024, 600, JAVA2D);
-    //fullScreen();
-    //noCursor();
+    // size(1024, 600, JAVA2D);
+    fullScreen();
+    noCursor();
     frameRate(15);
     rectMode(CENTER);
     imageMode(CENTER);
