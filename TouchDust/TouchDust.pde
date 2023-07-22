@@ -1,7 +1,7 @@
 String os = System.getProperty("os.name");
 
 int timeout = 15000;
-long cur_screen = 0;
+int cur_screen = 0;
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
@@ -34,9 +34,10 @@ public void draw() {
     }
     //read pm value & write duty cycle every 5 second
     if (cur_mil - prev_read_mil >= 5000) {
+        // read pm value
         readPMvalue();
         prev_read_mil = cur_mil;
-        
+        // write duty cycle
         String[] data_str = new String[1];
         int duty_value = int(map(dimming, 1, 7, 40, 3));
         data_str[0] = str(duty_value);
@@ -62,45 +63,73 @@ public void draw() {
         counter_prev_mil = cur_mil;
     }
     // select showing screen
-    if (cur_screen ==  0) main_screen();
-    else if (cur_screen ==  1) screen_select();
-    else if (cur_screen ==  2) screen_mode();
-    else if (cur_screen ==  3) screen_timer();
+    switch (cur_screen) {
+        case 1 :
+            screen_select();
+            break;
+        case 2 :
+            screen_mode();
+            break;
+        case 3 :
+            screen_timer();
+            break;
+        default :
+            main_screen();
+            break;	
+    }
 }
 
 void mousePressed() {
     //reset timmer
     prev_mil = millis();
-    if (cur_screen ==  1) {
-        btnMode.hasPressed();
-        btnTimer.hasPressed();
-        btnShutdown.hasPressed();
-    } else if (cur_screen ==  2) {
-        btnHi.hasPressed();
-        btnEco.hasPressed();
-        for (int i = 0; i < btnPower.length; i++) {
-            btnPower[i].hasPressed();
-        }
-    } else if (cur_screen ==  3) {
-        add.hasPressed();
-        del.hasPressed();
-        set.hasPressed();
-        clear.hasPressed();
-        cancel.hasPressed();
+    // button is clicking
+    switch (cur_screen) {
+        case 1 :
+            btnMode.hasPressed();
+            btnTimer.hasPressed();
+            btnShutdown.hasPressed();
+            break;
+        case 2 :
+            btnHi.hasPressed();
+            btnEco.hasPressed();
+            for (int i = 0; i < btnPower.length; i++) {
+                btnPower[i].hasPressed();
+            }
+            break;
+        case 3 :
+            add.hasPressed();
+            del.hasPressed();
+            set.hasPressed();
+            clear.hasPressed();
+            cancel.hasPressed();
+            break;
+        default :
+            break;	
     }
 }
 
 void mouseReleased() {
-    if (cur_screen ==  0) cur_screen = 1;
-    else if (cur_screen ==  1) {
-        if (btnMode.hasReleased()) cur_screen = 2;
-        if (btnTimer.hasReleased()) cur_screen = 3;
-        if (btnShutdown.hasReleased()) shutdown_now();
-    } else if (cur_screen ==  2) controller();
-    else if (cur_screen ==  3) calculatetime();
+    // button action
+    switch (cur_screen) {
+        case 1 :
+            if (btnMode.hasReleased()) cur_screen = 2;
+            if (btnTimer.hasReleased()) cur_screen = 3;
+            if (btnShutdown.hasReleased()) shutdown_now();
+            break;
+        case 2 :
+            controller();
+            break;
+        case 3 :
+            calculatetime();
+            break;
+        default :
+            cur_screen = 1;
+            break;	
+    }
 }
 
 void keyPressed() {
+    // press ESC for exit app
     if (key == ESC) {
         //fan_output.flush();
         //fan_output.close();
