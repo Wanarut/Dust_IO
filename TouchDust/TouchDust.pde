@@ -1,10 +1,12 @@
-String os = System.getProperty("os.name");
+static final String os = System.getProperty("os.name");
 
-int timeout = 15000;
+static final int timeout = 15000;
 int cur_screen = 0;
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
+
+PFont font_bold, font_regu;
 
 public void setup() {
     size(1024, 600, JAVA2D);
@@ -14,6 +16,9 @@ public void setup() {
     rectMode(CENTER);
     imageMode(CENTER);
     textAlign(CENTER, CENTER);
+    // system font
+    font_bold = createFont("Fira_Sans/FiraSans-Bold.ttf", 100);
+    font_regu = createFont("Fira_Sans/FiraSans-Regular.ttf", 100);
     
     setupPin();
     setupGif();
