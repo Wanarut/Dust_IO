@@ -5,7 +5,9 @@ Gif emoji_5;
 int gif_i = 0;
 color circle_c = color(59, 204, 255);
 String text_mode = "AUTO";
-String text_level = "2";
+String text_mode_post = "Hi";
+color text_mode_color = color(255, 0, 0);
+String text_level = "0";
 
 void setupGif() {
   emoji[0] = loadImage("Emoji/Emoji_1.png");

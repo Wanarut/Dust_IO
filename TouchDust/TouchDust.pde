@@ -32,7 +32,7 @@ public void setup() {
     cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
 }
 
-int level = 9;
+static final int level = 9;
 int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
 
 public void draw() {
@@ -61,11 +61,12 @@ public void draw() {
         } else {
             println("Timer End");
             text_mode = "OFF";
+            text_mode_post = "";
             text_level = "0";
+            // setduty cycle = 0 & close ESP pin
+            dimming = level;
             //if(os.equals("Linux")) pwmFan.set(period, 0);
             if (os.equals("Linux")) {
-                // setduty cycle = 0 & close ESP pin
-                dimming = level;
                 GPIO.digitalWrite(pinESP, GPIO.LOW);
             }
             start_count = false;
@@ -107,11 +108,9 @@ void mousePressed() {
             cancel.hasPressed();
             break;
         case 2 :
-            btnHi.hasPressed();
-            btnEco.hasPressed();
-            for (int i = 0; i < btnPower.length; i++) {
-                btnPower[i].hasPressed();
-            }
+            btnFanPow.hasPressed();
+            btnAutoHi.hasPressed();
+            btnAutoEco.hasPressed();
 
             menu.hasPressed();
             cancel.hasPressed();

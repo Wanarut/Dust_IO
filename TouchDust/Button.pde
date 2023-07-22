@@ -35,6 +35,12 @@ class Button {
         
         font = createFont("Fira_Sans/FiraSans-Regular.ttf", tsize_);
     }
+
+    void setImage(PImage cur_image) {
+        image = cur_image;
+        image_active = cur_image;
+        image_active.filter(POSTERIZE, 5);
+    }
     
     void display() {
         // add stroke in button
