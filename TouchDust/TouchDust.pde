@@ -39,7 +39,7 @@ public void draw() {
         prev_read_mil = cur_mil;
         // write duty cycle
         String[] data_str = new String[1];
-        int duty_value = int(map(dimming, 1, 7, 40, 3));
+        int duty_value = int(map(dimming, 1, level, 40, 0));
         data_str[0] = str(duty_value);
         saveStrings("/home/pi/Dust_IO/testPWM/fan_output.txt", data_str);
     }
@@ -55,7 +55,7 @@ public void draw() {
             //if(os.equals("Linux")) pwmFan.set(period, 0);
             if (os.equals("Linux")) {
                 // setduty cycle = 0 & close ESP pin
-                dimming = 9;
+                dimming = level;
                 GPIO.digitalWrite(pinESP, GPIO.LOW);
             }
             start_count = false;
