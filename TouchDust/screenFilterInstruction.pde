@@ -2,7 +2,7 @@ Button btnNext;
 PImage instuction;
 
 void changefilter_setBtn() {
-    btnNext = new Button(width - 125, height - 75, 150, 50, 30, color(128, 128, 128));
+    btnNext = new Button(width - 125, height - 75, 150, 50, 30, color(128));
     btnNext.text = "NEXT";
     btnNext.weight = 5;
 

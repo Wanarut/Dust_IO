@@ -1,7 +1,7 @@
 static final String os = System.getProperty("os.name");
 
 static final int timeout = 15000;
-int cur_screen = 4;
+int cur_screen = 0;
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
@@ -31,6 +31,7 @@ public void setup() {
     mode_setBtn();
     timer_setBtn();
     changefilter_setBtn();
+    confirmfilter_setBtn();
     
     // navigation btn
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
@@ -111,6 +112,9 @@ public void draw() {
         case 4 :
             screen_changefilter();
             break;
+        case 5 :
+            screen_confirmfilter();
+            break;
         default :
             main_screen();
             break;
@@ -148,6 +152,10 @@ void mousePressed() {
         case 4 :
             btnNext.hasPressed();
             break;
+        case 5 :
+            btnYes.hasPressed();
+            btnNo.hasPressed();
+            break;
         default :
             btnShutdown.hasPressed();
             if (filter_dirty) btnAlert.hasPressed();
@@ -176,6 +184,14 @@ void mouseReleased() {
             break;
         case 4 :
             if (btnNext.hasReleased()) cur_screen = 5;
+            break;
+        case 5 :
+            if (btnYes.hasReleased()) {
+                filter_dirty = false;
+                resetFilter();
+                cur_screen = 0;
+            }
+            if (btnNo.hasReleased()) cur_screen = 0;
             break;
         default :
             if (btnShutdown.hasReleased()) shutdown_now();
