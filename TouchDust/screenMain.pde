@@ -7,7 +7,7 @@ color text_mode_color = color(255, 0, 0);
 String text_level = "0";
 
 PImage icon_mode, icon_filter, icon_fan;
-Button btnShutdown;
+Button btnShutdown, btnAlert;
 
 void setupmain() {
     for (int i = 0; i < emoji.length; i++) {
@@ -18,25 +18,14 @@ void setupmain() {
     icon_fan = loadImage("logo/icon_fan.jpg");
     
     btnShutdown = new Button(int(width - 75), int(height - 75), 100, 100, 1, 0, "btn/icon_power.jpg");
+    btnAlert = new Button(int(width - 75), int(height - 200), 100, 100, 1, 0, "btn/alert.png");
 }
 
 void main_screen() {
     background(255);
     
-    if (esp_dirty) {
-        // image(emoji_5, width / 2, height * 0.4, 580, 435);
-        // fill(255);
-        // textSize(40); 
-        // text("PLEASE\nCLEAN UP", width / 2, height * 0.4);
-    } else if (filter_dirty) {
-        // image(emoji_5, width / 2, height * 0.4, 580, 435);
-        // fill(255);
-        // textSize(40); 
-        // text("PLEASE\nCLEAN UP", width / 2, height * 0.4);
-    } else {
-        select_emoji();
-        image(emoji[gif_i], width / 2, height * 0.3, 300, 300);
-    }
+    select_emoji();
+    image(emoji[gif_i], width / 2, height * 0.3, 300, 300);
     
     fill(128);
     textFont(font_bold);
@@ -75,6 +64,7 @@ void main_screen() {
     image(icon_fan, width * 0.65, height * 0.77, 50, 50);
     
     btnShutdown.display();
+    if (filter_dirty) btnAlert.display();
 }
 
 void select_emoji() {

@@ -1,13 +1,13 @@
 static final String os = System.getProperty("os.name");
 
 static final int timeout = 15000;
-int cur_screen = 0;
+int cur_screen = 4;
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
 long prev_filter_mil = 0;
 
-PFont font_bold, font_regu;
+PFont font_bold, font_regu, font_thai;
 Button menu, cancel;
 
 JSONObject properties;
@@ -23,12 +23,14 @@ public void setup() {
     // system font
     font_bold = createFont("Fira_Sans/FiraSans-Bold.ttf", 100);
     font_regu = createFont("Fira_Sans/FiraSans-Regular.ttf", 100);
+    font_thai = createFont("THSarabunNew/THSarabunNew.ttf", 24);
     
     setupPin();
     setupmain();
     select_setBtn();
     mode_setBtn();
     timer_setBtn();
+    changefilter_setBtn();
     
     // navigation btn
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
@@ -106,6 +108,9 @@ public void draw() {
             menu.display();
             cancel.display();
             break;
+        case 4 :
+            screen_changefilter();
+            break;
         default :
             main_screen();
             break;
@@ -140,8 +145,12 @@ void mousePressed() {
             menu.hasPressed();
             cancel.hasPressed();
             break;
+        case 4 :
+            btnNext.hasPressed();
+            break;
         default :
             btnShutdown.hasPressed();
+            if (filter_dirty) btnAlert.hasPressed();
             break;	
     }
 }
@@ -165,8 +174,12 @@ void mouseReleased() {
             if (menu.hasReleased()) cur_screen = 1;
             if (cancel.hasReleased()) cur_screen = 0;
             break;
+        case 4 :
+            if (btnNext.hasReleased()) cur_screen = 5;
+            break;
         default :
             if (btnShutdown.hasReleased()) shutdown_now();
+            else if (filter_dirty && btnAlert.hasReleased()) cur_screen = 4;
             else cur_screen = 1;
             break;	
     }

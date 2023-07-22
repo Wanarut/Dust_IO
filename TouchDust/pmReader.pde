@@ -20,11 +20,24 @@ void readPMvalue() {
     }
 }
 
+boolean isESPdirty() {
+    if (pm_inValue > 20) {
+        int diff = (pm_inValue - pm_outValue);
+        int percent = (diff * 100) / pm_inValue;
+        if (percent < 30) {
+            esp_dirty = true;
+        }
+    }
+    return esp_dirty;
+}
+
 int getFilterPercent() {
     // load data from properties file
     properties = loadJSONObject("data/properties.json");
     int filter_lifetime = properties.getInt("filter_lifetime");
-    return(filter_lifetime * 100) / filter_lifetime_max;
+    int result = (filter_lifetime * 100) / filter_lifetime_max;
+    if (result == 0) filter_dirty = true;
+    return result;
 }
 
 void decreaseFilterLife() {
