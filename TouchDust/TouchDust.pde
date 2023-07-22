@@ -7,8 +7,7 @@ long counter_prev_mil = 0;
 long prev_read_mil = 0;
 
 PFont font_bold, font_regu;
-
-Button menu, cancel;
+Button menu, cancel, btnShutdown;
 
 public void setup() {
     size(1024, 600, JAVA2D);
@@ -103,7 +102,7 @@ void mousePressed() {
         case 1 :
             btnMode.hasPressed();
             btnTimer.hasPressed();
-            btnShutdown.hasPressed();
+            //btnShutdown.hasPressed();
 
             cancel.hasPressed();
             break;
@@ -137,7 +136,7 @@ void mouseReleased() {
         case 1 :
             if (btnMode.hasReleased()) cur_screen = 2;
             if (btnTimer.hasReleased()) cur_screen = 3;
-            if (btnShutdown.hasReleased()) shutdown_now();
+            //if (btnShutdown.hasReleased()) shutdown_now();
             break;
         case 2 :
             controller();
