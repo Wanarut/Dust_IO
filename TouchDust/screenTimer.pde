@@ -1,4 +1,4 @@
-Button add, del, set, clear, menu, cancel;
+Button add, del, set, clear;
 int time_min;
 boolean start_count = false;
 static final int time_step = 900;
@@ -22,9 +22,6 @@ void timer_setBtn() {
     clear = new Button(width / 2 + 130, int(height * 0.65), 150, 50, 30, color(122, 122, 122));
     clear.text = "CLEAR";
     clear.weight = 5;
-    // navigation btn
-    menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
-    cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
 }
 
 void screen_timer() {
@@ -36,8 +33,6 @@ void screen_timer() {
     del.display();
     set.display();
     clear.display();
-    menu.display();
-    cancel.display();
     // digit lead with zero
     String hour = String.format(lead_zero_format, time_min / 3600);
     String min = String.format(lead_zero_format, (time_min / 60) % 60);
@@ -69,11 +64,5 @@ void calculatetime() {
     if (clear.hasReleased()) {
         start_count = false;
         time_min = 0;
-    }
-    if (menu.hasReleased()) {
-        cur_screen = 1;
-    }
-    if (cancel.hasReleased()) {
-        cur_screen = 0;
     }
 }
