@@ -32,11 +32,12 @@ public void setup() {
     timer_setBtn();
     changefilter_setBtn();
     confirmfilter_setBtn();
+    cleanESP_setBtn();
     
     // navigation btn
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
     cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
-
+    
     // find properties file
     properties = loadJSONObject("data/properties.json");
     if (properties == null) {
@@ -53,10 +54,16 @@ int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
 public void draw() {
     long cur_mil = millis();
     //timmer for switching to main page
-    // if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
-    //     cur_screen = 0;
-    //     prev_mil = cur_mil;
-// }
+    if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
+        prev_mil = cur_mil;
+        
+        isESPdirty();
+        if (esp_dirty) {
+            cur_screen = 6;
+        } else{
+            cur_screen = 0;
+        }
+    }
     //read pm value & write duty cycle every 5 second
     if (cur_mil - prev_read_mil >= 5000) {
         // read pm value
@@ -94,7 +101,10 @@ public void draw() {
         decreaseFilterLife();
     }
     // select showing screen
-    switch (cur_screen) {
+    switch(cur_screen) {
+        case 0 :
+            main_screen();
+            break;
         case 1 :
             screen_select();
             cancel.display();
@@ -115,9 +125,11 @@ public void draw() {
         case 5 :
             screen_confirmfilter();
             break;
-        default :
-            main_screen();
+        case 6 :
+            screen_cleanESP();
             break;
+        default :
+        break;
     }
 }
 
@@ -125,7 +137,11 @@ void mousePressed() {
     //reset timmer
     prev_mil = millis();
     // button is clicking
-    switch (cur_screen) {
+    switch(cur_screen) {
+        case 0 :
+            btnShutdown.hasPressed();
+            if (filter_dirty) btnAlert.hasPressed();
+            break;
         case 1 :
             btnMode.hasPressed();
             btnTimer.hasPressed();
@@ -157,15 +173,18 @@ void mousePressed() {
             btnNo.hasPressed();
             break;
         default :
-            btnShutdown.hasPressed();
-            if (filter_dirty) btnAlert.hasPressed();
-            break;	
+        break;
     }
 }
 
 void mouseReleased() {
     // button action
-    switch (cur_screen) {
+    switch(cur_screen) {
+        case 0 :
+            if (btnShutdown.hasReleased()) shutdown_now();
+            else if (filter_dirty && btnAlert.hasReleased()) cur_screen = 4;
+            else cur_screen = 1;
+            break;
         case 1 :
             if (btnMode.hasReleased()) cur_screen = 2;
             if (btnTimer.hasReleased()) cur_screen = 3;
@@ -194,10 +213,7 @@ void mouseReleased() {
             if (btnNo.hasReleased()) cur_screen = 0;
             break;
         default :
-            if (btnShutdown.hasReleased()) shutdown_now();
-            else if (filter_dirty && btnAlert.hasReleased()) cur_screen = 4;
-            else cur_screen = 1;
-            break;	
+        break;	
     }
 }
 
@@ -209,11 +225,11 @@ void keyPressed() {
 }
 
 void shutdown_now() {
-  if(os.equals("Linux")) dimming = 9;
-  if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
-  Command cmd = new Command("shutdown now");
-  if ( cmd.run() == true ) {
-    String[] output = cmd.getOutput();
-    println(output);
-  }
+    if (os.equals("Linux")) dimming = 9;
+    if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+    Command cmd = new Command("shutdown now");
+    if (cmd.run() == true) {
+        String[] output = cmd.getOutput();
+        println(output);
+    }
 }

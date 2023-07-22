@@ -13,6 +13,7 @@ void screen_changefilter() {
     background(255);
     image(instuction, width / 2, height / 2 + 50, 500, 400);
     fill(255, 0, 0);
+    textFont(font_regu);
     textSize(50);
     text("Please change the air filter", width / 2, height * 0.1);
     textFont(font_thai);

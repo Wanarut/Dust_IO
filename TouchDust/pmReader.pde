@@ -28,6 +28,7 @@ boolean isESPdirty() {
             esp_dirty = true;
         }
     }
+    println("ESPdirty:", esp_dirty);
     return esp_dirty;
 }
 
