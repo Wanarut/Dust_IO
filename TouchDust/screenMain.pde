@@ -61,7 +61,13 @@ void main_screen() {
     textAlign(CENTER, CENTER);
     
     fill(128);
-    text("Filter : " + filter_lifetime + " %", width / 2, height * 0.85);
+    text("Filter : ", width / 2 - 24, height * 0.85);
+    if (getFilterPercent() <= 10) fill(255, 0, 0);
+    textAlign(RIGHT, CENTER);
+    text(getFilterPercent() + " %", width / 2 + 55, height * 0.85);
+    textAlign(CENTER, CENTER);
+
+    fill(128);
     text("FAN LEVEL : " + text_level, width * 0.65, height * 0.85);
     
     image(icon_mode, width * 0.33, height * 0.77, 50, 50);

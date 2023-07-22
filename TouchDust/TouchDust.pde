@@ -5,14 +5,17 @@ int cur_screen = 0;
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
+long prev_filter_mil = 0;
 
 PFont font_bold, font_regu;
 Button menu, cancel;
 
+JSONObject properties;
+
 public void setup() {
-    // size(1024, 600, JAVA2D);
-    fullScreen();
-    noCursor();
+    size(1024, 600, JAVA2D);
+    //fullScreen();
+    //noCursor();
     frameRate(15);
     rectMode(CENTER);
     imageMode(CENTER);
@@ -30,6 +33,15 @@ public void setup() {
     // navigation btn
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
     cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
+
+    // find properties file
+    properties = loadJSONObject("data/properties.json");
+    if (properties == null) {
+        println("not found properties file");
+        properties = new JSONObject();
+        properties.setInt("filter_lifetime", filter_lifetime_max);
+        saveJSONObject(properties, "data/properties.json");
+    }
 }
 
 static final int level = 9;
@@ -72,6 +84,11 @@ public void draw() {
             start_count = false;
         }
         counter_prev_mil = cur_mil;
+    }
+    //decrease filter lifetime every minute
+    if (cur_mil - prev_filter_mil >= 60000) {
+        prev_filter_mil = cur_mil;
+        decreaseFilterLife();
     }
     // select showing screen
     switch (cur_screen) {
