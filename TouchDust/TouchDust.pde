@@ -14,6 +14,8 @@ PFont font_bold, font_regu, font_thai;
 // navigation btn
 Button menu, cancel;
 // save data
+static final String properties_file = "data/properties.json";
+static final String lifetime_key = "filter_lifetime";
 JSONObject properties;
 
 public void setup() {
@@ -42,12 +44,12 @@ public void setup() {
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
     cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
     // load properties file
-    properties = loadJSONObject("data/properties.json");
+    properties = loadJSONObject(properties_file);
     if (properties == null) {
         println("not found properties file");
         properties = new JSONObject();
-        properties.setInt("filter_lifetime", filter_lifetime_max);
-        saveJSONObject(properties, "data/properties.json");
+        properties.setInt(lifetime_key, filter_lifetime_max);
+        saveJSONObject(properties, properties_file);
     }
 }
 // pwm fan

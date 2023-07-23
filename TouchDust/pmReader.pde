@@ -2,14 +2,18 @@ import deadpixel.command.*;
 
 int pm_inValue = 0;
 int pm_outValue = 0;
-static final int filter_lifetime_max = 259200;
 boolean esp_dirty = false;
 boolean filter_dirty = false;
-int decrease_step = 1;
+
+static final int filter_lifetime_max = 259200;
+static final int decrease_step = 1;
+
+static final String python_file_pms = "/home/pi/Dust_IO/TouchDust/pmsRead.py";
+static final String python_cmd = "python3 ";
 
 void readPMvalue() {
-    String pythonPath = sketchPath("/home/pi/Dust_IO/TouchDust/pmsRead.py");
-    Command cmd = new Command("python3 " + pythonPath); 
+    String pythonPath = sketchPath(python_file_pms);
+    Command cmd = new Command(python_cmd + pythonPath); 
     if (cmd.run() == true) {
         // peachy
         String[] output = cmd.getOutput();
@@ -36,23 +40,23 @@ boolean isESPdirty() {
 
 int getFilterPercent() {
     // load data from properties file
-    properties = loadJSONObject("data/properties.json");
-    int filter_lifetime = properties.getInt("filter_lifetime");
+    properties = loadJSONObject(properties_file);
+    int filter_lifetime = properties.getInt(lifetime_key);
     int result = (filter_lifetime * 100) / filter_lifetime_max;
     if (result == 0) filter_dirty = true;
     return result;
 }
 
 void decreaseFilterLife() {
-    int filter_lifetime = properties.getInt("filter_lifetime");
+    int filter_lifetime = properties.getInt(lifetime_key);
     if (filter_lifetime > 0) {
         filter_lifetime -= decrease_step;
-        properties.setInt("filter_lifetime", filter_lifetime);
-        saveJSONObject(properties, "data/properties.json");
+        properties.setInt(lifetime_key, filter_lifetime);
+        saveJSONObject(properties, properties_file);
     }
 }
 
 void resetFilter() {
-    properties.setInt("filter_lifetime", filter_lifetime_max);
-    saveJSONObject(properties, "data/properties.json");
+    properties.setInt(lifetime_key, filter_lifetime_max);
+    saveJSONObject(properties, properties_file);
 }

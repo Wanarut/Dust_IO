@@ -1,11 +1,12 @@
 import processing.io.*;
 
-int pinESP = 23;
-int pinZC = 4;
-int AC_LOAD = 18;
+static final int pinESP = 23;
+static final int pinZC = 4;
+static final int AC_LOAD = 18;
 boolean zcState = false;  // 0 = ready, 1 = processing
 
 void setupPin() {
+  // setup pin of pi
   if(os.equals("Linux")) {
     GPIO.pinMode(pinESP, GPIO.OUTPUT);
     //GPIO.pinMode(AC_LOAD, GPIO.OUTPUT);// Set AC Load pin as output
