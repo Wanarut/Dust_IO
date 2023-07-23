@@ -8,9 +8,9 @@ static final int mode_man = 3;
 int cur_mode = mode_eco;
 
 void mode_setBtn() {
-    btnFanPow = new Button(width / 2 - 220, int(height / 2.5), 300, 300, 1, 0, "btn/fan_0.jpg");
-    btnAutoEco = new Button(width / 2 + 220, height / 4, 200, 200, 1, 0, "btn/mode_eco.jpg");
-    btnAutoHi = new Button(width / 2 + 220, int(1.8 * height) / 3, 200, 200, 1, 0, "btn/mode_high.jpg");
+    btnFanPow = new Button(width / 2 - 280, int(height / 2.3), 400, 400, 1, 0, "btn/fan_0.jpg");
+    btnAutoEco = new Button(width / 2 + 280, height / 4, 250, 250, 1, 0, "btn/mode_eco.jpg");
+    btnAutoHi = new Button(width / 2 + 280, int(1.8 * height) / 3, 250, 250, 1, 0, "btn/mode_high.jpg");
     
     for (int i = 0; i < fanPowerImgs.length; i++) {
         fanPowerImgs[i] = loadImage("btn/fan_" + str(i) + ".jpg");
@@ -31,8 +31,8 @@ void screen_mode() {
     fill(128);
     textFont(font_bold);
     textSize(40);
-    text(eco, width / 2 + 220, height / 4 + 90);
-    text(high, width / 2 + 220, int(2.3 * height) / 3);
+    text(eco, width / 2 + 280, height / 4 + 110);
+    text(high, width / 2 + 280, int(2.3 * height) / 3);
 }
 
 void controller() {

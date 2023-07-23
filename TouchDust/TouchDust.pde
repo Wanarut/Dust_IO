@@ -19,7 +19,7 @@ static final String lifetime_key = "filter_lifetime";
 JSONObject properties;
 
 public void setup() {
-    // size(1024, 600, JAVA2D);
+    // size(1280, 720, JAVA2D);
     fullScreen();
     noCursor();
     // setup drawing style
@@ -30,7 +30,7 @@ public void setup() {
     // setup system font
     font_bold = createFont("Fira_Sans/FiraSans-Bold.ttf", 100);
     font_regu = createFont("Fira_Sans/FiraSans-Regular.ttf", 100);
-    font_thai = createFont("THSarabunNew/THSarabunNew.ttf", 24);
+    font_thai = createFont("THSarabunNew/THSarabunNew.ttf", 36);
     // setup screen
     setupPin();
     setupmain();
