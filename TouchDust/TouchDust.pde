@@ -55,7 +55,7 @@ public void setup() {
 // pwm fan
 static final int level = 9;
 int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
-static final String fan_output_path = "../testPWM/fan_output.txt";
+static final String fan_output_path = "/home/pi/Dust_IO/testPWM/fan_output.txt";
 
 public void draw() {
     long cur_mil = millis();
