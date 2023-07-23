@@ -17,9 +17,9 @@ Button menu, cancel;
 JSONObject properties;
 
 public void setup() {
-    size(1024, 600, JAVA2D);
-    // fullScreen();
-    // noCursor();
+    // size(1024, 600, JAVA2D);
+    fullScreen();
+    noCursor();
     // setup drawing style
     frameRate(15);
     rectMode(CENTER);
@@ -62,6 +62,12 @@ public void draw() {
     //     prev_mil = cur_mil;
     //     cur_screen = 0;
     // }
+
+    // simulation
+    // pm_inValue++;
+    // pm_inValue%=260;
+    // adaptiveFan();
+
     //read pm value & write duty cycle every 5 second
     if (cur_mil - prev_read_mil >= 5000) {
         prev_read_mil = cur_mil;
@@ -89,6 +95,7 @@ public void draw() {
             if (save_screen >= 0) cur_screen = save_screen;
             save_screen = -1;
         }
+        adaptiveFan();
     }
     //timmer for sleep
     if (start_count & cur_mil - counter_prev_mil >= 1000) {

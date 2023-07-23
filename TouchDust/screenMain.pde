@@ -2,8 +2,8 @@ PImage[] emoji = new PImage[5];
 int gif_i = 0;
 // fan state
 String text_mode = "AUTO";
-String text_mode_post = "Hi";
-color text_mode_color = color(255, 0, 0);
+String text_mode_post = "Eco";
+color text_mode_color = color(0, 176, 80);
 // icon
 PImage icon_mode, icon_filter, icon_fan;
 Button btnShutdown, btnAlert;
@@ -61,7 +61,6 @@ void main_screen() {
     textAlign(CENTER, CENTER);
     // display fan speed
     fill(128);
-    fan_index = (level - dimming) / 2;
     text(label_fan + str(fan_index), width * 0.65, height * 0.85);
     // display icon
     image(icon_mode, width * 0.33, height * 0.77, 50, 50);
