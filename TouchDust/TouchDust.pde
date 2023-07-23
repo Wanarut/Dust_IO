@@ -1,31 +1,35 @@
 static final String os = System.getProperty("os.name");
-
+// timeout interval
 static final int timeout = 15000;
+// screen index
 int cur_screen = 0;
 int save_screen = -1;
+// software polling
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
 long prev_filter_mil = 0;
-
+// system font
 PFont font_bold, font_regu, font_thai;
+// navigation btn
 Button menu, cancel;
-
+// save data
 JSONObject properties;
 
 public void setup() {
     // size(1024, 600, JAVA2D);
     fullScreen();
     noCursor();
+    // setup drawing style
     frameRate(15);
     rectMode(CENTER);
     imageMode(CENTER);
     textAlign(CENTER, CENTER);
-    // system font
+    // setup system font
     font_bold = createFont("Fira_Sans/FiraSans-Bold.ttf", 100);
     font_regu = createFont("Fira_Sans/FiraSans-Regular.ttf", 100);
     font_thai = createFont("THSarabunNew/THSarabunNew.ttf", 24);
-    
+    // setup screen
     setupPin();
     setupmain();
     select_setBtn();
@@ -34,12 +38,10 @@ public void setup() {
     changefilter_setBtn();
     confirmfilter_setBtn();
     cleanESP_setBtn();
-    
-    // navigation btn
+    // setup navigation btn
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
     cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
-    
-    // find properties file
+    // load properties file
     properties = loadJSONObject("data/properties.json");
     if (properties == null) {
         println("not found properties file");
@@ -48,9 +50,10 @@ public void setup() {
         saveJSONObject(properties, "data/properties.json");
     }
 }
-
+// pwm fan
 static final int level = 9;
 int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
+static final String fan_output_path = "../testPWM/fan_output.txt";
 
 public void draw() {
     long cur_mil = millis();
@@ -68,19 +71,21 @@ public void draw() {
         String[] data_str = new String[1];
         int duty_value = int(map(dimming, 1, level, 40, 0));
         data_str[0] = str(duty_value);
-        saveStrings("/home/pi/Dust_IO/testPWM/fan_output.txt", data_str);
+        saveStrings(fan_output_path, data_str);
 
         // pm_inValue = 100;
         // pm_outValue += 15;
         // pm_outValue %= 100;
         // println("pm_outValue:", pm_outValue);
 
+        // Check ESP Efficiency
         if (isESPdirty()) {
             // save cur_screen
             if (save_screen < 0) save_screen = cur_screen;
             // switch to clean esp screen
             cur_screen = 6;
         } else{
+            // load cur_screen
             if (save_screen >= 0) cur_screen = save_screen;
             save_screen = -1;
         }
@@ -88,10 +93,11 @@ public void draw() {
     //timmer for sleep
     if (start_count & cur_mil - counter_prev_mil >= 1000) {
         counter_prev_mil = cur_mil;
+        // start countdown
         if (time_min > 0) {
             time_min--;
-            //pm_inValue+=10;
         } else {
+            // end countdown
             println("Timer End");
             text_mode = "OFF";
             text_mode_post = "";
@@ -235,6 +241,7 @@ void keyPressed() {
 }
 
 void shutdown_now() {
+    // linux shutdown command
     if (os.equals("Linux")) dimming = 9;
     if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
     Command cmd = new Command("shutdown now");
