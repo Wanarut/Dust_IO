@@ -9,14 +9,17 @@ void changefilter_setBtn() {
     instuction = loadImage("logo/hepa.jpg");
 }
 
+static final String label_changefilter = "Please change the air filter";
+static final String label_changefilter_th = "กรุณาเปลี่ยนแผ่นกรองอากาศ";
+
 void screen_changefilter() {
     background(255);
     image(instuction, width / 2, height / 2 + 50, 500, 400);
     fill(255, 0, 0);
     textFont(font_regu);
     textSize(50);
-    text("Please change the air filter", width / 2, height * 0.1);
+    text(label_changefilter, width / 2, height * 0.1);
     textFont(font_thai);
-    text("กรุณาเปลี่ยนแผ่นกรองอากาศ", width / 2, height * 0.18);
+    text(label_changefilter_th, width / 2, height * 0.18);
     btnNext.display();
 }  
