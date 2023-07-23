@@ -56,6 +56,7 @@ public void setup() {
 static final int level = 9;
 int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
 static final String fan_output_path = "/home/pi/Dust_IO/testPWM/fan_output.txt";
+int duty_cycles = new int[]{"0", "3", "10", "20", "40"};
 
 public void draw() {
     long cur_mil = millis();
@@ -77,8 +78,8 @@ public void draw() {
         readPMvalue();
         // write duty cycle
         String[] data_str = new String[1];
-        int duty_value = int(map(dimming, 1, level, 40, 0));
-        data_str[0] = str(duty_value);
+        // int duty_value = int(map(dimming, 1, level, 40, 0));
+        data_str[0] = str(duty_cycles[fan_index]);
         saveStrings(fan_output_path, data_str);
         
         // clean esp simulation
