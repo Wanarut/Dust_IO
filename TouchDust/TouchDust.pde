@@ -2,6 +2,7 @@ static final String os = System.getProperty("os.name");
 
 static final int timeout = 15000;
 int cur_screen = 0;
+int save_screen = -1;
 long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
@@ -13,9 +14,9 @@ Button menu, cancel;
 JSONObject properties;
 
 public void setup() {
-    size(1024, 600, JAVA2D);
-    //fullScreen();
-    //noCursor();
+    // size(1024, 600, JAVA2D);
+    fullScreen();
+    noCursor();
     frameRate(15);
     rectMode(CENTER);
     imageMode(CENTER);
@@ -54,29 +55,39 @@ int dimming = 7; // Dimming level (0-9)  0 = ON, 9 = OFF
 public void draw() {
     long cur_mil = millis();
     //timmer for switching to main page
-    if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
-        prev_mil = cur_mil;
-        
-        isESPdirty();
-        if (esp_dirty) {
-            cur_screen = 6;
-        } else{
-            cur_screen = 0;
-        }
-    }
+    // if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
+    //     prev_mil = cur_mil;
+    //     cur_screen = 0;
+    // }
     //read pm value & write duty cycle every 5 second
     if (cur_mil - prev_read_mil >= 5000) {
+        prev_read_mil = cur_mil;
         // read pm value
         readPMvalue();
-        prev_read_mil = cur_mil;
         // write duty cycle
         String[] data_str = new String[1];
         int duty_value = int(map(dimming, 1, level, 40, 0));
         data_str[0] = str(duty_value);
         saveStrings("/home/pi/Dust_IO/testPWM/fan_output.txt", data_str);
+
+        // pm_inValue = 100;
+        // pm_outValue += 15;
+        // pm_outValue %= 100;
+        // println("pm_outValue:", pm_outValue);
+
+        if (isESPdirty()) {
+            // save cur_screen
+            if (save_screen < 0) save_screen = cur_screen;
+            // switch to clean esp screen
+            cur_screen = 6;
+        } else{
+            if (save_screen >= 0) cur_screen = save_screen;
+            save_screen = -1;
+        }
     }
     //timmer for sleep
     if (start_count & cur_mil - counter_prev_mil >= 1000) {
+        counter_prev_mil = cur_mil;
         if (time_min > 0) {
             time_min--;
             //pm_inValue+=10;
@@ -93,7 +104,6 @@ public void draw() {
             }
             start_count = false;
         }
-        counter_prev_mil = cur_mil;
     }
     //decrease filter lifetime every minute
     if (cur_mil - prev_filter_mil >= 60000) {

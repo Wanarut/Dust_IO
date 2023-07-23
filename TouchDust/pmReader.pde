@@ -26,6 +26,8 @@ boolean isESPdirty() {
         int percent = (diff * 100) / pm_inValue;
         if (percent < 30) {
             esp_dirty = true;
+        }else{
+            esp_dirty = false;
         }
     }
     println("ESPdirty:", esp_dirty);
