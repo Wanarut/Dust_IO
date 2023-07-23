@@ -17,9 +17,9 @@ Button menu, cancel;
 JSONObject properties;
 
 public void setup() {
-    // size(1024, 600, JAVA2D);
-    fullScreen();
-    noCursor();
+    size(1024, 600, JAVA2D);
+    // fullScreen();
+    // noCursor();
     // setup drawing style
     frameRate(15);
     rectMode(CENTER);
@@ -101,7 +101,6 @@ public void draw() {
             println("Timer End");
             text_mode = "OFF";
             text_mode_post = "";
-            text_level = "0";
             // setduty cycle = 0 & close ESP pin
             dimming = level;
             //if(os.equals("Linux")) pwmFan.set(period, 0);

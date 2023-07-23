@@ -1,11 +1,10 @@
 PImage[] emoji = new PImage[5];
 int gif_i = 0;
-
+// fan state
 String text_mode = "AUTO";
 String text_mode_post = "Hi";
 color text_mode_color = color(255, 0, 0);
-String text_level = "0";
-
+// icon
 PImage icon_mode, icon_filter, icon_fan;
 Button btnShutdown, btnAlert;
 
@@ -21,48 +20,54 @@ void setupmain() {
     btnAlert = new Button(int(width - 75), int(height - 200), 100, 100, 1, 0, "btn/alert.png");
 }
 
+static final String label_pm = "   PM                μg/m\u00B3";
+static final String label_25 = "2.5";
+static final String label_mode = "MODE : ";
+static final String label_filter = "Filter : ";
+static final String label_fan = "FAN LEVEL : ";
+
 void main_screen() {
     background(255);
-    
+    // display emoji
     select_emoji();
     image(emoji[gif_i], width / 2, height * 0.3, 300, 300);
-    
+    // display pm value
     fill(128);
     textFont(font_bold);
     textSize(60);
-    text("   PM                μg/m\u00B3", width / 2, height * 0.62);
+    text(label_pm, width / 2, height * 0.62);
     textSize(30);
-    text("2.5", width / 2 - 120, height * 0.66);
+    text(label_25, width / 2 - 120, height * 0.66);
     fill(0);
     textSize(90);
     textAlign(RIGHT, CENTER);
     text(pm_inValue, width / 2 + 70, height * 0.6);
     textAlign(CENTER, CENTER);
-    
+    // display mode
     fill(128);
     textFont(font_regu);
     textSize(18);
-    text("MODE : " + text_mode, width * 0.32, height * 0.85);
-    
+    text(label_mode + text_mode, width * 0.32, height * 0.85);
     textAlign(LEFT, CENTER);
     fill(text_mode_color);
     text(text_mode_post, width * 0.38, height * 0.85);
     textAlign(CENTER, CENTER);
-    
+    // display filter lifetime
     fill(128);
-    text("Filter : ", width / 2 - 24, height * 0.85);
+    text(label_filter, width / 2 - 24, height * 0.85);
     if (getFilterPercent() <= 10) fill(255, 0, 0);
     textAlign(RIGHT, CENTER);
     text(getFilterPercent() + " %", width / 2 + 55, height * 0.85);
     textAlign(CENTER, CENTER);
-
+    // display fan speed
     fill(128);
-    text("FAN LEVEL : " + text_level, width * 0.65, height * 0.85);
-    
+    fan_index = (level - dimming) / 2;
+    text(label_fan + str(fan_index), width * 0.65, height * 0.85);
+    // display icon
     image(icon_mode, width * 0.33, height * 0.77, 50, 50);
     image(icon_filter, width / 2, height * 0.77, 50, 50);
     image(icon_fan, width * 0.65, height * 0.77, 50, 50);
-    
+    // display button
     btnShutdown.display();
     if (filter_dirty) btnAlert.display();
 }

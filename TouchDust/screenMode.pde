@@ -12,11 +12,13 @@ void mode_setBtn() {
     }
 }
 
+static final String eco = "ECO";
+static final String high = "High Air Quality";
+
 void screen_mode() {
     background(255);
     
     fan_index = (level - dimming) / 2;
-    text_level = str(fan_index);
     btnFanPow.setImage(fanPowerImgs[fan_index]);
     btnFanPow.display();
     btnAutoHi.display();
@@ -25,8 +27,8 @@ void screen_mode() {
     fill(128);
     textFont(font_bold);
     textSize(40);
-    text("ECO", width / 2 + 220, height / 4 + 90);
-    text("High Air Quality", width / 2 + 220, int(2.3 * height) / 3);
+    text(eco, width / 2 + 220, height / 4 + 90);
+    text(high, width / 2 + 220, int(2.3 * height) / 3);
 }
 
 void controller() {
@@ -73,6 +75,5 @@ void controller() {
         text_mode_post = "";
     }
     fan_index = (level - dimming) / 2;
-    text_level = str(fan_index);
-    println(text_mode, text_mode_post, "Fan Level:", text_level);
+    println(text_mode, text_mode_post, "Fan Level:", str(fan_index));
 }

@@ -1,6 +1,8 @@
 Button add, del, set, clear;
+// countdown time in second (max 2,147,483,647 sec = ~68 years)
 int time_min;
 boolean start_count = false;
+// increase countdown time by 15 min per step
 static final int time_step = 900;
 PImage sleep_timer_img;
 
