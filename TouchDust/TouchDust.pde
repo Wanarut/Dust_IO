@@ -63,7 +63,7 @@ public void draw() {
     //     cur_screen = 0;
     // }
 
-    // simulation
+    // adaptive fan simulation
     // pm_inValue++;
     // pm_inValue%=260;
     // adaptiveFan();
@@ -78,7 +78,8 @@ public void draw() {
         int duty_value = int(map(dimming, 1, level, 40, 0));
         data_str[0] = str(duty_value);
         saveStrings(fan_output_path, data_str);
-
+        
+        // clean esp simulation
         // pm_inValue = 100;
         // pm_outValue += 15;
         // pm_outValue %= 100;
