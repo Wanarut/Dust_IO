@@ -9,6 +9,7 @@ long prev_mil = 0;
 long counter_prev_mil = 0;
 long prev_read_mil = 0;
 long prev_filter_mil = 0;
+long prev_esp_mil = 0;
 // system font
 PFont font_bold, font_regu, font_thai;
 // navigation btn
@@ -88,17 +89,6 @@ public void draw() {
         // pm_outValue %= 100;
         // println("pm_outValue:", pm_outValue);
 
-        // Check ESP Efficiency
-        if (isESPdirty()) {
-            // save cur_screen
-            if (save_screen < 0) save_screen = cur_screen;
-            // switch to clean esp screen
-            cur_screen = 6;
-        } else{
-            // load cur_screen
-            if (save_screen >= 0) cur_screen = save_screen;
-            save_screen = -1;
-        }
         adaptiveFan();
     }
     //timmer for sleep
@@ -125,6 +115,21 @@ public void draw() {
     if (cur_mil - prev_filter_mil >= 60000) {
         prev_filter_mil = cur_mil;
         decreaseFilterLife();
+    }
+    //check ESP Efficiency every 10 minutes
+    if (cur_mil - prev_esp_mil >= 600000) {
+        prev_esp_mil = cur_mil;
+        // Check ESP Efficiency
+        if (isESPdirty()) {
+            // save cur_screen
+            if (save_screen < 0) save_screen = cur_screen;
+            // switch to clean esp screen
+            cur_screen = 6;
+        } else{
+            // load cur_screen
+            if (save_screen >= 0) cur_screen = save_screen;
+            save_screen = -1;
+        }
     }
     // select showing screen
     switch(cur_screen) {
@@ -238,6 +243,9 @@ void mouseReleased() {
             }
             if (btnNo.hasReleased()) cur_screen = 0;
             break;
+        case 6 :
+            if (save_screen >= 0) cur_screen = save_screen;
+            save_screen = -1;
         default :
         break;	
     }
