@@ -4,7 +4,7 @@ pm_value_0 = -1
 pm_value_1 = -1
 
 try:
-    sensor_0 = Pms7003Sensor('/dev/ttyAMA0')
+    sensor_0 = Pms7003Sensor('/dev/serial1')
     sensor_0.close()
     pm_value_0 = sensor_0.read()['pm2_5']
 except:
