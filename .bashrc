@@ -116,4 +116,4 @@ sudo chmod 777 /dev/serial0
 sudo chmod 777 /dev/ttyAMA1
 
 lxterminal --command="/bin/bash -c 'python3 /home/pi/Dust_IO/testPWM/read_fan.py; read'"
-lxterminal -e "/home/pi/Dust_IO/TouchDust/application.linux-armv6hf/TouchDust"
+lxterminal -e "sudo /home/pi/Dust_IO/TouchDust/application.linux-armv6hf/TouchDust"
