@@ -62,6 +62,9 @@ void main_screen() {
     // display fan speed
     fill(128);
     text(label_fan + str(fan_index), width * 0.65, height * 0.83);
+    // debug filtered pm value
+    fill(0);
+    text("S2 = " + str(pm_outValue), width * 0.1, height * 0.9);
     // display icon
     image(icon_mode, width * 0.33, height * 0.77, 50, 50);
     image(icon_filter, width / 2, height * 0.77, 50, 50);
