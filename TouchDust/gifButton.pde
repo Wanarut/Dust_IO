@@ -1,3 +1,5 @@
+import gifAnimation.*;
+
 class gifButton {
   private Gif image_off;
   private Gif image_down;

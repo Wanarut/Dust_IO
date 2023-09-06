@@ -1,48 +1,97 @@
-gifButton btnHi, btnEco;
-gifButton[] btnPower = new gifButton[4];
+Button btnFanPow, btnAutoHi, btnAutoEco;
+PImage[] fanPowerImgs = new PImage[5];
+int fan_index = 0;
+// working mode
+static final int mode_high = 1;
+static final int mode_eco = 2;
+static final int mode_man = 3;
+int cur_mode = mode_eco;
 
 void mode_setBtn() {
-  btnHi = new gifButton(this, width/2-200, int(height*0.4), 300, 300, 80, color(255, 0, 0), "btn/winkle.gif", "btn/purple.gif");
-  btnHi.text = "Hi";
-  btnEco = new gifButton(this, width/2+200, int(height*0.4), 300, 300, 80, color(0, 255, 0), "btn/blue.gif", "btn/purple.gif");
-  btnEco.text = "Eco";
-  for (int i=0; i<btnPower.length; i++) {
-    btnPower[i] = new gifButton(this, (i+1)*(width/5), int(height*0.8), 75, 75, 40, 255, "btn/white.gif", "btn/purple.gif");
-    btnPower[i].text = str(i+1);
-  }
+    btnFanPow = new Button(width / 2 - 280, int(height / 2.3), 400, 400, 1, 0, "btn/fan_0.jpg");
+    btnAutoEco = new Button(width / 2 + 280, height / 4, 250, 250, 1, 0, "btn/mode_eco.jpg");
+    btnAutoHi = new Button(width / 2 + 280, int(1.8 * height) / 3, 250, 250, 1, 0, "btn/mode_high.jpg");
+    
+    for (int i = 0; i < fanPowerImgs.length; i++) {
+        fanPowerImgs[i] = loadImage("btn/fan_" + str(i) + ".jpg");
+    }
 }
 
+static final String eco = "ECO";
+static final String high = "High Air Quality";
+
 void screen_mode() {
-  background(0);
-  btnHi.display();
-  btnEco.display();
-  for (int i=0; i<btnPower.length; i++) {
-    btnPower[i].display();
-  }
+    background(255);
+    
+    btnFanPow.setImage(fanPowerImgs[fan_index]);
+    btnFanPow.display();
+    btnAutoHi.display();
+    btnAutoEco.display();
+    
+    fill(128);
+    textFont(font_bold);
+    textSize(40);
+    text(eco, width / 2 + 280, height / 4 + 110);
+    text(high, width / 2 + 280, int(2.3 * height) / 3);
 }
 
 void controller() {
-  if (btnHi.hasReleased()) {
-    println("Hi Mode: ESP On");
-    text_mode = "HI";
-    text_level = "4";
-    dimming = 1;
-    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
-  }
-  if (btnEco.hasReleased()) {
-    println("Eco Mode: ESP Off");
-    text_mode = "ECO";
-    text_level = "1";
-    dimming = 7;
-    if(os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
-  }
-  for (int i=0; i<btnPower.length; i++) {
-    if (btnPower[i].hasReleased()) {
-      int btn_level = i+1;
-      println("Fan level " + str(btn_level));
-      text_mode = "MANUAL";
-      text_level = str(btn_level);
-      dimming = level - (btn_level*2);
+    if (btnAutoHi.hasReleased()) {
+        cur_mode = mode_high;
+        println("Eco Mode: ESP On");
+        text_mode = "AUTO";
+        text_mode_post = "Hi";
+        text_mode_color = color(255, 0, 0);
     }
-  }
+    if (btnAutoEco.hasReleased()) {
+        cur_mode = mode_eco;
+        println("Eco Mode: ESP Off");
+        text_mode = "AUTO";
+        text_mode_post = "Eco";
+        text_mode_color = color(0, 176, 80);
+    }
+    if (btnFanPow.hasReleased()) {
+        cur_mode = mode_man;
+        println("Manual Mode");
+        text_mode = "MANUAL";
+        text_mode_post = "";
+
+        dimming -= 2;
+        if (dimming < 1) dimming = 7;
+    }
+    adaptiveFan();
+    println(text_mode, text_mode_post, "Fan Level:", str(fan_index));
+}
+
+
+void adaptiveFan() {
+    switch(cur_mode) {
+        case mode_high :
+            if (pm_inValue > 3 && pm_inValue < 9) {
+                dimming = 7;
+            }
+            if (pm_inValue > 12) {
+                dimming = 1;
+            }
+            if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
+            break;
+        case mode_eco :
+            if (pm_inValue > 3 && pm_inValue < 9) {
+                dimming = 7;
+            }
+            if (pm_inValue > 12 && pm_inValue < 35) {
+                dimming = 5;
+            }
+            if (pm_inValue > 38 && pm_inValue < 55) {
+                dimming = 3;
+            }
+            if (pm_inValue > 58) {
+                dimming = 1;
+            }
+            if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+            break;
+        default :
+            break;
+    }
+    fan_index = (level - dimming) / 2;
 }

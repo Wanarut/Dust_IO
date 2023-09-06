@@ -1,70 +1,91 @@
-import gifAnimation.*;
-
 PImage[] emoji = new PImage[5];
-Gif emoji_5;
 int gif_i = 0;
-color circle_c = color(59, 204, 255);
+// fan state
 String text_mode = "AUTO";
-String text_level = "2";
+String text_mode_post = "Eco";
+color text_mode_color = color(0, 176, 80);
+// icon
+PImage icon_mode, icon_filter, icon_fan;
+Button btnShutdown, btnAlert;
 
-void setupGif() {
-  emoji[0] = loadImage("Emoji/Emoji_1.png");
-  emoji[1] = loadImage("Emoji/Emoji_2.png");
-  emoji[2] = loadImage("Emoji/Emoji_3.png");
-  emoji[3] = loadImage("Emoji/Emoji_4.png");
-  emoji[4] = loadImage("Emoji/Emoji_5.png");
-  emoji_5 = new Gif(this, "Emoji/water.gif");
-
-  emoji_5.loop();
-  
+void setupmain() {
+    for (int i = 0; i < emoji.length; i++) {
+        emoji[i] = loadImage("Emoji/emoji_lvl_" + str(i + 1) + ".jpg");
+    }
+    icon_mode = loadImage("logo/icon_mode.jpg");
+    icon_filter = loadImage("logo/icon_filter.jpg");
+    icon_fan = loadImage("logo/icon_fan.jpg");
+    
+    btnShutdown = new Button(int(width - 75), int(height - 75), 100, 100, 1, 0, "btn/icon_power.jpg");
+    btnAlert = new Button(int(width - 75), int(height - 200), 100, 100, 1, 0, "btn/alert.png");
 }
 
+static final String label_pm = "  PM                μg/m\u00B3";
+static final String label_25 = "2.5";
+static final String label_mode = "MODE : ";
+static final String label_filter = "Filter : ";
+static final String label_fan = "FAN LEVEL : ";
+
 void main_screen() {
-  background(0);
-
-  if (dirty) {
-    image(emoji_5, width/2, height*0.4, 580, 435);
-    fill(255);
-    textSize(40); 
-    text("PLEASE\nCLEAN UP", width/2, height*0.4);
-  } else {
+    background(255);
+    // display emoji
     select_emoji();
-    image(emoji[gif_i], width/2, height*0.4, 300, 300);
-
-    strokeWeight(15);
-    stroke(circle_c);
-    noFill();
-    circle(width/2, height*0.4, 350);
-  }
-
-  fill(255);
-  textSize(60); 
-  text("PM 2.5: " + str(pm_inValue) + " μg/m\u00B3", width/2, height*0.77);
-  textSize(16);
-  text("MODE " + text_mode, width*0.35, height*0.85);
-  fill(255);
-  text("Filter " + filter_lifetime + " %", width/2, height*0.85);
-  fill(255);
-  text("FAN LEVEL " + text_level, width*0.65, height*0.85);
+    image(emoji[gif_i], width / 2, height * 0.3, 400, 400);
+    // display pm value
+    fill(128);
+    textFont(font_bold);
+    textSize(60);
+    text(label_pm, width / 2, height * 0.64);
+    textSize(30);
+    text(label_25, width / 2 - 120, height * 0.67);
+    fill(0);
+    textSize(90);
+    textAlign(RIGHT, CENTER);
+    text(pm_inValue, width / 2 + 70, height * 0.62);
+    textAlign(CENTER, CENTER);
+    // display mode
+    fill(128);
+    textFont(font_regu);
+    textSize(24);
+    text(label_mode + text_mode, width * 0.32, height * 0.83);
+    textAlign(LEFT, CENTER);
+    fill(text_mode_color);
+    text(text_mode_post, width * 0.38, height * 0.83);
+    textAlign(CENTER, CENTER);
+    // display filter lifetime
+    fill(128);
+    text(label_filter, width / 2 - 24, height * 0.83);
+    if (getFilterPercent() <= 10) fill(255, 0, 0);
+    textAlign(RIGHT, CENTER);
+    text(getFilterPercent() + " %", width / 2 + 75, height * 0.83);
+    textAlign(CENTER, CENTER);
+    // display fan speed
+    fill(128);
+    text(label_fan + str(fan_index), width * 0.65, height * 0.83);
+    // debug filtered pm value
+    fill(0);
+    text("S2 = " + str(pm_outValue), width * 0.1, height * 0.9);
+    // display icon
+    image(icon_mode, width * 0.33, height * 0.77, 50, 50);
+    image(icon_filter, width / 2, height * 0.77, 50, 50);
+    image(icon_fan, width * 0.65, height * 0.77, 50, 50);
+    // display button
+    btnShutdown.display();
+    if (filter_dirty) btnAlert.display();
 }
 
 void select_emoji() {
-  gif_i = 0;
-  circle_c = color(0, 255, 0);
-  if (pm_inValue>12) {
-    gif_i = 1;
-    circle_c = color(36, 202, 220);
-  }
-  if (pm_inValue>35) {
-    gif_i = 2;
-    circle_c = color(255, 255, 0);
-  }
-  if (pm_inValue>55) {
-    gif_i = 3;
-    circle_c = color(255, 162, 0);
-  }
-  if (pm_inValue>250) {
-    gif_i = 4;
-    circle_c = color(255, 59, 59);
-  }
+    gif_i = 0;
+    if (pm_inValue > 12) {
+        gif_i = 1;
+    }
+    if (pm_inValue > 35) {
+        gif_i = 2;
+    }
+    if (pm_inValue > 55) {
+        gif_i = 3;
+    }
+    if (pm_inValue > 250) {
+        gif_i = 4;
+    }
 }

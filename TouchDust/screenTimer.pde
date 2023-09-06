@@ -1,55 +1,71 @@
-Button add, del, set, clear, cancel;
+Button add, del, set, clear;
+// countdown time in second (max 2,147,483,647 sec = ~68 years)
 int time_min;
 boolean start_count = false;
+// increase countdown time by 15 min per step
+static final int time_step = 900;
+PImage sleep_timer_img;
+
+static final String lead_zero_format = "%02d";
+static final String colon = ":";
+static final String time_label = "  HOURS                   MINUTES";
 
 void timer_setBtn() {
-  add = new Button(width/2-300, int(height*0.3), 100, 150, 100, color(255, 255, 255));
-  add.text = "+";
-  del = new Button(width/2+300, int(height*0.3), 100, 150, 100, color(255, 255, 255));
-  del.text = "-";
-
-  time_min = 0;
-
-  set = new Button(width/4-50, int(height*0.7), 220, 80, 50, color(0, 255, 0));
-  set.text = "SET";
-  clear = new Button(2*width/4, int(height*0.7), 220, 80, 50, color(255, 0, 0));
-  clear.text = "CLEAR";
-  cancel = new Button(3*width/4+50, int(height*0.7), 220, 80, 50, color(200, 200, 200));
-  cancel.text = "CANCEL";
+    time_min = 0;
+    // sleep timer logo
+    sleep_timer_img = loadImage("logo/icon_sleep.jpg");
+    // timmer increase & decrease btn
+    add = new Button(width / 2 + 350, int(height * 0.4), 120, 120, 1, 0, "btn/plus.png");
+    del = new Button(width / 2 - 350, int(height * 0.4), 120, 120, 1, 0, "btn/min.png");
+    // set timmer & clear btn
+    set = new Button(width / 2 - 150, int(height * 0.65), 200, 70, 36, color(0, 173, 73));
+    set.text = "SET";
+    set.weight = 5;
+    clear = new Button(width / 2 + 150, int(height * 0.65), 200, 70, 36, color(122, 122, 122));
+    clear.text = "CLEAR";
+    clear.weight = 5;
 }
 
 void screen_timer() {
-  background(0);
-  add.display();
-  del.display();
-  set.display();
-  clear.display();
-  cancel.display();
-
-  textSize(100);
-  fill(255);
-  String hour = str(time_min / 60);
-  String min = str(time_min % 60);
-  text(hour + " : " + min, width/2, int(height*0.3));
+    background(255);
+    // display logo
+    image(sleep_timer_img, int(width * 0.9), int(height * 0.15), 228, 180);
+    // display btns
+    add.display();
+    del.display();
+    set.display();
+    clear.display();
+    // digit lead with zero
+    String hour = String.format(lead_zero_format, time_min / 3600);
+    String min = String.format(lead_zero_format, (time_min / 60) % 60);
+    // display time
+    fill(55, 179, 73);
+    textFont(font_bold);
+    textSize(120);
+    text(hour, width / 2 - 128, int(height * 0.35));
+    text(colon, width / 2, int(height * 0.35));
+    text(min, width / 2 + 128, int(height * 0.35));
+    // display labels
+    fill(157);
+    textFont(font_regu);
+    textSize(30);
+    text(time_label, width / 2, int(height * 0.47));
 }
 
 void calculatetime() {
-  if (add.hasReleased()) {
-    time_min += 30;
-  }
-  if (del.hasReleased()) {
-    time_min -= 30;
-    if (time_min<0) time_min=0;
-  }
-  if (set.hasReleased()) {
-    start_count = true;
-    counter_prev_mil = millis();
-  }
-  if (clear.hasReleased()) {
-    start_count = false;
-    time_min=0;
-  }
-  if (cancel.hasReleased()) {
-    cur_screen = 0;
-  }
+    if (add.hasReleased()) {
+        time_min += time_step;
+    }
+    if (del.hasReleased()) {
+        time_min -= time_step;
+        if (time_min < 0) time_min = 0;
+    }
+    if (set.hasReleased()) {
+        start_count = true;
+        counter_prev_mil = millis();
+    }
+    if (clear.hasReleased()) {
+        start_count = false;
+        time_min = 0;
+    }
 }
