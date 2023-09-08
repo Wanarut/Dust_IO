@@ -51,6 +51,7 @@ public void setup() {
     changefilter_setBtn();
     confirmfilter_setBtn();
     cleanESP_setBtn();
+    confirmShutdown_setBtn();
     // setup navigation btn
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
     cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
@@ -231,8 +232,9 @@ void mouseReleased() {
     // button action
     switch(cur_screen) {
         case SCREEN_MAIN :
-            if (btnShutdown.hasReleased() && (current_mil - prev_shutdown_mil) > HOLD_TIME) cur_screen = SCREEN_SHUTDOWN;
-            else if (filter_dirty && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
+            if (btnShutdown.hasReleased()){
+                if (current_mil - prev_shutdown_mil > HOLD_TIME) cur_screen = SCREEN_SHUTDOWN;
+            } else if (filter_dirty && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
             else cur_screen = SCREEN_MENU;
             break;
         case SCREEN_MENU :
@@ -286,7 +288,7 @@ void keyPressed() {
 void shutdown_now() {
     // linux shutdown command
     print("starting shutdown...");
-    if (os.equals("Linux")) dimming = level;
+    dimming = level;
     if (os.equals("Linux")) {
         GPIO.digitalWrite(pinESP, GPIO.LOW);
         Command cmd = new Command("sleep 5;shutdown now");
