@@ -1,8 +1,17 @@
 static final String os = System.getProperty("os.name");
-// timeout interval
-static final int timeout = 15000;
+// screen timeout interval
+static final int SCREEN_TIMEOUT = 15000;
+static final int HOLD_TIME = 5000;
 // screen index
-int cur_screen = 0;
+static final int SCREEN_MAIN = 0;
+static final int SCREEN_MENU = 1;
+static final int SCREEN_MODE = 2;
+static final int SCREEN_TIMMER = 3;
+static final int SCREEN_CHANGEFILTER = 4;
+static final int SCREEN_CONFIRMFILTER = 5;
+static final int SCREEN_CLEANESP = 6;
+static final int SCREEN_SHUTDOWN = 7;
+int cur_screen = SCREEN_MAIN;
 int save_screen = -1;
 // software polling
 long prev_mil = 0;
@@ -10,6 +19,7 @@ long counter_prev_mil = 0;
 long prev_read_mil = 0;
 long prev_filter_mil = 0;
 long prev_esp_mil = 0;
+long prev_shutdown_mil = 0;
 // system font
 PFont font_bold, font_regu, font_thai;
 // navigation btn
@@ -20,9 +30,9 @@ static final String lifetime_key = "filter_lifetime";
 JSONObject properties;
 
 public void setup() {
-    // size(1280, 720, JAVA2D);
-    fullScreen();
-    noCursor();
+    size(1280, 720, JAVA2D);
+    // fullScreen();
+    // noCursor();
     // setup drawing style
     frameRate(15);
     rectMode(CENTER);
@@ -62,16 +72,16 @@ String duty_cycles[] = new String[]{"0", "3", "10", "20", "40"};
 public void draw() {
     long cur_mil = millis();
     //timmer for switching to main page
-    // if (cur_mil - prev_mil >= timeout & cur_screen != 3) {
-    //     prev_mil = cur_mil;
-    //     cur_screen = 0;
-    // }
-
+    if (cur_mil - prev_mil >= SCREEN_TIMEOUT & cur_screen != SCREEN_TIMMER) {
+        prev_mil = cur_mil;
+        cur_screen = SCREEN_MAIN;
+    }
+    
     // adaptive fan simulation
     // pm_inValue++;
     // pm_inValue%=260;
     // adaptiveFan();
-
+    
     //read pm value & write duty cycle every 5 second
     if (cur_mil - prev_read_mil >= 5000) {
         prev_read_mil = cur_mil;
@@ -88,7 +98,7 @@ public void draw() {
         // pm_outValue += 15;
         // pm_outValue %= 100;
         // println("pm_outValue:", pm_outValue);
-
+        
         adaptiveFan();
     }
     //timmer for sleep
@@ -109,6 +119,7 @@ public void draw() {
                 GPIO.digitalWrite(pinESP, GPIO.LOW);
             }
             start_count = false;
+            shutdown_now();
         }
     }
     //decrease filter lifetime every minute
@@ -122,42 +133,45 @@ public void draw() {
         // Check ESP Efficiency
         if (isESPdirty()) {
             // save cur_screen
-            if (save_screen < 0) save_screen = cur_screen;
+            if (save_screen < SCREEN_MAIN) save_screen = cur_screen;
             // switch to clean esp screen
-            cur_screen = 6;
+            cur_screen = SCREEN_CLEANESP;
         } else{
             // load cur_screen
-            if (save_screen >= 0) cur_screen = save_screen;
+            if (save_screen >= SCREEN_MAIN) cur_screen = save_screen;
             save_screen = -1;
         }
     }
     // select showing screen
     switch(cur_screen) {
-        case 0 :
+        case SCREEN_MAIN :
             main_screen();
             break;
-        case 1 :
+        case SCREEN_MENU :
             screen_select();
             cancel.display();
             break;
-        case 2 :
+        case SCREEN_MODE :
             screen_mode();
             menu.display();
             cancel.display();
             break;
-        case 3 :
+        case SCREEN_TIMMER :
             screen_timer();
             menu.display();
             cancel.display();
             break;
-        case 4 :
+        case SCREEN_CHANGEFILTER :
             screen_changefilter();
             break;
-        case 5 :
+        case SCREEN_CONFIRMFILTER :
             screen_confirmfilter();
             break;
-        case 6 :
+        case SCREEN_CLEANESP :
             screen_cleanESP();
+            break;
+        case SCREEN_SHUTDOWN :
+            screen_confirmshutdown();
             break;
         default :
         break;
@@ -169,17 +183,17 @@ void mousePressed() {
     prev_mil = millis();
     // button is clicking
     switch(cur_screen) {
-        case 0 :
-            btnShutdown.hasPressed();
+        case SCREEN_MAIN :
+            if (btnShutdown.hasPressed()) prev_shutdown_mil = prev_mil;
             if (filter_dirty) btnAlert.hasPressed();
             break;
-        case 1 :
+        case SCREEN_MENU :
             btnMode.hasPressed();
             btnTimer.hasPressed();
             
             cancel.hasPressed();
             break;
-        case 2 :
+        case SCREEN_MODE :
             btnFanPow.hasPressed();
             btnAutoHi.hasPressed();
             btnAutoEco.hasPressed();
@@ -187,7 +201,7 @@ void mousePressed() {
             menu.hasPressed();
             cancel.hasPressed();
             break;
-        case 3 :
+        case SCREEN_TIMMER :
             add.hasPressed();
             del.hasPressed();
             set.hasPressed();
@@ -196,12 +210,16 @@ void mousePressed() {
             menu.hasPressed();
             cancel.hasPressed();
             break;
-        case 4 :
+        case SCREEN_CHANGEFILTER :
             btnNext.hasPressed();
             break;
-        case 5 :
+        case SCREEN_CONFIRMFILTER :
             btnYes.hasPressed();
             btnNo.hasPressed();
+            break;
+        case SCREEN_SHUTDOWN :
+            btnShutYes.hasPressed();
+            btnShutNo.hasPressed();
             break;
         default :
         break;
@@ -209,43 +227,50 @@ void mousePressed() {
 }
 
 void mouseReleased() {
+    long current_mil = millis();
     // button action
     switch(cur_screen) {
-        case 0 :
-            if (btnShutdown.hasReleased()) shutdown_now();
-            else if (filter_dirty && btnAlert.hasReleased()) cur_screen = 4;
-            else cur_screen = 1;
+        case SCREEN_MAIN :
+            if (btnShutdown.hasReleased() && (current_mil - prev_shutdown_mil) > HOLD_TIME) cur_screen = SCREEN_SHUTDOWN;
+            else if (filter_dirty && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
+            else cur_screen = SCREEN_MENU;
             break;
-        case 1 :
-            if (btnMode.hasReleased()) cur_screen = 2;
-            if (btnTimer.hasReleased()) cur_screen = 3;
+        case SCREEN_MENU :
+            if (btnMode.hasReleased()) cur_screen = SCREEN_MODE;
+            if (btnTimer.hasReleased()) cur_screen = SCREEN_TIMMER;
             
-            if (cancel.hasReleased()) cur_screen = 0;
+            if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
-        case 2 :
+        case SCREEN_MODE :
             controller();
-            if (menu.hasReleased()) cur_screen = 1;
-            if (cancel.hasReleased()) cur_screen = 0;
+            if (menu.hasReleased()) cur_screen = SCREEN_MENU;
+            if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
-        case 3 :
+        case SCREEN_TIMMER :
             calculatetime();
-            if (menu.hasReleased()) cur_screen = 1;
-            if (cancel.hasReleased()) cur_screen = 0;
+            if (menu.hasReleased()) cur_screen = SCREEN_MENU;
+            if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
-        case 4 :
-            if (btnNext.hasReleased()) cur_screen = 5;
+        case SCREEN_CHANGEFILTER :
+            if (btnNext.hasReleased()) cur_screen = SCREEN_CONFIRMFILTER;
             break;
-        case 5 :
+        case SCREEN_CONFIRMFILTER :
             if (btnYes.hasReleased()) {
                 filter_dirty = false;
                 resetFilter();
-                cur_screen = 0;
+                cur_screen = SCREEN_MAIN;
             }
-            if (btnNo.hasReleased()) cur_screen = 0;
+            if (btnNo.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
-        case 6 :
-            if (save_screen >= 0) cur_screen = save_screen;
+        case SCREEN_CLEANESP :
+            if (save_screen >= SCREEN_MAIN) cur_screen = save_screen;
             save_screen = -1;
+        case SCREEN_SHUTDOWN :
+            if (btnShutYes.hasReleased()) {
+                shutdown_now();
+            }
+            if (btnShutNo.hasReleased()) cur_screen = SCREEN_MAIN;
+            break;
         default :
         break;	
     }
@@ -260,11 +285,15 @@ void keyPressed() {
 
 void shutdown_now() {
     // linux shutdown command
-    if (os.equals("Linux")) dimming = 9;
-    if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
-    Command cmd = new Command("shutdown now");
-    if (cmd.run() == true) {
-        String[] output = cmd.getOutput();
-        println(output);
+    print("starting shutdown...");
+    if (os.equals("Linux")) dimming = level;
+    if (os.equals("Linux")) {
+        GPIO.digitalWrite(pinESP, GPIO.LOW);
+        Command cmd = new Command("sleep 5;shutdown now");
+        if (cmd.run() == true) {
+            String[] output = cmd.getOutput();
+            println(output);
+        }
     }
+    println("complete!");
 }
