@@ -1,3 +1,4 @@
 .DS_Store
 *.autosave
 TouchDust/data/properties.json
+TouchDust/home/pi/Dust_IO/testPWM/fan_output.txt
