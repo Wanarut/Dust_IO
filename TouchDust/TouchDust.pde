@@ -6,7 +6,7 @@ static final int HOLD_TIME = 5000;
 static final int SCREEN_MAIN = 0;
 static final int SCREEN_MENU = 1;
 static final int SCREEN_MODE = 2;
-static final int SCREEN_TIMMER = 3;
+static final int SCREEN_TIMER = 3;
 static final int SCREEN_CHANGEFILTER = 4;
 static final int SCREEN_CONFIRMFILTER = 5;
 static final int SCREEN_CLEANESP = 6;
@@ -72,8 +72,8 @@ String duty_cycles[] = new String[]{"0", "3", "10", "20", "40"};
 
 public void draw() {
     long cur_mil = millis();
-    //timmer for switching to main page
-    if (cur_mil - prev_mil >= SCREEN_TIMEOUT & cur_screen != SCREEN_TIMMER) {
+    //timmr for switching to main page
+    if (cur_mil - prev_mil >= SCREEN_TIMEOUT & cur_screen != SCREEN_TIMER) {
         prev_mil = cur_mil;
         cur_screen = SCREEN_MAIN;
     }
@@ -102,7 +102,7 @@ public void draw() {
         
         adaptiveFan();
     }
-    //timmer for sleep
+    //timer for sleep
     if (start_count & cur_mil - counter_prev_mil >= 1000) {
         counter_prev_mil = cur_mil;
         // start countdown
@@ -157,7 +157,7 @@ public void draw() {
             menu.display();
             cancel.display();
             break;
-        case SCREEN_TIMMER :
+        case SCREEN_TIMER :
             screen_timer();
             menu.display();
             cancel.display();
@@ -180,7 +180,7 @@ public void draw() {
 }
 
 void mousePressed() {
-    //reset timmer
+    //reset timer
     prev_mil = millis();
     // button is clicking
     switch(cur_screen) {
@@ -202,7 +202,7 @@ void mousePressed() {
             menu.hasPressed();
             cancel.hasPressed();
             break;
-        case SCREEN_TIMMER :
+        case SCREEN_TIMER :
             add.hasPressed();
             del.hasPressed();
             set.hasPressed();
@@ -239,7 +239,7 @@ void mouseReleased() {
             break;
         case SCREEN_MENU :
             if (btnMode.hasReleased()) cur_screen = SCREEN_MODE;
-            if (btnTimer.hasReleased()) cur_screen = SCREEN_TIMMER;
+            if (btnTimer.hasReleased()) cur_screen = SCREEN_TIMER;
             
             if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
@@ -248,7 +248,7 @@ void mouseReleased() {
             if (menu.hasReleased()) cur_screen = SCREEN_MENU;
             if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
-        case SCREEN_TIMMER :
+        case SCREEN_TIMER :
             calculatetime();
             if (menu.hasReleased()) cur_screen = SCREEN_MENU;
             if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
