@@ -79,8 +79,8 @@ public void draw() {
     }
     
     // adaptive fan simulation
-    // pm_inValue++;
-    // pm_inValue%=260;
+    pm_inValue++;
+    pm_inValue%=300;
     // adaptiveFan();
     
     //read pm value & write duty cycle every 5 second

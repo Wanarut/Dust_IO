@@ -4,6 +4,7 @@ int gif_i = 0;
 String text_mode = "AUTO";
 String text_mode_post = "Eco";
 color text_mode_color = color(0, 176, 80);
+color text_pm_color = color(0, 176, 80);
 // icon
 PImage icon_mode, icon_filter, icon_fan;
 Button btnShutdown, btnAlert;
@@ -38,10 +39,19 @@ void main_screen() {
     text(label_pm, width / 2, height * 0.64);
     textSize(30);
     text(label_25, width / 2 - 120, height * 0.67);
-    fill(0);
     textSize(90);
     textAlign(RIGHT, CENTER);
-    text(pm_inValue, width / 2 + 70, height * 0.62);
+    int pos_x = int(width * 0.5 + 70);
+    int pos_y = int(height * 0.62);
+    fill(0);
+    // stroke pm value
+    for(int x = -1; x < 2; x++){
+        text(pm_inValue, pos_x + x, pos_y);
+        text(pm_inValue, pos_x, pos_y + x);
+    }
+    fill(text_pm_color);
+    text(pm_inValue, pos_x, pos_y);
+
     textAlign(CENTER, CENTER);
     // display mode
     fill(128);
@@ -76,16 +86,24 @@ void main_screen() {
 
 void select_emoji() {
     gif_i = 0;
+    text_pm_color = color(0, 176, 80);
     if (pm_inValue > 12) {
         gif_i = 1;
+        text_pm_color = color(255, 192, 0);
     }
     if (pm_inValue > 35) {
         gif_i = 2;
+        text_pm_color = color(237, 125, 49);
     }
     if (pm_inValue > 55) {
         gif_i = 3;
+        text_pm_color = color(255, 0, 0);
+    }
+    if (pm_inValue > 150) {
+        text_pm_color = color(112, 48, 160);
     }
     if (pm_inValue > 250) {
         gif_i = 4;
+        text_pm_color = color(165, 0, 33);
     }
 }
