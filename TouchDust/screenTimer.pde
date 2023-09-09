@@ -9,15 +9,19 @@ PImage sleep_timer_img;
 static final String lead_zero_format = "%02d";
 static final String colon = ":";
 static final String time_label = "  HOURS                   MINUTES";
+static final String label_timer = "Timer";
+
+String timer_hour = "00";
+String timer_min = "00";
 
 void timer_setBtn() {
     time_min = 0;
     // sleep timer logo
     sleep_timer_img = loadImage("logo/icon_sleep.jpg");
-    // timmer increase & decrease btn
+    // timer increase & decrease btn
     add = new Button(width / 2 + 350, int(height * 0.4), 120, 120, 1, 0, "btn/plus.png");
     del = new Button(width / 2 - 350, int(height * 0.4), 120, 120, 1, 0, "btn/min.png");
-    // set timmer & clear btn
+    // set timer & clear btn
     set = new Button(width / 2 - 150, int(height * 0.65), 200, 70, 36, color(0, 173, 73));
     set.text = "SET";
     set.weight = 5;
@@ -29,22 +33,26 @@ void timer_setBtn() {
 void screen_timer() {
     background(255);
     // display logo
-    image(sleep_timer_img, int(width * 0.9), int(height * 0.15), 228, 180);
+    image(sleep_timer_img, int(width * 0.93), int(height * 0.12), 120, 120);
+    fill(89);
+    textFont(font_bold);
+    textSize(30);
+    text(label_timer, int(width * 0.85), int(height * 0.12));
     // display btns
     add.display();
     del.display();
     set.display();
     clear.display();
     // digit lead with zero
-    String hour = String.format(lead_zero_format, time_min / 3600);
-    String min = String.format(lead_zero_format, (time_min / 60) % 60);
+    timer_hour = String.format(lead_zero_format, time_min / 3600);
+    timer_min = String.format(lead_zero_format, (time_min / 60) % 60);
     // display time
     fill(55, 179, 73);
     textFont(font_bold);
     textSize(120);
-    text(hour, width / 2 - 128, int(height * 0.35));
+    text(timer_hour, width / 2 - 128, int(height * 0.35));
     text(colon, width / 2, int(height * 0.35));
-    text(min, width / 2 + 128, int(height * 0.35));
+    text(timer_min, width / 2 + 128, int(height * 0.35));
     // display labels
     fill(157);
     textFont(font_regu);

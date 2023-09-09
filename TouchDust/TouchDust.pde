@@ -1,6 +1,6 @@
 static final String os = System.getProperty("os.name");
 // screen timeout interval
-static final int SCREEN_TIMEOUT = 15000;
+static final int SCREEN_TIMEOUT = 60000;
 static final int HOLD_TIME = 5000;
 // screen index
 static final int SCREEN_MAIN = 0;
@@ -11,7 +11,7 @@ static final int SCREEN_CHANGEFILTER = 4;
 static final int SCREEN_CONFIRMFILTER = 5;
 static final int SCREEN_CLEANESP = 6;
 static final int SCREEN_SHUTDOWN = 7;
-int cur_screen = SCREEN_MAIN;
+int cur_screen = SCREEN_MENU;
 int save_screen = -1;
 // software polling
 long prev_mil = 0;
@@ -73,7 +73,7 @@ String duty_cycles[] = new String[]{"0", "3", "10", "20", "40"};
 public void draw() {
     long cur_mil = millis();
     //timmr for switching to main page
-    if (cur_mil - prev_mil >= SCREEN_TIMEOUT & cur_screen != SCREEN_TIMER) {
+    if (cur_mil - prev_mil >= SCREEN_TIMEOUT & cur_screen != SCREEN_CONFIRMFILTER) {
         prev_mil = cur_mil;
         cur_screen = SCREEN_MAIN;
     }

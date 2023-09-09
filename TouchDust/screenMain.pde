@@ -65,6 +65,7 @@ void main_screen() {
     // display filter lifetime
     fill(128);
     text(label_filter, width / 2 - 24, height * 0.94);
+    if (getFilterPercent() <= 20) fill(237, 125, 49);
     if (getFilterPercent() <= 10) fill(255, 0, 0);
     textAlign(RIGHT, CENTER);
     text(getFilterPercent() + " %", width / 2 + 75, height * 0.94);
@@ -82,6 +83,25 @@ void main_screen() {
     // display button
     btnShutdown.display();
     if (filter_dirty) btnAlert.display();
+
+    if (start_count) {
+        // display logo
+        image(sleep_timer_img, int(width * 0.93), int(height * 0.12), 120, 120);
+        fill(89);
+        textFont(font_bold);
+        textSize(20);
+        text(label_timer, int(width * 0.93), int(height * 0.2));
+        // digit lead with zero
+        timer_hour = String.format(lead_zero_format, time_min / 3600);
+        timer_min = String.format(lead_zero_format, (time_min / 60) % 60);
+        // display time
+        fill(55, 179, 73);
+        textFont(font_bold);
+        textSize(30);
+        text(timer_hour, width * 0.82, int(height * 0.12));
+        text(colon, width * 0.845, int(height * 0.12));
+        text(timer_min, width * 0.87, int(height * 0.12));
+    }
 }
 
 void select_emoji() {
