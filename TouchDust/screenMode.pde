@@ -28,11 +28,16 @@ void screen_mode() {
     btnAutoHi.display();
     btnAutoEco.display();
     
-    fill(128);
     textFont(font_bold);
     textSize(30);
+    if (cur_mode == MODE_MANUAL) fill(0, 176, 80);
+    else fill(128);
     text(STRING_MANUAL, width * 0.52, height * 0.31);
+    if (cur_mode == MODE_AUTO) fill(0, 176, 80);
+    else fill(128);
     text(STRING_AUTO, int(width * 0.25), int(height * 0.71));
+    if (cur_mode == MODE_HIGH) fill(0, 176, 80);
+    else fill(128);
     text(STRING_HIGH, int(width * 0.75), int(height * 0.71));
 }
 
