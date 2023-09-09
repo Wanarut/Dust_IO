@@ -65,8 +65,7 @@ void main_screen() {
     // display filter lifetime
     fill(128);
     text(label_filter, width / 2 - 24, height * 0.94);
-    if (getFilterPercent() <= 20) fill(237, 125, 49);
-    if (getFilterPercent() <= 10) fill(255, 0, 0);
+    fill(filter_percent_color);
     textAlign(RIGHT, CENTER);
     text(getFilterPercent() + " %", width / 2 + 75, height * 0.94);
     textAlign(CENTER, CENTER);

@@ -11,6 +11,8 @@ static final int decrease_step = 1;
 static final String python_file_pms = "/home/pi/Dust_IO/TouchDust/pmsRead.py";
 static final String python_cmd = "python3 ";
 
+color filter_percent_color = color(128);
+
 void readPMvalue() {
     String pythonPath = sketchPath(python_file_pms);
     Command cmd = new Command(python_cmd + pythonPath); 
@@ -43,6 +45,9 @@ int getFilterPercent() {
     properties = loadJSONObject(properties_file);
     int filter_lifetime = properties.getInt(lifetime_key);
     int result = (filter_lifetime * 100) / filter_lifetime_max;
+    filter_percent_color = color(128);
+    if (result <= 20) filter_percent_color = color(237, 125, 49);
+    if (result <= 10) filter_percent_color = color(255, 0, 0);
     if (result == 0) filter_dirty = true;
     return result;
 }
