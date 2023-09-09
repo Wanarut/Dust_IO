@@ -270,7 +270,7 @@ void mouseReleased() {
             if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
         case SCREEN_CHANGEFILTER :
-            if (btnNext.hasReleased()) cur_screen = SCREEN_CONFIRMFILTER;
+            if (btnHidden.hasReleased()) cur_screen = SCREEN_CONFIRMFILTER;
             break;
         case SCREEN_CONFIRMFILTER :
             if (btnYes.hasReleased()) {

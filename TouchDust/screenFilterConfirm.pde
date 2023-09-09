@@ -22,4 +22,11 @@ void screen_confirmfilter() {
     text(label_confirmfilter_th, width / 2, height * 0.5);
     btnYes.display();
     btnNo.display();
+    
+    // debug filtered pm value
+    fill(0);
+    textAlign(LEFT, CENTER);
+    text("S1 = " + str(pm_inValue), width * 0.1, height * 0.9);
+    text("S2 = " + str(pm_outValue), width * 0.1, height * 0.94);
+    textAlign(CENTER, CENTER);
 }  
