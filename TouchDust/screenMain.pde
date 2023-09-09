@@ -17,8 +17,8 @@ void setupmain() {
     icon_filter = loadImage("logo/icon_filter.jpg");
     icon_fan = loadImage("logo/icon_fan.jpg");
     
-    btnShutdown = new Button(int(width - 75), int(height - 75), 100, 100, 1, 0, "btn/icon_power.jpg");
-    btnAlert = new Button(int(width - 75), int(height - 200), 100, 100, 1, 0, "btn/alert.png");
+    btnShutdown = new Button(int(width * 0.94), int(height * 0.9), 100, 100, 1, 0, "btn/icon_power.jpg");
+    btnAlert = new Button(int(width * 0.94), int(height * 0.75), 100, 100, 1, 0, "btn/alert.png");
 }
 
 static final String label_pm = "  PM                           μg/m\u00B3";
@@ -81,7 +81,10 @@ void main_screen() {
     image(icon_fan, width * 0.65, height * 0.89, 50, 50);
     // display button
     btnShutdown.display();
-    if (filter_dirty) btnAlert.display();
+    if (filter_dirty) {
+        btnAlert.setPosition(int(width * 0.94), int(height * 0.75));
+        btnAlert.display();
+    }
 
     if (start_count) {
         // display logo

@@ -41,6 +41,11 @@ class Button {
         image_active = cur_image;
         image_active.filter(POSTERIZE, 5);
     }
+
+    void setPosition(int xpos, int ypos) {
+        xpos_ = xpos;
+        ypos_ = ypos;
+    }
     
     void display() {
         // add stroke in button

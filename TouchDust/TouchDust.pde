@@ -11,7 +11,8 @@ static final int SCREEN_CHANGEFILTER = 4;
 static final int SCREEN_CONFIRMFILTER = 5;
 static final int SCREEN_CLEANESP = 6;
 static final int SCREEN_SHUTDOWN = 7;
-int cur_screen = SCREEN_MENU;
+static final int SCREEN_FILTER = 8;
+int cur_screen = SCREEN_MAIN;
 int save_screen = -1;
 // software polling
 long prev_mil = 0;
@@ -52,6 +53,7 @@ public void setup() {
     confirmfilter_setBtn();
     cleanESP_setBtn();
     confirmShutdown_setBtn();
+    filter_setBtn();
     // setup navigation btn
     menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
     cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
@@ -174,6 +176,11 @@ public void draw() {
         case SCREEN_SHUTDOWN :
             screen_confirmshutdown();
             break;
+        case SCREEN_FILTER :
+            screen_filter();
+            menu.display();
+            cancel.display();
+            break;
         default :
         break;
     }
@@ -191,7 +198,8 @@ void mousePressed() {
         case SCREEN_MENU :
             btnMode.hasPressed();
             btnTimer.hasPressed();
-            
+            btnFilter.hasPressed();
+
             cancel.hasPressed();
             break;
         case SCREEN_MODE :
@@ -222,6 +230,13 @@ void mousePressed() {
             btnShutYes.hasPressed();
             btnShutNo.hasPressed();
             break;
+        case SCREEN_FILTER :
+            if (filter_dirty) btnAlert.hasPressed();
+            btnHidden.hasPressed();
+
+            menu.hasPressed();
+            cancel.hasPressed();
+            break;
         default :
         break;
     }
@@ -240,7 +255,8 @@ void mouseReleased() {
         case SCREEN_MENU :
             if (btnMode.hasReleased()) cur_screen = SCREEN_MODE;
             if (btnTimer.hasReleased()) cur_screen = SCREEN_TIMER;
-            
+            if (btnFilter.hasReleased()) cur_screen = SCREEN_FILTER;
+
             if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
         case SCREEN_MODE :
@@ -272,6 +288,13 @@ void mouseReleased() {
                 shutdown_now();
             }
             if (btnShutNo.hasReleased()) cur_screen = SCREEN_MAIN;
+            break;
+        case SCREEN_FILTER :
+            if (filter_dirty && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
+            if (btnHidden.hasReleased()) cur_screen = SCREEN_CONFIRMFILTER;
+
+            if (menu.hasReleased()) cur_screen = SCREEN_MENU;
+            if (cancel.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
         default :
         break;	
