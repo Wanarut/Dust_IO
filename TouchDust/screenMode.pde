@@ -2,10 +2,10 @@ Button btnFanPow, btnAutoHi, btnAutoEco;
 PImage[] fanPowerImgs = new PImage[5];
 int fan_index = 0;
 // working mode
-static final int mode_high = 1;
-static final int mode_eco = 2;
-static final int mode_man = 3;
-int cur_mode = mode_eco;
+static final int MODE_HIGH = 1;
+static final int MODE_AUTO = 2;
+static final int MODE_MANUAL = 3;
+int cur_mode = MODE_AUTO;
 
 void mode_setBtn() {
     btnFanPow = new Button(width / 2 - 280, int(height / 2.3), 400, 400, 1, 0, "btn/fan_0.jpg");
@@ -37,27 +37,27 @@ void screen_mode() {
 
 void controller() {
     if (btnAutoHi.hasReleased()) {
-        cur_mode = mode_high;
+        cur_mode = MODE_HIGH;
         println("Eco Mode: ESP On");
         text_mode = "AUTO";
         text_mode_post = "Hi";
         text_mode_color = color(255, 0, 0);
     }
     if (btnAutoEco.hasReleased()) {
-        cur_mode = mode_eco;
+        cur_mode = MODE_AUTO;
         println("Eco Mode: ESP Off");
         text_mode = "AUTO";
         text_mode_post = "Eco";
         text_mode_color = color(0, 176, 80);
     }
     if (btnFanPow.hasReleased()) {
-        cur_mode = mode_man;
+        cur_mode = MODE_MANUAL;
         println("Manual Mode");
         text_mode = "MANUAL";
         text_mode_post = "";
 
         dimming -= 2;
-        if (dimming < 1) dimming = 7;
+        if (dimming < 1) dimming = level;
     }
     adaptiveFan();
     println(text_mode, text_mode_post, "Fan Level:", str(fan_index));
@@ -66,16 +66,21 @@ void controller() {
 
 void adaptiveFan() {
     switch(cur_mode) {
-        case mode_high :
+        case MODE_HIGH :
+            if (pm_inValue <= 3) {
+                dimming = level;
+            }
             if (pm_inValue > 3 && pm_inValue < 9) {
-                dimming = 7;
+                dimming = 5;
             }
             if (pm_inValue > 12) {
                 dimming = 1;
             }
-            if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
             break;
-        case mode_eco :
+        case MODE_AUTO :
+            if (pm_inValue <= 3) {
+                dimming = level;
+            }
             if (pm_inValue > 3 && pm_inValue < 9) {
                 dimming = 7;
             }
@@ -88,10 +93,15 @@ void adaptiveFan() {
             if (pm_inValue > 58) {
                 dimming = 1;
             }
-            if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
             break;
         default :
             break;
+    }
+    // case fan is turn off
+    if (dimming == level) {
+        if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
+    } else {
+        if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
     }
     fan_index = (level - dimming) / 2;
 }
