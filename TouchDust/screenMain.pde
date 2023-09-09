@@ -21,7 +21,7 @@ void setupmain() {
     btnAlert = new Button(int(width - 75), int(height - 200), 100, 100, 1, 0, "btn/alert.png");
 }
 
-static final String label_pm = "  PM                μg/m\u00B3";
+static final String label_pm = "  PM                           μg/m\u00B3";
 static final String label_25 = "2.5";
 static final String label_mode = "MODE : ";
 static final String label_filter = "Filter : ";
@@ -31,18 +31,18 @@ void main_screen() {
     background(255);
     // display emoji
     select_emoji();
-    image(emoji[gif_i], width / 2, height * 0.3, 400, 400);
+    image(emoji[gif_i], width / 2, height * 0.35, height * 0.7, height * 0.7);
     // display pm value
     fill(128);
     textFont(font_bold);
-    textSize(60);
-    text(label_pm, width / 2, height * 0.64);
-    textSize(30);
-    text(label_25, width / 2 - 120, height * 0.67);
+    textSize(35);
+    text(label_pm, width / 2, height * 0.78);
+    textSize(20);
+    text(label_25, width * 0.41, height * 0.795);
     textSize(90);
     textAlign(RIGHT, CENTER);
     int pos_x = int(width * 0.5 + 70);
-    int pos_y = int(height * 0.62);
+    int pos_y = int(height * 0.74);
     fill(0);
     // stroke pm value
     for(int x = -1; x < 2; x++){
@@ -57,28 +57,28 @@ void main_screen() {
     fill(128);
     textFont(font_regu);
     textSize(24);
-    text(label_mode + text_mode, width * 0.32, height * 0.83);
+    text(label_mode, width * 0.32, height * 0.94);
     textAlign(LEFT, CENTER);
     fill(text_mode_color);
-    text(text_mode_post, width * 0.38, height * 0.83);
+    text(text_mode, width * 0.355, height * 0.94);
     textAlign(CENTER, CENTER);
     // display filter lifetime
     fill(128);
-    text(label_filter, width / 2 - 24, height * 0.83);
+    text(label_filter, width / 2 - 24, height * 0.94);
     if (getFilterPercent() <= 10) fill(255, 0, 0);
     textAlign(RIGHT, CENTER);
-    text(getFilterPercent() + " %", width / 2 + 75, height * 0.83);
+    text(getFilterPercent() + " %", width / 2 + 75, height * 0.94);
     textAlign(CENTER, CENTER);
     // display fan speed
     fill(128);
-    text(label_fan + str(fan_index), width * 0.65, height * 0.83);
+    text(label_fan + str(fan_index), width * 0.65, height * 0.94);
     // debug filtered pm value
     fill(0);
-    text("S2 = " + str(pm_outValue), width * 0.1, height * 0.9);
+    text("S2 = " + str(pm_outValue), width * 0.1, height * 0.94);
     // display icon
-    image(icon_mode, width * 0.33, height * 0.77, 50, 50);
-    image(icon_filter, width / 2, height * 0.77, 50, 50);
-    image(icon_fan, width * 0.65, height * 0.77, 50, 50);
+    image(icon_mode, width * 0.33, height * 0.89, 50, 50);
+    image(icon_filter, width / 2, height * 0.89, 50, 50);
+    image(icon_fan, width * 0.65, height * 0.89, 50, 50);
     // display button
     btnShutdown.display();
     if (filter_dirty) btnAlert.display();

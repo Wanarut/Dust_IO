@@ -39,7 +39,7 @@ void controller() {
     if (btnAutoHi.hasReleased()) {
         cur_mode = MODE_HIGH;
         println("Eco Mode: ESP On");
-        text_mode = "AUTO";
+        text_mode = "Hi";
         text_mode_post = "Hi";
         text_mode_color = color(255, 0, 0);
     }
@@ -55,6 +55,7 @@ void controller() {
         println("Manual Mode");
         text_mode = "MANUAL";
         text_mode_post = "";
+        text_mode_color = color(128);
 
         dimming -= 2;
         if (dimming < 1) dimming = level;
