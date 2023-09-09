@@ -14,13 +14,16 @@ static final String label_changefilter_th = "กรุณาเปลี่ย�
 
 void screen_changefilter() {
     background(255);
-    image(instuction, width / 2, height / 2 + 50, 500, 400);
+    // image(instuction, width / 2, height / 2 + 50, 500, 400);
     fill(255, 0, 0);
     textFont(font_regu);
-    textSize(50);
-    text(label_changefilter, width / 2, height * 0.1);
+    // textSize(50);
+    // text(label_changefilter, width / 2, height * 0.1);
+    textSize(80);
+    text(label_changefilter, width / 2, height * 0.4);
     textFont(font_thai);
-    text(label_changefilter_th, width / 2, height * 0.18);
+    // text(label_changefilter_th, width / 2, height * 0.18);
+    text(label_changefilter_th, width / 2, height * 0.5);
     // btnNext.display();
     textAlign(RIGHT);
     text(label_contact_th, width * 0.98, height * 0.97);
