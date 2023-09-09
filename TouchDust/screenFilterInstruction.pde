@@ -21,5 +21,8 @@ void screen_changefilter() {
     text(label_changefilter, width / 2, height * 0.1);
     textFont(font_thai);
     text(label_changefilter_th, width / 2, height * 0.18);
-    btnNext.display();
+    // btnNext.display();
+    textAlign(RIGHT);
+    text(label_contact_th, width * 0.98, height * 0.97);
+    textAlign(CENTER, CENTER);
 }  
