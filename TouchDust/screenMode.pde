@@ -8,31 +8,32 @@ static final int MODE_MANUAL = 3;
 int cur_mode = MODE_AUTO;
 
 void mode_setBtn() {
-    btnFanPow = new Button(width / 2 - 280, int(height / 2.3), 400, 400, 1, 0, "btn/fan_0.jpg");
-    btnAutoEco = new Button(width / 2 + 280, height / 4, 250, 250, 1, 0, "btn/mode_eco.jpg");
-    btnAutoHi = new Button(width / 2 + 280, int(1.8 * height) / 3, 250, 250, 1, 0, "btn/mode_high.jpg");
+    btnFanPow = new Button(width / 2, int(height * 0.2), 400, 400, 1, 0, "btn/fan_1.jpg");
+    btnAutoEco = new Button(int(width * 0.25), int(height * 0.55), 250, 250, 1, 0, "btn/mode_eco.jpg");
+    btnAutoHi = new Button(int(width * 0.75), int(height * 0.55), 250, 250, 1, 0, "btn/mode_high.jpg");
     
     for (int i = 0; i < fanPowerImgs.length; i++) {
         fanPowerImgs[i] = loadImage("btn/fan_" + str(i) + ".jpg");
     }
 }
 
-static final String eco = "ECO";
-static final String high = "High Air Quality";
+static final String STRING_AUTO = "Auto";
+static final String STRING_HIGH = "Hi";
+static final String STRING_MANUAL = "Manual";
 
 void screen_mode() {
     background(255);
     
-    btnFanPow.setImage(fanPowerImgs[fan_index]);
     btnFanPow.display();
     btnAutoHi.display();
     btnAutoEco.display();
     
     fill(128);
     textFont(font_bold);
-    textSize(40);
-    text(eco, width / 2 + 280, height / 4 + 110);
-    text(high, width / 2 + 280, int(2.3 * height) / 3);
+    textSize(30);
+    text(STRING_MANUAL, width * 0.52, height * 0.31);
+    text(STRING_AUTO, int(width * 0.25), int(height * 0.71));
+    text(STRING_HIGH, int(width * 0.75), int(height * 0.71));
 }
 
 void controller() {
@@ -105,4 +106,5 @@ void adaptiveFan() {
         if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
     }
     fan_index = (level - dimming) / 2;
+    btnFanPow.setImage(fanPowerImgs[fan_index]);
 }

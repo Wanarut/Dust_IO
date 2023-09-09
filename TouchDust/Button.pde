@@ -38,7 +38,7 @@ class Button {
 
     void setImage(PImage cur_image) {
         image = cur_image;
-        image_active = cur_image;
+        image_active = cur_image.copy();
         image_active.filter(POSTERIZE, 5);
     }
 
