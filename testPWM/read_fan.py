@@ -23,11 +23,7 @@ try:
         except:
             continue
         print('Set Duty Cycle: ' + str(duty) + '%')
-        if duty > 0 :
-            pwm12.start(duty)
-            pwm12.ChangeDutyCycle(duty)
-        else :
-            pwm12.stop()
+        pwm12.ChangeDutyCycle(duty)
         
         time.sleep(1)
 except KeyboardInterrupt:
