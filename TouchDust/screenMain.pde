@@ -38,11 +38,11 @@ void main_screen() {
     textSize(35);
     text(label_pm, width / 2, height * 0.78);
     textSize(20);
-    text(label_25, width * 0.41, height * 0.795);
+    text(label_25, width * 0.43, height * 0.795);
     textSize(90);
     textAlign(RIGHT, CENTER);
     int pos_x = int(width * 0.5 + 70);
-    int pos_y = int(height * 0.74);
+    int pos_y = int(height * 0.75);
     fill(0);
     // stroke pm value
     for(int x = -1; x < 2; x++){
