@@ -31,7 +31,7 @@ static final String lifetime_key = "filter_lifetime";
 JSONObject properties;
 
 public void setup() {
-    // size(1280, 720, JAVA2D);
+    // size(1600, 900, JAVA2D);
     fullScreen();
     noCursor();
     // setup drawing style
