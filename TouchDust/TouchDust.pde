@@ -30,6 +30,7 @@ static final String properties_file = "data/properties.json";
 static final String lifetime_key = "filter_lifetime";
 JSONObject properties;
 
+boolean shutdown_flag = false;
 static final boolean show_all_element = false;
 public void setup() {
     // size(1600, 900, JAVA2D);
@@ -185,6 +186,11 @@ public void draw() {
         default :
         break;
     }
+    if (shutdown_flag && cur_mil - prev_shutdown_mil > HOLD_TIME) {
+        cur_screen = SCREEN_SHUTDOWN;
+        shutdown_flag = false;
+        btnShutdown.hasReleased();
+    }
 }
 
 void mousePressed() {
@@ -193,7 +199,10 @@ void mousePressed() {
     // button is clicking
     switch(cur_screen) {
         case SCREEN_MAIN :
-            if (btnShutdown.hasPressed()) prev_shutdown_mil = prev_mil;
+            if (btnShutdown.hasPressed()) {
+                prev_shutdown_mil = prev_mil;
+                shutdown_flag = true;
+            }
             if (filter_dirty || show_all_element) btnAlert.hasPressed();
             break;
         case SCREEN_MENU :
@@ -249,7 +258,7 @@ void mouseReleased() {
     switch(cur_screen) {
         case SCREEN_MAIN :
             if (btnShutdown.hasReleased()){
-                if (current_mil - prev_shutdown_mil > HOLD_TIME) cur_screen = SCREEN_SHUTDOWN;
+                shutdown_flag = false;
             } else if ((filter_dirty || show_all_element) && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
             else cur_screen = SCREEN_MENU;
             break;
