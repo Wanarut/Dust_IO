@@ -56,8 +56,8 @@ public void setup() {
     confirmShutdown_setBtn();
     filter_setBtn();
     // setup navigation btn
-    menu = new Button(width / 7, int(height * 0.85), 150, 150, 1, 0, "btn/btn_back.jpg");
-    cancel = new Button(width / 2, int(height * 0.85), 100, 100, 1, 0, "btn/logo.jpg");
+    menu = new Button(int(width * 0.1), int(height * 0.9), 150, 150, 1, 0, "btn/btn_back.jpg");
+    cancel = new Button(width / 2, int(height * 0.9), 100, 100, 1, 0, "btn/logo.jpg");
     // load properties file
     properties = loadJSONObject(properties_file);
     if (properties == null) {

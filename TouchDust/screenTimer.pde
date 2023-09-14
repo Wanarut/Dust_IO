@@ -49,10 +49,10 @@ void screen_timer() {
     // display time
     fill(55, 179, 73);
     textFont(font_bold);
-    textSize(120);
-    text(timer_hour, width / 2 - 128, int(height * 0.35));
-    text(colon, width / 2, int(height * 0.35));
-    text(timer_min, width / 2 + 128, int(height * 0.35));
+    textSize(180);
+    text(timer_hour, width / 2 - 138, int(height * 0.35));
+    text(colon, width / 2, int(height * 0.335));
+    text(timer_min, width / 2 + 138, int(height * 0.35));
     // display labels
     fill(157);
     textFont(font_regu);

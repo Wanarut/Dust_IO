@@ -8,9 +8,9 @@ static final int MODE_MANUAL = 3;
 int cur_mode = MODE_AUTO;
 
 void mode_setBtn() {
-    btnFanPow = new Button(width / 2, int(height * 0.2), 400, 400, 1, 0, "btn/fan_1.jpg");
-    btnAutoEco = new Button(int(width * 0.25), int(height * 0.55), 250, 250, 1, 0, "btn/mode_eco.jpg");
-    btnAutoHi = new Button(int(width * 0.75), int(height * 0.55), 250, 250, 1, 0, "btn/mode_high.jpg");
+    btnFanPow = new Button(width / 2, int(height * 0.25), 400, 400, 1, 0, "btn/fan_1.jpg");
+    btnAutoEco = new Button(int(width * 0.25), int(height * 0.6), 250, 250, 1, 0, "btn/mode_eco.jpg");
+    btnAutoHi = new Button(int(width * 0.75), int(height * 0.6), 250, 250, 1, 0, "btn/mode_high.jpg");
     
     for (int i = 0; i < fanPowerImgs.length; i++) {
         fanPowerImgs[i] = loadImage("btn/fan_" + str(i) + ".jpg");
@@ -29,16 +29,16 @@ void screen_mode() {
     btnAutoEco.display();
     
     textFont(font_bold);
-    textSize(30);
+    textSize(40);
     if (cur_mode == MODE_MANUAL) fill(0, 176, 80);
     else fill(128);
-    text(STRING_MANUAL, width * 0.52, height * 0.29);
+    text(STRING_MANUAL, width * 0.54, height * 0.34);
     if (cur_mode == MODE_AUTO) fill(0, 176, 80);
     else fill(128);
-    text(STRING_AUTO, int(width * 0.25), int(height * 0.68));
+    text(STRING_AUTO, int(width * 0.25), int(height * 0.73));
     if (cur_mode == MODE_HIGH) fill(0, 176, 80);
     else fill(128);
-    text(STRING_HIGH, int(width * 0.75), int(height * 0.68));
+    text(STRING_HIGH, int(width * 0.76), int(height * 0.73));
 }
 
 void controller() {

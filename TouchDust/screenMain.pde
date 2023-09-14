@@ -31,18 +31,18 @@ void main_screen() {
     background(255);
     // display emoji
     select_emoji();
-    image(emoji[gif_i], width / 2, height * 0.35, height * 0.7, height * 0.7);
+    image(emoji[gif_i], width / 2, height * 0.39, height * 0.7, height * 0.7);
     // display pm value
     fill(128);
     textFont(font_bold);
     textSize(35);
-    text(label_pm, width / 2, height * 0.78);
+    text(label_pm, width / 2, height * 0.82);
     textSize(20);
-    text(label_25, width * 0.404, height * 0.795);
+    text(label_25, width * 0.404, height * 0.835);
     textSize(110);
-    textAlign(RIGHT, CENTER);
-    int pos_x = int(width * 0.542);
-    int pos_y = int(height * 0.745);
+    // textAlign(RIGHT, CENTER);
+    int pos_x = int(width * 0.5);
+    int pos_y = int(height * 0.785);
     fill(0);
     // stroke pm value
     for(int x = -1; x < 2; x++){
@@ -71,11 +71,11 @@ void main_screen() {
     textAlign(CENTER, CENTER);
     // display fan speed
     fill(128);
-    text(label_fan + str(fan_index), width * 0.65, height * 0.931);
+    text(label_fan + str(fan_index), width * 0.67, height * 0.931);
     // display icon
     image(icon_mode, width * 0.33, height * 0.89, 50, 50);
-    image(icon_filter, width / 2, height * 0.89, 50, 50);
-    image(icon_fan, width * 0.65, height * 0.89, 50, 50);
+    image(icon_filter, width / 2, height * 0.89, 65, 65);
+    image(icon_fan, width * 0.67, height * 0.89, 50, 50);
     // display button
     btnShutdown.display();
     if (filter_dirty || show_all_element) {
@@ -89,7 +89,7 @@ void main_screen() {
         fill(89);
         textFont(font_bold);
         textSize(20);
-        text(label_timer, int(width * 0.93), int(height * 0.17));
+        text(label_timer, int(width * 0.93), int(height * 0.19));
         // digit lead with zero
         timer_hour = String.format(lead_zero_format, time_min / 3600);
         timer_min = String.format(lead_zero_format, (time_min / 60) % 60);
