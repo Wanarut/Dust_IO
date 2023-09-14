@@ -38,10 +38,10 @@ void main_screen() {
     textSize(35);
     text(label_pm, width / 2, height * 0.78);
     textSize(20);
-    text(label_25, width * 0.418, height * 0.795);
+    text(label_25, width * 0.416, height * 0.795);
     textSize(110);
     textAlign(RIGHT, CENTER);
-    int pos_x = int(width * 0.541);
+    int pos_x = int(width * 0.542);
     int pos_y = int(height * 0.745);
     fill(0);
     // stroke pm value
@@ -57,21 +57,21 @@ void main_screen() {
     fill(128);
     textFont(font_regu);
     textSize(24);
-    text(label_mode, width * 0.32, height * 0.927);
+    text(label_mode, width * 0.32, height * 0.928);
     textAlign(LEFT, CENTER);
     fill(text_mode_color);
-    text(text_mode, width * 0.355, height * 0.927);
+    text(text_mode, width * 0.355, height * 0.928);
     textAlign(CENTER, CENTER);
     // display filter lifetime
     fill(128);
-    text(label_filter, width / 2 - 24, height * 0.927);
+    text(label_filter, width / 2 - 24, height * 0.928);
     fill(filter_percent_color);
     textAlign(RIGHT, CENTER);
-    text(getFilterPercent() + " %", width / 2 + 75, height * 0.927);
+    text(getFilterPercent() + " %", width / 2 + 75, height * 0.928);
     textAlign(CENTER, CENTER);
     // display fan speed
     fill(128);
-    text(label_fan + str(fan_index), width * 0.65, height * 0.927);
+    text(label_fan + str(fan_index), width * 0.65, height * 0.928);
     // display icon
     image(icon_mode, width * 0.33, height * 0.89, 50, 50);
     image(icon_filter, width / 2, height * 0.89, 50, 50);

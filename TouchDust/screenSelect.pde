@@ -14,7 +14,7 @@ void screen_select() {
     fill(89);
     textFont(font_bold);
     textSize(25);
-    text("Mode", width * 0.2, height * 0.54);
-    text("Timer", width * 0.5, height * 0.54);
-    text("Filter", width * 0.8, height * 0.54);
+    text("Mode", width * 0.2, height * 0.55);
+    text("Timer", width * 0.5, height * 0.55);
+    text("Filter", width * 0.8, height * 0.55);
 }  
