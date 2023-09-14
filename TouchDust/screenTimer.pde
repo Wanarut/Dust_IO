@@ -37,7 +37,7 @@ void screen_timer() {
     fill(89);
     textFont(font_bold);
     textSize(30);
-    text(label_timer, int(width * 0.85), int(height * 0.12));
+    text(label_timer, int(width * 0.87), int(height * 0.12));
     // display btns
     add.display();
     del.display();

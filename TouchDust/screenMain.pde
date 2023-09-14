@@ -21,7 +21,7 @@ void setupmain() {
     btnAlert = new Button(int(width * 0.94), int(height * 0.75), 100, 100, 1, 0, "btn/alert.png");
 }
 
-static final String label_pm = "  PM                           μg/m\u00B3";
+static final String label_pm = "PM                                   μg/m\u00B3";
 static final String label_25 = "2.5";
 static final String label_mode = "MODE : ";
 static final String label_filter = "Filter : ";
@@ -38,11 +38,11 @@ void main_screen() {
     textSize(35);
     text(label_pm, width / 2, height * 0.78);
     textSize(20);
-    text(label_25, width * 0.43, height * 0.795);
-    textSize(90);
+    text(label_25, width * 0.42, height * 0.795);
+    textSize(110);
     textAlign(RIGHT, CENTER);
-    int pos_x = int(width * 0.5 + 70);
-    int pos_y = int(height * 0.75);
+    int pos_x = int(width * 0.54);
+    int pos_y = int(height * 0.745);
     fill(0);
     // stroke pm value
     for(int x = -1; x < 2; x++){
@@ -57,39 +57,39 @@ void main_screen() {
     fill(128);
     textFont(font_regu);
     textSize(24);
-    text(label_mode, width * 0.32, height * 0.94);
+    text(label_mode, width * 0.32, height * 0.925);
     textAlign(LEFT, CENTER);
     fill(text_mode_color);
-    text(text_mode, width * 0.355, height * 0.94);
+    text(text_mode, width * 0.355, height * 0.925);
     textAlign(CENTER, CENTER);
     // display filter lifetime
     fill(128);
-    text(label_filter, width / 2 - 24, height * 0.94);
+    text(label_filter, width / 2 - 24, height * 0.925);
     fill(filter_percent_color);
     textAlign(RIGHT, CENTER);
-    text(getFilterPercent() + " %", width / 2 + 75, height * 0.94);
+    text(getFilterPercent() + " %", width / 2 + 75, height * 0.925);
     textAlign(CENTER, CENTER);
     // display fan speed
     fill(128);
-    text(label_fan + str(fan_index), width * 0.65, height * 0.94);
+    text(label_fan + str(fan_index), width * 0.65, height * 0.925);
     // display icon
     image(icon_mode, width * 0.33, height * 0.89, 50, 50);
     image(icon_filter, width / 2, height * 0.89, 50, 50);
     image(icon_fan, width * 0.65, height * 0.89, 50, 50);
     // display button
     btnShutdown.display();
-    if (filter_dirty) {
+    if (filter_dirty || show_all_element) {
         btnAlert.setPosition(int(width * 0.94), int(height * 0.75));
         btnAlert.display();
     }
 
-    if (start_count) {
+    if (start_count || show_all_element) {
         // display logo
         image(sleep_timer_img, int(width * 0.93), int(height * 0.12), 120, 120);
         fill(89);
         textFont(font_bold);
         textSize(20);
-        text(label_timer, int(width * 0.93), int(height * 0.2));
+        text(label_timer, int(width * 0.93), int(height * 0.17));
         // digit lead with zero
         timer_hour = String.format(lead_zero_format, time_min / 3600);
         timer_min = String.format(lead_zero_format, (time_min / 60) % 60);
@@ -97,9 +97,9 @@ void main_screen() {
         fill(55, 179, 73);
         textFont(font_bold);
         textSize(30);
-        text(timer_hour, width * 0.82, int(height * 0.12));
-        text(colon, width * 0.845, int(height * 0.12));
-        text(timer_min, width * 0.87, int(height * 0.12));
+        text(timer_hour, width * 0.86, int(height * 0.12));
+        text(colon, width * 0.875, int(height * 0.12));
+        text(timer_min, width * 0.89, int(height * 0.12));
     }
 }
 

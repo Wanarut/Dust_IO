@@ -32,13 +32,13 @@ void screen_mode() {
     textSize(30);
     if (cur_mode == MODE_MANUAL) fill(0, 176, 80);
     else fill(128);
-    text(STRING_MANUAL, width * 0.52, height * 0.29);
+    text(STRING_MANUAL, width * 0.52, height * 0.27);
     if (cur_mode == MODE_AUTO) fill(0, 176, 80);
     else fill(128);
-    text(STRING_AUTO, int(width * 0.25), int(height * 0.68));
+    text(STRING_AUTO, int(width * 0.25), int(height * 0.66));
     if (cur_mode == MODE_HIGH) fill(0, 176, 80);
     else fill(128);
-    text(STRING_HIGH, int(width * 0.75), int(height * 0.68));
+    text(STRING_HIGH, int(width * 0.75), int(height * 0.66));
 }
 
 void controller() {

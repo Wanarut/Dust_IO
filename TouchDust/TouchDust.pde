@@ -30,8 +30,9 @@ static final String properties_file = "data/properties.json";
 static final String lifetime_key = "filter_lifetime";
 JSONObject properties;
 
+static final boolean show_all_element = false;
 public void setup() {
-    // size(1600, 900, JAVA2D);
+    // size(1920, 1080, JAVA2D);
     fullScreen();
     noCursor();
     // setup drawing style
@@ -193,7 +194,7 @@ void mousePressed() {
     switch(cur_screen) {
         case SCREEN_MAIN :
             if (btnShutdown.hasPressed()) prev_shutdown_mil = prev_mil;
-            if (filter_dirty) btnAlert.hasPressed();
+            if (filter_dirty || show_all_element) btnAlert.hasPressed();
             break;
         case SCREEN_MENU :
             btnMode.hasPressed();
@@ -231,7 +232,7 @@ void mousePressed() {
             btnShutNo.hasPressed();
             break;
         case SCREEN_FILTER :
-            if (filter_dirty) btnAlert.hasPressed();
+            if (filter_dirty || show_all_element) btnAlert.hasPressed();
             btnHidden.hasPressed();
 
             menu.hasPressed();
@@ -249,7 +250,7 @@ void mouseReleased() {
         case SCREEN_MAIN :
             if (btnShutdown.hasReleased()){
                 if (current_mil - prev_shutdown_mil > HOLD_TIME) cur_screen = SCREEN_SHUTDOWN;
-            } else if (filter_dirty && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
+            } else if ((filter_dirty || show_all_element) && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
             else cur_screen = SCREEN_MENU;
             break;
         case SCREEN_MENU :
@@ -290,7 +291,7 @@ void mouseReleased() {
             if (btnShutNo.hasReleased()) cur_screen = SCREEN_MAIN;
             break;
         case SCREEN_FILTER :
-            if (filter_dirty && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
+            if ((filter_dirty || show_all_element) && btnAlert.hasReleased()) cur_screen = SCREEN_CHANGEFILTER;
             if (btnHidden.hasReleased()) cur_screen = SCREEN_CONFIRMFILTER;
 
             if (menu.hasReleased()) cur_screen = SCREEN_MENU;

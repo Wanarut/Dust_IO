@@ -28,4 +28,5 @@ void screen_changefilter() {
     textAlign(RIGHT);
     text(label_contact_th, width * 0.98, height * 0.97);
     textAlign(CENTER, CENTER);
+    btnHidden.display();
 }  
