@@ -38,7 +38,7 @@ void main_screen() {
     textSize(35);
     text(label_pm, width / 2, height * 0.78);
     textSize(20);
-    text(label_25, width * 0.413, height * 0.795);
+    text(label_25, width * 0.411, height * 0.795);
     textSize(110);
     textAlign(RIGHT, CENTER);
     int pos_x = int(width * 0.542);
