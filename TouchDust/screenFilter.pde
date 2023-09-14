@@ -11,7 +11,7 @@ void screen_filter() {
     fill(89);
     textFont(font_bold);
     textSize(25);
-    text("Filter", width * 0.28, height * 0.61);
+    text("Filter", width * 0.24, height * 0.59);
 
     fill(filter_percent_color);
     textAlign(RIGHT, CENTER);

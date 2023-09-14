@@ -32,7 +32,7 @@ JSONObject properties;
 
 static final boolean show_all_element = false;
 public void setup() {
-    // size(1920, 1080, JAVA2D);
+    // size(1900, 1070, JAVA2D);
     fullScreen();
     noCursor();
     // setup drawing style
