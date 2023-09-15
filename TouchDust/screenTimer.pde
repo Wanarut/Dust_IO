@@ -19,15 +19,15 @@ void timer_setBtn() {
     // sleep timer logo
     sleep_timer_img = loadImage("logo/icon_sleep.jpg");
     // timer increase & decrease btn
-    add = new Button(width / 2 + 350, int(height * 0.4), 120, 120, 1, 0, "btn/plus.png");
-    del = new Button(width / 2 - 350, int(height * 0.4), 120, 120, 1, 0, "btn/min.png");
+    add = new Button(width / 2 + 350, int(height * 0.45), 120, 120, 1, 0, "btn/plus.png");
+    del = new Button(width / 2 - 350, int(height * 0.45), 120, 120, 1, 0, "btn/min.png");
     // set timer & clear btn
-    set = new Button(width / 2 - 150, int(height * 0.65), 200, 70, 36, color(0, 173, 73));
+    set = new Button(width / 2 - 200, int(height * 0.7), 280, 100, 60, color(0, 173, 73));
     set.text = "SET";
-    set.weight = 5;
-    clear = new Button(width / 2 + 150, int(height * 0.65), 200, 70, 36, color(122, 122, 122));
+    set.weight = 10;
+    clear = new Button(width / 2 + 200, int(height * 0.7), 280, 100, 60, color(122, 122, 122));
     clear.text = "CLEAR";
-    clear.weight = 5;
+    clear.weight = 10;
 }
 
 void screen_timer() {
@@ -50,14 +50,14 @@ void screen_timer() {
     fill(55, 179, 73);
     textFont(font_bold);
     textSize(180);
-    text(timer_hour, width / 2 - 138, int(height * 0.35));
-    text(colon, width / 2, int(height * 0.335));
-    text(timer_min, width / 2 + 138, int(height * 0.35));
+    text(timer_hour, width / 2 - 138, int(height * 0.4));
+    text(colon, width / 2, int(height * 0.385));
+    text(timer_min, width / 2 + 138, int(height * 0.4));
     // display labels
     fill(157);
     textFont(font_regu);
     textSize(30);
-    text(time_label, width / 2, int(height * 0.47));
+    text(time_label, width / 2, int(height * 0.52));
 }
 
 void calculatetime() {

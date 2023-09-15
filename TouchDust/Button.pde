@@ -66,8 +66,9 @@ class Button {
         // display text
         if (btn_state ==  1) fill(128);
         else fill(0);
-        textFont(font);
-        text(text, xpos_, ypos_ - 3);
+        textFont(font_bold);
+        textSize(tsize_);
+        text(text, xpos_, ypos_ - 7);
     }
     
     boolean hasPressed() {

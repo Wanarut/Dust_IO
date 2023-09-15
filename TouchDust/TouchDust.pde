@@ -1,7 +1,7 @@
 static final String os = System.getProperty("os.name");
 // screen timeout interval
 static final int SCREEN_TIMEOUT = 60000;
-static final int HOLD_TIME = 5000;
+static final int HOLD_TIME = 2000;
 // screen index
 static final int SCREEN_MAIN = 0;
 static final int SCREEN_MENU = 1;
@@ -324,7 +324,7 @@ void shutdown_now() {
     dimming = level;
     if (os.equals("Linux")) {
         GPIO.digitalWrite(pinESP, GPIO.LOW);
-        Command cmd = new Command("sleep 5;shutdown now");
+        Command cmd = new Command("shutdown now");
         if (cmd.run() == true) {
             String[] output = cmd.getOutput();
             println(output);

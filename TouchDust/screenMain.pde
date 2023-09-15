@@ -17,8 +17,8 @@ void setupmain() {
     icon_filter = loadImage("logo/icon_filter.jpg");
     icon_fan = loadImage("logo/icon_fan.jpg");
     
-    btnShutdown = new Button(int(width * 0.94), int(height * 0.9), 100, 100, 1, 0, "btn/icon_power.jpg");
-    btnAlert = new Button(int(width * 0.94), int(height * 0.75), 100, 100, 1, 0, "btn/alert.png");
+    btnShutdown = new Button(int(width * 0.92), int(height * 0.87), 150, 150, 1, 0, "btn/icon_power.jpg");
+    btnAlert = new Button(0, 0, 150, 150, 1, 0, "btn/alert.png");
 }
 
 static final String label_pm = "PM                                   μg/m\u00B3";
@@ -57,29 +57,29 @@ void main_screen() {
     fill(128);
     textFont(font_regu);
     textSize(24);
-    text(label_mode, width * 0.32, height * 0.931);
+    text(label_mode, width * 0.32, height * 0.951);
     textAlign(LEFT, CENTER);
     fill(text_mode_color);
-    text(text_mode, width * 0.355, height * 0.931);
+    text(text_mode, width * 0.355, height * 0.951);
     textAlign(CENTER, CENTER);
     // display filter lifetime
     fill(128);
-    text(label_filter, width / 2 - 24, height * 0.931);
+    text(label_filter, width / 2 - 24, height * 0.951);
     fill(filter_percent_color);
     textAlign(RIGHT, CENTER);
-    text(getFilterPercent() + " %", width / 2 + 75, height * 0.931);
+    text(getFilterPercent() + " %", width / 2 + 75, height * 0.951);
     textAlign(CENTER, CENTER);
     // display fan speed
     fill(128);
-    text(label_fan + str(fan_index), width * 0.67, height * 0.931);
+    text(label_fan + str(fan_index), width * 0.67, height * 0.951);
     // display icon
-    image(icon_mode, width * 0.33, height * 0.89, 50, 50);
-    image(icon_filter, width / 2, height * 0.89, 65, 65);
-    image(icon_fan, width * 0.67, height * 0.89, 50, 50);
+    image(icon_mode, width * 0.33, height * 0.91, 50, 50);
+    image(icon_filter, width / 2, height * 0.91, 65, 65);
+    image(icon_fan, width * 0.67, height * 0.91, 50, 50);
     // display button
     btnShutdown.display();
     if (filter_dirty || show_all_element) {
-        btnAlert.setPosition(int(width * 0.94), int(height * 0.75));
+        btnAlert.setPosition(int(width * 0.92), int(height * 0.68));
         btnAlert.display();
     }
 
