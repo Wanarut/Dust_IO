@@ -661,12 +661,12 @@ public void screen_filter() {
 Button btnYes, btnNo;
 
 public void confirmfilter_setBtn() {
-    btnYes = new Button(width / 2 - 130, PApplet.parseInt(height * 0.65f), 150, 50, 30, color(17, 181, 92));
+    btnYes = new Button(width / 2 - 200, PApplet.parseInt(height * 0.7f), 280, 100, 60, color(17, 181, 92));
     btnYes.text = "YES";
-    btnYes.weight = 5;
-    btnNo = new Button(width / 2 + 130, PApplet.parseInt(height * 0.65f), 150, 50, 30, color(122));
+    btnYes.weight = 10;
+    btnNo = new Button(width / 2 + 200, PApplet.parseInt(height * 0.7f), 280, 100, 60, color(122));
     btnNo.text = "NO";
-    btnNo.weight = 5;
+    btnNo.weight = 10;
 }
 
 static final String label_confirmfilter = "Have you changed the air filter?";
@@ -686,6 +686,7 @@ public void screen_confirmfilter() {
     // debug filtered pm value
     fill(0);
     textAlign(LEFT, CENTER);
+    textSize(30);
     text("S1 = " + str(pm_inValue), width * 0.1f, height * 0.9f);
     text("S2 = " + str(pm_outValue), width * 0.1f, height * 0.94f);
     textAlign(CENTER, CENTER);
@@ -968,9 +969,9 @@ public void adaptiveFan() {
 Button btnMode, btnTimer, btnFilter;
 
 public void select_setBtn() {
-    btnMode = new Button(PApplet.parseInt(width * 0.2f), PApplet.parseInt(height * 0.4f), 400, 400, 1, 0, "btn/btn_mode.jpg");
-    btnTimer = new Button(PApplet.parseInt(width * 0.5f), PApplet.parseInt(height * 0.4f), 400, 400, 1, 0, "btn/btn_timer.jpg");
-    btnFilter = new Button(PApplet.parseInt(width * 0.8f), PApplet.parseInt(height * 0.4f), 400, 300, 1, 0, "btn/btn_filter.png");
+    btnMode = new Button(PApplet.parseInt(width * 0.2f), PApplet.parseInt(height * 0.45f), 400, 400, 1, 0, "btn/btn_mode.jpg");
+    btnTimer = new Button(PApplet.parseInt(width * 0.5f), PApplet.parseInt(height * 0.45f), 400, 400, 1, 0, "btn/btn_timer.jpg");
+    btnFilter = new Button(PApplet.parseInt(width * 0.8f), PApplet.parseInt(height * 0.45f), 400, 300, 1, 0, "btn/btn_filter.png");
 }
 
 public void screen_select() {
@@ -981,19 +982,19 @@ public void screen_select() {
     fill(89);
     textFont(font_bold);
     textSize(40);
-    text("Mode", width * 0.2f, height * 0.6f);
-    text("Timer", width * 0.5f, height * 0.6f);
-    text("Filter", width * 0.78f, height * 0.6f);
+    text("Mode", width * 0.2f, height * 0.65f);
+    text("Timer", width * 0.5f, height * 0.65f);
+    text("Filter", width * 0.78f, height * 0.65f);
 }  
 Button btnShutYes, btnShutNo;
 
 public void confirmShutdown_setBtn() {
-    btnShutYes = new Button(width / 2 - 130, PApplet.parseInt(height * 0.65f), 150, 50, 30, color(17, 181, 92));
+    btnShutYes = new Button(width / 2 - 200, PApplet.parseInt(height * 0.7f), 280, 100, 60, color(17, 181, 92));
     btnShutYes.text = "YES";
-    btnShutYes.weight = 5;
-    btnShutNo = new Button(width / 2 + 130, PApplet.parseInt(height * 0.65f), 150, 50, 30, color(122));
+    btnShutYes.weight = 10;
+    btnShutNo = new Button(width / 2 + 200, PApplet.parseInt(height * 0.7f), 280, 100, 60, color(122));
     btnShutNo.text = "NO";
-    btnShutNo.weight = 5;
+    btnShutNo.weight = 10;
 }
 
 static final String label_confirmshutdown = "Do you really want to “shut down”?";

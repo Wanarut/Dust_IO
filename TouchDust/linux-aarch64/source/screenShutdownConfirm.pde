@@ -1,12 +1,12 @@
 Button btnShutYes, btnShutNo;
 
 void confirmShutdown_setBtn() {
-    btnShutYes = new Button(width / 2 - 130, int(height * 0.65), 150, 50, 30, color(17, 181, 92));
+    btnShutYes = new Button(width / 2 - 200, int(height * 0.7), 280, 100, 60, color(17, 181, 92));
     btnShutYes.text = "YES";
-    btnShutYes.weight = 5;
-    btnShutNo = new Button(width / 2 + 130, int(height * 0.65), 150, 50, 30, color(122));
+    btnShutYes.weight = 10;
+    btnShutNo = new Button(width / 2 + 200, int(height * 0.7), 280, 100, 60, color(122));
     btnShutNo.text = "NO";
-    btnShutNo.weight = 5;
+    btnShutNo.weight = 10;
 }
 
 static final String label_confirmshutdown = "Do you really want to “shut down”?";
