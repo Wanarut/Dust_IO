@@ -17,7 +17,7 @@ void screen_confirmshutdown() {
     background(255);
     fill(68, 114, 196);
     textFont(font_regu);
-    textSize(60);
+    textSize(80);
     text(label_confirmshutdown, width / 2, height * 0.4);
     textFont(font_thai);
     text(label_confirmshutdown_th, width / 2, height * 0.5);

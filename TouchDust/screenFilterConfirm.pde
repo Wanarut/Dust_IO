@@ -16,7 +16,7 @@ void screen_confirmfilter() {
     background(255);
     fill(100);
     textFont(font_regu);
-    textSize(60);
+    textSize(80);
     text(label_confirmfilter, width / 2, height * 0.4);
     textFont(font_thai);
     text(label_confirmfilter_th, width / 2, height * 0.5);

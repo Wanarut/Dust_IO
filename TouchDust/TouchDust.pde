@@ -44,7 +44,7 @@ public void setup() {
     // setup system font
     font_bold = createFont("Fira_Sans/FiraSans-Bold.ttf", 100);
     font_regu = createFont("Fira_Sans/FiraSans-Regular.ttf", 100);
-    font_thai = createFont("THSarabunNew/THSarabunNew.ttf", 36);
+    font_thai = createFont("THSarabunNew/THSarabunNew.ttf", 60);
     // setup screen
     setupPin();
     setupmain();
