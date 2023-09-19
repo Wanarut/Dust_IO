@@ -130,7 +130,7 @@ public void draw() {
     //decrease filter lifetime every minute
     if (cur_mil - prev_filter_mil >= 60000) {
         prev_filter_mil = cur_mil;
-        decreaseFilterLife();
+        if (dimming < level) decreaseFilterLife();
     }
     //check ESP Efficiency every 10 minutes
     if (cur_mil - prev_esp_mil >= 600000) {
