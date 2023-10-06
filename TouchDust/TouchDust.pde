@@ -20,6 +20,7 @@ long counter_prev_mil = 0;
 long prev_read_mil = 0;
 long prev_filter_mil = 0;
 long prev_esp_mil = 0;
+long prev_esp_count_mil = 0;
 long prev_shutdown_mil = 0;
 // system font
 PFont font_bold, font_regu, font_thai;
@@ -32,6 +33,9 @@ JSONObject properties;
 
 boolean shutdown_flag = false;
 static final boolean show_all_element = false;
+
+int esp_dirty_count = 0;
+
 public void setup() {
     // size(1600, 900, JAVA2D);
     fullScreen();
@@ -77,7 +81,7 @@ String duty_cycles[] = new String[]{"0", "3", "10", "20", "40"};
 public void draw() {
     long cur_mil = millis();
     //timmr for switching to main page
-    if (cur_mil - prev_mil >= SCREEN_TIMEOUT & cur_screen != SCREEN_CONFIRMFILTER) {
+    if (cur_mil - prev_mil >= SCREEN_TIMEOUT && cur_screen != SCREEN_CONFIRMFILTER && cur_screen != SCREEN_CLEANESP) {
         prev_mil = cur_mil;
         cur_screen = SCREEN_MAIN;
     }
@@ -132,11 +136,21 @@ public void draw() {
         prev_filter_mil = cur_mil;
         if (dimming < level) decreaseFilterLife();
     }
-    //check ESP Efficiency every 10 minutes
+    //check ESP Efficiency every 10 minutes (reset dirty count)
     if (cur_mil - prev_esp_mil >= 600000) {
         prev_esp_mil = cur_mil;
+        esp_dirty_count = 0;
+    }
+    // check esp dirty every 10 second
+    if (cur_mil - prev_esp_count_mil >= 10000) {
+        prev_esp_count_mil = cur_mil;
+
         // Check ESP Efficiency
         if (isESPdirty()) {
+            esp_dirty_count++;
+        }
+        // if dirty count than 3 times
+        if (esp_dirty_count >= 3) {
             // save cur_screen
             if (save_screen < SCREEN_MAIN) save_screen = cur_screen;
             // switch to clean esp screen
