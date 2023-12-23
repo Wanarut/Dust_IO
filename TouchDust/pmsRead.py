@@ -5,15 +5,15 @@ pm_value_1 = -1
 
 try:
     sensor_0 = Pms7003Sensor('/dev/ttyAMA0')
-    sensor_0.close()
     pm_value_0 = sensor_0.read()['pm2_5']
+    sensor_0.close()
 except:
     pass
 
 try:
     sensor_1 = Pms7003Sensor('/dev/ttyAMA1')
-    sensor_1.close()
     pm_value_1 = sensor_1.read()['pm2_5']
+    sensor_1.close()
 except:
     pass
 
