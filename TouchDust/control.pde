@@ -1,6 +1,7 @@
 import processing.io.*;
 
 static final int pinESP = 23;
+boolean espStatus = false;
 static final int pinZC = 4;
 static final int AC_LOAD = 18;
 boolean zcState = false;  // 0 = ready, 1 = processing
@@ -13,6 +14,7 @@ void setupPin() {
     //GPIO.pinMode(pinZC, GPIO.INPUT);
     //GPIO.attachInterrupt(pinZC, this, "zcDetectISR", GPIO.RISING);
     
+    espStatus = true;
     GPIO.digitalWrite(pinESP, GPIO.HIGH);
   }
 }

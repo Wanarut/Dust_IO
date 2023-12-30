@@ -124,6 +124,7 @@ public void draw() {
             // setduty cycle = 0 & close ESP pin
             dimming = level;
             //if(os.equals("Linux")) pwmFan.set(period, 0);
+            espStatus = false;
             if (os.equals("Linux")) {
                 GPIO.digitalWrite(pinESP, GPIO.LOW);
             }
@@ -150,7 +151,7 @@ public void draw() {
             esp_dirty_count++;
         }
         // if dirty count than 3 times
-        if (esp_dirty_count >= 3) {
+        if (esp_dirty_count >= 3 && espStatus) {
             // save cur_screen
             if (save_screen < SCREEN_MAIN) save_screen = cur_screen;
             // switch to clean esp screen
@@ -336,6 +337,7 @@ void shutdown_now() {
     // linux shutdown command
     print("starting shutdown...");
     dimming = level;
+    espStatus = false;
     if (os.equals("Linux")) {
         GPIO.digitalWrite(pinESP, GPIO.LOW);
         Command cmd = new Command("shutdown now");

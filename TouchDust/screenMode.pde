@@ -106,8 +106,10 @@ void adaptiveFan() {
     }
     // case fan is turn off
     if (dimming == level) {
+        espStatus = false;
         if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.LOW);
     } else {
+        espStatus = true;
         if (os.equals("Linux")) GPIO.digitalWrite(pinESP, GPIO.HIGH);
     }
     fan_index = (level - dimming) / 2;
