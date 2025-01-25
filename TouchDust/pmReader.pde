@@ -30,8 +30,8 @@ boolean isESPdirty() {
     if (pm_inValue > 20) {
         int diff = (pm_inValue - pm_outValue);
         int percent = (diff * 100) / pm_inValue;
-        if (percent < 5) {
-            esp_dirty = true;
+        if (percent < 30) {
+            esp_dirty = false;
         }else{
             esp_dirty = false;
         }
