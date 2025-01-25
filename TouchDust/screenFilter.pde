@@ -3,7 +3,7 @@ PImage filter_img;
 
 void filter_setBtn() {
     filter_img = loadImage("btn/btn_filter.png");
-    btnHidden = new Button(100, 50, 200, 100, 30, color(128));
+    btnHidden = new Button(width-100, height-50, 200, 200, 30, color(128));
     if (show_all_element) btnHidden.weight = 5;
 }
 
